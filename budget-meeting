@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cloverdale Budget Workshop, May 5, 2026 — A Citizen's Recap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --paper:#f7f3ea;
+    --rule:#1a1a1a;
+    --accent:#7a1d1d;
+    --muted:#6b6157;
+    --green:#2f4a2a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:'Lora',Georgia,serif;line-height:1.55}
+  body{padding:36px 20px 80px;max-width:880px;margin:0 auto}
+
+  /* Masthead */
+  .masthead{
+    border-top:6px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    padding:14px 0 10px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:'Oswald',sans-serif;letter-spacing:.08em;text-transform:uppercase;font-size:12px;color:var(--muted)
+  }
+  .masthead .nameplate{
+    font-family:'Playfair Display',serif;font-weight:900;font-style:italic;
+    font-size:42px;letter-spacing:-.01em;color:var(--ink);text-transform:none
+  }
+  .masthead .nameplate small{font-size:14px;font-weight:400;font-style:normal;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;display:block;margin-top:-4px}
+
+  .kicker{
+    font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.22em;
+    font-size:12px;color:var(--accent);margin:28px 0 6px
+  }
+  h1.headline{
+    font-family:'Playfair Display',serif;font-weight:900;font-size:54px;line-height:1.05;
+    letter-spacing:-.015em;margin-bottom:14px
+  }
+  .dek{font-size:20px;color:var(--muted);font-style:italic;margin-bottom:18px;max-width:760px}
+
+  .byline{
+    font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+    padding:8px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:24px
+  }
+
+  /* Body text */
+  article p{font-size:17px;margin-bottom:14px;text-align:justify;hyphens:auto}
+  article p.lede:first-letter{
+    font-family:'Playfair Display',serif;font-weight:900;
+    float:left;font-size:78px;line-height:.85;padding:6px 8px 0 0;color:var(--accent)
+  }
+  article p.lede{font-size:18.5px}
+
+  h2{
+    font-family:'Playfair Display',serif;font-weight:700;font-size:28px;margin:36px 0 10px;
+    border-bottom:2px solid var(--ink);padding-bottom:6px
+  }
+  h3{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:14px;margin:18px 0 6px;color:var(--accent)}
+
+  /* Pull quote */
+  .pullquote{
+    border-left:4px solid var(--accent);padding:6px 0 6px 18px;margin:18px 0;
+    font-family:'Playfair Display',serif;font-style:italic;font-size:22px;line-height:1.3;color:var(--ink)
+  }
+  .pullquote cite{display:block;margin-top:6px;font-style:normal;font-size:13px;font-family:'Oswald',sans-serif;
+    text-transform:uppercase;letter-spacing:.15em;color:var(--muted)}
+
+  /* Chart figures */
+  figure{margin:22px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:18px 0;background:#fbf8f1}
+  figcaption{
+    font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;
+    color:var(--muted);text-align:center;margin-top:10px;padding:0 12px
+  }
+  figcaption strong{color:var(--ink);letter-spacing:.18em}
+
+  .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:0 18px}
+  @media (max-width:640px){.chart-grid{grid-template-columns:1fr}}
+
+  /* Numbers display */
+  .bignums{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:6px 12px}
+  .bignum{text-align:center;padding:8px 14px}
+  .bignum .label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:var(--muted)}
+  .bignum .val{font-family:'Playfair Display',serif;font-weight:900;font-size:30px;color:var(--ink);line-height:1.05}
+  .bignum.green .val{color:var(--green)}
+  .bignum.red .val{color:var(--accent)}
+
+  /* Funding table */
+  table.funding{width:100%;border-collapse:collapse;margin:8px 0;font-size:14.5px}
+  table.funding th{
+    font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:11px;
+    text-align:left;border-bottom:2px solid var(--ink);padding:8px 6px;background:transparent
+  }
+  table.funding td{padding:7px 6px;border-bottom:1px solid #d8cfbe}
+  table.funding tr.subhead td{
+    font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.12em;
+    font-size:11px;color:#fff;background:var(--green);padding:5px 6px
+  }
+  table.funding td.amt{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  table.funding tr.tot td{font-weight:700;border-top:2px solid var(--ink);border-bottom:none;padding-top:10px}
+
+  /* Source line */
+  .source{font-size:12px;color:var(--muted);font-style:italic;margin-top:6px}
+
+  /* End mark */
+  .endmark{display:inline-block;width:10px;height:10px;background:var(--ink);margin-left:6px;vertical-align:middle}
+
+  /* Sidebar box */
+  .sidebar{
+    background:#efe7d4;border:1px solid #c8b893;padding:18px 22px;margin:24px 0;
+    box-shadow:3px 3px 0 var(--ink)
+  }
+  .sidebar h3{margin-top:0;color:var(--green)}
+  .sidebar p{font-size:15.5px;margin-bottom:10px}
+
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div>
+    <div class="nameplate">The Cloverdale Recap<small>Local News · Vol. 1</small></div>
+  </div>
+  <div>Tue, May 5, 2026 · Special Edition</div>
+</header>
+
+<div class="kicker">City Hall · Budget Workshop</div>
+<h1 class="headline">Council weighs nearly $700,000 in new wish-list spending as reserves shrink toward floor</h1>
+<p class="dek">Tuesday's budget workshop laid out a two-year financial picture for Cloverdale: more requests than revenue, a healthy but declining reserve, and a dozen pitches — from a new cop to a Senior Center boost to crash-rated street barriers — that the Council must now sort into "yes," "later," and "no."</p>
+
+<div class="byline">
+  <span>Filed from the Fire District EOC, 451 S. Cloverdale Blvd.</span>
+  <span>Meeting: 9 a.m., May 5, 2026 · in-person only</span>
+</div>
+
+<article>
+
+<p class="lede">If you missed the Cloverdale City Council's special budget workshop on Tuesday morning, you missed a long, candid look at the city's books for fiscal years 2026–27 and 2027–28 — and a parade of presentations from staff and community groups asking the Council to spend money the city does not, at the moment, have a plain surplus to cover. The workshop was held in person at the Fire District Emergency Operations Center and, by design, was not streamed on Zoom or YouTube. This recap pulls together what was presented, how the dollars line up, and what the Council was asked to decide.</p>
+
+<h2>The Big Picture: Spending Outpaces Revenue</h2>
+
+<p>The headline number from staff's General Fund overview is simple and, for residents, important: in both upcoming fiscal years, the city expects to spend more from its General Fund than it brings in. Projected revenue for FY 26–27 is about $12.7 million; projected expenses are about $14.8 million. The following year, revenue dips to roughly $11.5 million while expenses ease to about $13.1 million. The gap is bridged by drawing down the General Fund balance, which is budgeted to fall from roughly $10.4 million at the start of FY 25–26 to about $6.8 million by the end of FY 27–28.</p>
+
+<figure>
+  <div class="bignums">
+    <div class="bignum green"><div class="label">Revenue 26-27</div><div class="val">$12.70M</div></div>
+    <div class="bignum red"><div class="label">Expenses 26-27</div><div class="val">$14.77M</div></div>
+    <div class="bignum green"><div class="label">Revenue 27-28</div><div class="val">$11.52M</div></div>
+    <div class="bignum red"><div class="label">Expenses 27-28</div><div class="val">$13.10M</div></div>
+  </div>
+  <figcaption><strong>General Fund — Two-Year Snapshot.</strong> Source: City of Cloverdale FY 26–27 / 27–28 Budget Workshop Presentation, slides 8 &amp; 10.</figcaption>
+</figure>
+
+<p>Where does the city's money come from? Three sources do most of the work: property tax (30%), sales tax (21%), and interfund transfers (16%). After that, overhead (9%) and the utility user tax (6%) round out the top five, with the remaining 18% spread across grants, reimbursements, services, franchise fees, and smaller categories. On the spending side, salaries and benefits dominate — 45% in 26–27 and rising to 51% the following year as one-time construction spending falls off. Services and supplies come next at 35–38%, followed by interfund transfers at 11–12%.</p>
+
+<figure>
+  <div class="chart-grid">
+    <!-- Revenue donut -->
+    <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-label="Revenue breakdown donut chart" style="width:100%;max-width:280px;display:block;margin:0 auto">
+      <g transform="translate(110,110)">
+        <!-- Property Tax 30% -->
+        <circle r="80" cx="0" cy="0" fill="none" stroke="#2f4a2a" stroke-width="34"
+          stroke-dasharray="150.8 502.65" stroke-dashoffset="0" transform="rotate(-90)"/>
+        <!-- Sales Tax 21% -->
+        <circle r="80" cx="0" cy="0" fill="none" stroke="#7a1d1d" stroke-width="34"
+          stroke-dasharray="105.56 502.65" stroke-dashoffset="-150.8" transform="rotate(-90)"/>
+        <!-- Interfund 16% -->
+        <circle r="80" cx="0" cy="0" fill="none" stroke="#c08a3e" stroke-width="34"
+          stroke-dasharray="80.42 502.65" stroke-dashoffset="-256.36" transform="rotate(-90)"/>
+        <!-- Overhead 9% -->
+        <circle r="80" cx="0" cy="0" fill="none" stroke="#5b8aa6" stroke-width="34"
+          stroke-dasharray="45.24 502.65" stroke-dashoffset="-336.78" transform="rotate(-90)"/>
+        <!-- UUT 6% -->
+        <circle r="80" cx="0" cy="0" fill="none" stroke="#6b6157" stroke-width="34"
+          stroke-dasharray="30.16 502.65" stroke-dashoffset="-382.02" transform="rotate(-90)"/>
+        <!-- Other 18% -->
+        <circle r="80" cx="0" cy="0" fill="none" stroke="#d8cfbe" stroke-width="34"
+          stroke-dasharray="90.48 502.65" stroke-dashoffset="-412.18" transform="rotate(-90)"/>
+        <text text-anchor="middle" y="-2" font-family="Playfair Display" font-weight="900" font-size="20" fill="#1a1a1a">$12.7M</text>
+        <text text-anchor="middle" y="16" font-family="Oswald" font-size="9" fill="#6b6157" letter-spacing="2">REVENUE 26–27</text>
+      </g>
+    </svg>
+    <div style="font-family:'Lora',serif;font-size:14px">
+      <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;margin-bottom:8px;color:#6b6157">General Fund Revenue Mix</div>
+      <div style="display:grid;grid-template-columns:14px 1fr auto;gap:6px 10px;align-items:center">
+        <span style="background:#2f4a2a;height:14px;display:block"></span><span>Property Tax</span><span><strong>30%</strong></span>
+        <span style="background:#7a1d1d;height:14px;display:block"></span><span>Sales Tax</span><span><strong>21%</strong></span>
+        <span style="background:#c08a3e;height:14px;display:block"></span><span>Interfund Transfers</span><span><strong>16%</strong></span>
+        <span style="background:#5b8aa6;height:14px;display:block"></span><span>Overhead</span><span><strong>9%</strong></span>
+        <span style="background:#6b6157;height:14px;display:block"></span><span>Utility User Tax</span><span><strong>6%</strong></span>
+        <span style="background:#d8cfbe;height:14px;display:block"></span><span>Other</span><span><strong>18%</strong></span>
+      </div>
+    </div>
+  </div>
+  <figcaption><strong>Where Cloverdale's General Fund Money Comes From.</strong> Recreated from Budget Workshop Presentation, slide 8.</figcaption>
+</figure>
+
+<figure>
+  <div class="chart-grid">
+    <div style="font-family:'Lora',serif;font-size:14px;padding-left:8px">
+      <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;margin-bottom:10px;color:#6b6157">General Fund Expenses 26–27</div>
+      <!-- Horizontal bar chart -->
+      <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px">
+        <g font-family="Oswald" font-size="11" fill="#1a1a1a">
+          <!-- Salaries 45% -->
+          <text x="0" y="22">Salaries &amp; Benefits</text>
+          <rect x="0" y="28" width="270" height="16" fill="#2f4a2a"/>
+          <text x="278" y="40" font-weight="700">45%</text>
+          <!-- Services 35% -->
+          <text x="0" y="62">Services &amp; Supplies</text>
+          <rect x="0" y="68" width="210" height="16" fill="#7a1d1d"/>
+          <text x="218" y="80" font-weight="700">35%</text>
+          <!-- Interfund 12% -->
+          <text x="0" y="102">Interfund Transfers</text>
+          <rect x="0" y="108" width="72" height="16" fill="#c08a3e"/>
+          <text x="80" y="120" font-weight="700">12%</text>
+          <!-- Construction 7% -->
+          <text x="0" y="142">Construction</text>
+          <rect x="0" y="148" width="42" height="16" fill="#5b8aa6"/>
+          <text x="50" y="160" font-weight="700">7%</text>
+          <!-- Vehicle 1% -->
+          <text x="0" y="182">Vehicle Capital Outlay</text>
+          <rect x="0" y="188" width="6" height="10" fill="#6b6157"/>
+          <text x="14" y="197" font-weight="700">1%</text>
+        </g>
+      </svg>
+    </div>
+    <div style="font-family:'Lora',serif;font-size:14px">
+      <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11px;margin-bottom:8px;color:#6b6157">By the Numbers</div>
+      <p style="font-size:14.5px;margin-bottom:10px">Total General Fund expenses for 26–27 are budgeted at <strong>$14,766,151</strong>. Salaries and benefits — paying the people who run the city — alone come to <strong>$6.69 million</strong>, with services and supplies adding another <strong>$5.13 million</strong>.</p>
+      <p style="font-size:14.5px">A one-time $1 million construction line in 26–27 helps explain why the gap narrows the following year, when total spending drops to <strong>$13,101,753</strong>.</p>
+    </div>
+  </div>
+  <figcaption><strong>Where the Money Goes.</strong> Recreated from Budget Workshop Presentation, slide 10.</figcaption>
+</figure>
+
+<p>Staff was careful to put a frame around all of this: revenues are budgeted conservatively, the General Fund Reserve sits at roughly 25%, and labor agreements are not yet finalized — so the budget carries only a placeholder 1% cost-of-living adjustment that will scale up once contracts are signed. As staff put it on slide 54, every $100,000 in additional General Fund spending shaves about one percentage point off the reserve. That is the rule-of-thumb the Council was asked to keep in mind as the rest of the workshop unfolded.</p>
+
+<h2>Police: A New Officer, More Cameras, and Mobile Crash Barriers</h2>
+
+<p>The Cloverdale Police Department brought several items, presented as a package. The largest is a request for an <strong>11th sworn officer</strong>. Under the timeline staff laid out, recruitment would begin July 1, 2026, the academy in January 2027, and field training would wrap up by December 2027. Half a year of trainee wages — about <strong>$87,500</strong> — would hit the 26–27 budget; a full salary of <strong>$175,000</strong> would land in 27–28, plus roughly $4,000 for academy costs and $1,700 in pro-rated uniforms. Staff noted that revenue from voter-approved Measure DD could be used to support the position.</p>
+
+<p>Two technology requests came alongside it. <strong>Peregrine</strong> (referred to in some materials as "Peregrin") is an integrated public-safety software platform that would consolidate dispatch, records, license-plate reader data, body-worn camera footage, and reports into a single searchable system, with real-time crime mapping and CJIS-compliant data sharing with neighboring agencies. It runs roughly $29,000 to $33,000 a year on a three-year contract — and, importantly, staff described it as <em>cost-neutral</em>, paid out of the $50,000 the Cloverdale School District contributes annually for the School Resource Officer.</p>
+
+<p>The <strong>Flock Safety</strong> camera system would expand from six license-plate-reading cameras to nine, closing what the department described as gaps at certain ingress and egress points around town. The hardware add-on costs $7,800 (with a $1,550 discount), also covered out of the SRO funds. The annual subscription rises from $17,500 to $23,400. The Police Department's executive summary emphasized that the system does not use facial recognition.</p>
+
+<div class="pullquote">
+  Expanding to nine cameras will strengthen the department's ability to detect and track vehicles tied to criminal activity… while maintaining strong privacy safeguards, including no use of facial recognition technology.
+  <cite>— Cloverdale PD, Flock Safety Upgrade Executive Summary</cite>
+</div>
+
+<p>Finally, the department asked for <strong>Mobile Vehicle Barriers (MVB)</strong> — a crash-rated, federally-tested, single-person-deployable system, with trailer included, that would protect the public during downtown street closures and recurring events such as Friday Night Live. The one-time cost is approximately <strong>$130,000</strong>, proposed to come from a mix of the General Fund and impact fees. Staff framed it as a response to the rising risk of vehicles being used as weapons in pedestrian-heavy events.</p>
+
+<p>Added together, the police department's "wish list" items — the 11th officer, additional Flock cameras (the General Fund portion, listed at $5,900), the barriers, and Peregrine — total <strong>$431,400</strong> across the two years.</p>
+
+<h2>City Clerk's Office: A Proposed Community Engagement Department</h2>
+
+<p>City Clerk Mike Maloney's presentation argued that Cloverdale's current model — a single City Clerk position carrying governance, public information, recreation programming, records, and elections — is structurally out of balance compared with similarly sized cities, which typically staff multiple positions in the Clerk's Office. Workload has grown in records management, Public Records Act compliance, recreation programming (in the absence of a dedicated recreation position), grant administration, and emergency-preparedness coordination.</p>
+
+<p>The proposal would consolidate overlapping public-facing functions into a new <strong>Community Engagement Department</strong>, with two staffing options on the table: <strong>Option A</strong>, one full-time benefited position at roughly <strong>$155,000</strong>, or <strong>Option B</strong>, multiple part-time/temporary positions at roughly <strong>$84,000</strong>. Staff stressed that they were asking only for general agreement on the concept on Tuesday; specifics would return after a formal classification and compensation study. A budget amendment may be needed if changes can't be folded in before June 30.</p>
+
+<h2>Emergency Preparedness: JDS Training Continued</h2>
+
+<p>Staff recommended continuing emergency-preparedness training through 26–27 with <strong>JDS Management Services</strong>, at a cost of <strong>$25,000</strong> from the General Fund. The training is structured rather than one-time, focusing on the Emergency Operations Center: resource requesting (field → city → county), damage assessment, disaster finance tracking for federal reimbursement, and building out a logistics section.</p>
+
+<h2>Community Funding Requests</h2>
+
+<p>Several local nonprofits asked for more help than the budget currently provides. A summary of the asks is below; the "additional" column shows what's <em>new</em> on top of existing baseline funding.</p>
+
+<table class="funding">
+  <thead>
+    <tr><th>Project</th><th style="text-align:right">Additional Ask</th><th>Funding Source</th><th>Year</th></tr>
+  </thead>
+  <tbody>
+    <tr class="subhead"><td colspan="4">Community Support</td></tr>
+    <tr><td>Chamber of Commerce (above existing $133K base)</td><td class="amt">$21,539</td><td>General Fund</td><td>26–27</td></tr>
+    <tr><td>Historical Society / History Center (above $5K base)</td><td class="amt">$10,000</td><td>General Fund</td><td>26–27</td></tr>
+    <tr><td>Cloverdale Performing Arts Center (CPAC)</td><td class="amt">$25,000</td><td>General Fund</td><td>26–27</td></tr>
+    <tr><td>Senior Center (above $15K base)</td><td class="amt">$25,000</td><td>General Fund</td><td>26–27</td></tr>
+    <tr><td>CloveReady (Cloverdale Resiliency program)</td><td class="amt">$20,000</td><td>General Fund</td><td>26–27</td></tr>
+    <tr class="tot"><td>Subtotal — Community Support</td><td class="amt">$101,539</td><td></td><td></td></tr>
+
+    <tr class="subhead"><td colspan="4">Public Safety</td></tr>
+    <tr><td>Flock Cameras (General Fund portion)</td><td class="amt">$5,900</td><td>General Fund</td><td>27–28</td></tr>
+    <tr><td>Mobile Vehicle Barriers for street events</td><td class="amt">$130,000</td><td>GF / Impact Fees</td><td>26–27</td></tr>
+    <tr><td>Peregrine platform</td><td class="amt">$33,000</td><td>General Fund*</td><td>26–27</td></tr>
+    <tr class="tot"><td>Subtotal — Public Safety</td><td class="amt">$168,900</td><td></td><td></td></tr>
+
+    <tr class="subhead"><td colspan="4">Planning Initiatives</td></tr>
+    <tr><td>Code Enforcement</td><td class="amt">$20,000</td><td>General Fund</td><td>26–27</td></tr>
+    <tr><td>West Hills Annexation Consultant (some reimbursable)</td><td class="amt">$90,000</td><td>General Fund</td><td>26–27</td></tr>
+    <tr class="tot"><td>Subtotal — Planning</td><td class="amt">$110,000</td><td></td><td></td></tr>
+
+    <tr class="subhead"><td colspan="4">Public Works</td></tr>
+    <tr><td>Utility Side-by-Side vehicle</td><td class="amt">$20,000</td><td>Water Enterprise</td><td>27–28</td></tr>
+    <tr><td>Cloverdale Airport fencing &amp; gate</td><td class="amt">$32,969</td><td>Airport Enterprise</td><td>26–27</td></tr>
+    <tr class="tot"><td>Subtotal — Public Works</td><td class="amt">$52,969</td><td></td><td></td></tr>
+  </tbody>
+</table>
+<p class="source">Source: Budget Workshop Presentation, slide 56. *Peregrine is described as cost-neutral, with the annual cost offset by School Resource Officer funds from the Cloverdale School District. The $5,900 Flock figure is the residual General Fund portion not covered by SRO funds.</p>
+
+<h3>Senior Center: From $15,000 to $40,000</h3>
+<p>Anthony Ramirez, Administrative Manager of the Cloverdale Senior Multipurpose Center, wrote to the city in April requesting a $40,000 contribution for FY 26–27, up from the $15,000 the city has historically contributed. The request breaks down to $15,000 for programs and services (healthy-aging classes, the congregate senior lunch, food distribution, a community produce market, medical-equipment lending, support groups), $10,000 for administration and operations, $10,000 for insurance (general liability, cyber, volunteer, workers' comp), and $5,000 for health and safety items.</p>
+
+<h3>Historical Society: Saving the Gould-Shaw House Paint</h3>
+<p>Cloverdale Historical Society President Kate Barrett wrote to City Manager Kevin Thompson on April 22 asking for a contribution or grant of at least $15,000. The Society's letter — which doubles as a small annual report — described a new board, a new website, a decision not to refill the Executive Director position, and resulting savings. The money is wanted for facilities work: dry-rot repairs on the historic Gould-Shaw House and the History Center, the back of which the Society described as "essentially bare of paint." Total estimated repair cost is more than $60,000, to be tackled in installments over two years.</p>
+
+<h3>CloveReady / Cloverdale Resiliency</h3>
+<p>The $20,000 resiliency program, proposed to be administered through the Chamber of Commerce, would build out response playbooks (communications, volunteer management, donations), produce a public Stay-Safe guide, expand the CloveReady, Know Your Zone, and Nixle awareness campaigns, and increase the city's presence at events such as Friday Night Live and National Night Out — including multilingual outreach.</p>
+
+<h3>CPAC and the Chamber</h3>
+<p>The Cloverdale Performing Arts Center asked for an additional $25,000 in 26–27, and the Chamber of Commerce asked for an additional $21,539 on top of its existing $133,000 base contract. The City Clerk's office reported that an Amendment 4 to the CPAC agreement is currently in negotiations.</p>
+
+<h2>Planning, Public Works, and Capital Projects</h2>
+
+<p>Beyond the discretionary list, staff walked the Council through ongoing capital work. Notable lines on the Water Enterprise side include <strong>$470,000</strong> for water infrastructure tied to the Clark Avenue reconstruction, <strong>$584,826</strong> in 26–27 plus another <strong>$1 million</strong> in 27–28 for the South Crest Tank, and ongoing tank/reservoir rehab and pipe replacement at $500,000 and $185,000 per year, respectively. On the planning side, $20,000 for code enforcement and $90,000 for a West Hills Annexation consultant — a portion of which may be reimbursable through LAFCO — round out the asks.</p>
+
+<h2>Public Comment: A Pointed Letter on Water Rates</h2>
+
+<p>The workshop's public-comment portion included a written submission from resident Rob Koslowsky, sent the morning of the meeting, taking sharp aim at consultant West Yost's April 2026 letter on the aging Cherry Creek (Southcrest) reservoir. Koslowsky argued that the 60-year-old reservoir has been the subject of repeated studies dating back to the 2010 Water System Master Plan, that ratepayers have already absorbed substantial rate increases tied to capital improvements that include this site, and that further deferral amounts to "more studies" without the replacement getting built. He also proposed an immediate sewer rate reduction from $62.77 to $57.06 — back to 2024 levels — followed by inflation-only increases for one year rather than the multi-year escalator currently in place, partly on grounds of fairness to fixed-income residents and seniors.</p>
+
+<div class="sidebar">
+  <h3>Reserves at a Glance</h3>
+  <p>Cloverdale's General Fund balance is budgeted to move like this:</p>
+  <p style="font-family:'Oswald',sans-serif;letter-spacing:.05em">
+    <strong>End of 24–25:</strong> $10,650,113 &nbsp;→&nbsp;
+    <strong>End of 25–26:</strong> $10,444,000 &nbsp;→&nbsp;
+    <strong>End of 26–27:</strong> $8,373,792 &nbsp;→&nbsp;
+    <strong>End of 27–28:</strong> $6,793,444
+  </p>
+  <p>The reserve currently sits near 25% of expenditures. Staff's policy targets call for an Emergency Reserve at 7% and a Contingency Reserve at 17%; both targets remain met throughout the projection. (Source: slide 62.)</p>
+</div>
+
+<h2>What's Next</h2>
+
+<p>Tuesday's session was a workshop, not a vote. The Council was asked for direction on priorities and funding approach — which discretionary items to incorporate into the draft budget, which to defer, and which to drop. The Council's next regular meeting is scheduled for <strong>Tuesday, May 13, 2026</strong>, and the full FY 26–27 / 27–28 budget will return for adoption in the weeks that follow. Workshop materials, including the full presentation deck and individual funding requests, are posted on the city's agenda center at <em>cloverdale.net/agendacenter</em>.<span class="endmark"></span></p>
+
+<p class="source" style="margin-top:18px">A note on this article: figures and program descriptions are drawn from the May 5, 2026 Budget Workshop Presentation and the executive summaries and funding requests posted as supplemental attachments to that meeting's agenda, including materials from the Cloverdale Police Department, the City Clerk's Office, JDS Management Services, the Cloverdale Senior Multipurpose Center, the Cloverdale Historical Society, the Chamber of Commerce, CPAC, and a public comment from resident Rob Koslowsky. Any errors are the writer's, not the city's.</p>
+
+</article>
+
+</body>
+</html>
