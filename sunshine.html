@@ -233,6 +233,79 @@
 </style>
 </head>
 <body>
+  <body>
+  <style>
+  .reader-nav {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 14px 56px 0;
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #4a3f2f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #c9bfa9;
+    padding-bottom: 12px;
+    margin-bottom: 0;
+  }
+  .reader-nav .brand {
+    font-family: "Old Standard TT", Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -.005em;
+    text-transform: none;
+    color: #1a1612;
+  }
+  .reader-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 24px;
+  }
+  .reader-nav a {
+    color: #4a3f2f;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color .15s, border-color .15s;
+  }
+  .reader-nav a:hover {
+    color: #8b1e1e;
+    border-bottom-color: #8b1e1e;
+  }
+  .reader-nav a.current {
+    color: #8b1e1e;
+    border-bottom-color: #8b1e1e;
+  }
+  @media (max-width: 720px) {
+    .reader-nav {
+      padding: 12px 20px 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .reader-nav ul {
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 10px;
+    }
+  }
+</style>
+ 
+<nav class="reader-nav">
+  <span class="brand">The Cloverdale Reader</span>
+  <ul>
+    <li><a href="index.html">A Brief History</a></li>
+    <li><a href="no.html">The Files</a></li>
+    <li><a href="sunshine.html">What the Logs Don't Say</a></li>
+  </ul>
+</nav>
+  
 <div class="page">
 
   <div class="eyebrow">A Log Files Companion · Part III</div>
