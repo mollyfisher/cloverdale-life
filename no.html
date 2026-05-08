@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cloverdale Police, By the Numbers</title>
+<title>The Cloverdale Reader — Police Log Files</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   :root {
@@ -15,11 +15,11 @@
     --ink: #1a1612;
     --ink-soft: #4a3f2f;
     --rule: #1a1612;
-    --accent: #8b1e1e;        /* deep editorial red */
-    --accent-soft: #b85c39;   /* terracotta */
-    --officer: #6b4423;       /* sepia for officer-initiated */
-    --citizen: #2c4a5e;       /* slate blue for citizen calls */
     --rule-thin: #c9bfa9;
+    --accent: #8b1e1e;
+    --accent-soft: #b85c39;
+    --officer: #6b4423;
+    --citizen: #2c4a5e;
   }
   * { box-sizing: border-box; }
   html, body {
@@ -41,7 +41,6 @@
     margin: 0 auto;
     padding: 56px 56px 96px;
   }
-  /* MASTHEAD */
   .masthead {
     border-top: 6px double var(--rule);
     border-bottom: 6px double var(--rule);
@@ -76,7 +75,6 @@
     color: var(--ink-soft);
     margin-top: 14px;
   }
-  /* DECK */
   .deck {
     text-align: center;
     margin: 22px auto 40px;
@@ -87,8 +85,6 @@
     color: var(--ink-soft);
   }
   .deck strong { color: var(--ink); font-style: normal; font-weight: 700; }
-
-  /* HERO STATS */
   .hero-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -118,8 +114,6 @@
     text-transform: uppercase;
     color: var(--ink-soft);
   }
-
-  /* SECTIONS */
   .section { margin-bottom: 56px; }
   .section-eyebrow {
     font-family: "IBM Plex Mono", monospace;
@@ -178,18 +172,12 @@
     margin-right: 6px;
     vertical-align: -2px;
   }
-  .chart-wrap {
-    position: relative;
-    width: 100%;
-  }
+  .chart-wrap { position: relative; width: 100%; }
   .h-220 { height: 220px; }
   .h-260 { height: 260px; }
   .h-300 { height: 300px; }
   .h-340 { height: 340px; }
   .h-200 { height: 200px; }
-  .h-180 { height: 180px; }
-
-  /* TWO COL */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -197,8 +185,6 @@
     margin-bottom: 40px;
   }
   .two-col .section { margin-bottom: 0; }
-
-  /* DROP CAP for verdict */
   .verdict {
     border-top: 6px double var(--rule);
     padding-top: 36px;
@@ -241,8 +227,6 @@
     padding: 6px 10px 0 0;
     color: var(--accent);
   }
-
-  /* COLOPHON */
   .colophon {
     margin-top: 56px;
     padding-top: 22px;
@@ -255,8 +239,6 @@
     text-align: center;
     line-height: 1.7;
   }
-
-  /* DAY OF WEEK callout */
   .pull-quote {
     font-family: "Old Standard TT", serif;
     font-style: italic;
@@ -269,7 +251,6 @@
     border-bottom: 1px solid var(--rule-thin);
     padding: 18px 40px;
   }
-
   @media (max-width: 720px) {
     .page { padding: 32px 20px 60px; }
     .masthead h1 { font-size: 44px; }
@@ -286,38 +267,35 @@
 <body>
 <div class="page">
 
-  <!-- MASTHEAD -->
   <div class="masthead">
     <div class="masthead-meta">
-      <span>Vol. CLII · No. 17</span>
-      <span>Ground Truth Watch</span>
-      <span>Issue 7 May 2026 · Twenty-five Cents</span>
+      <span>Vol. I · No. 1</span>
+      <span>The Cloverdale Reader</span>
+      <span>May 2026 · Independent</span>
     </div>
     <h1>The Police Log Files</h1>
-    <div class="subhead">A Statistical Examination of Local Law Enforcement Activity, 2026</div>
+    <div class="subhead">A Statistical Examination of Cloverdale Police Activity, May 2025 — April 2026</div>
   </div>
 
-  <!-- DECK -->
   <div class="deck">
-    Three thousand one hundred and seventy-six logged incidents across <strong>seventeen consecutive weeks</strong> of Media Bulletins, examined alongside published activity reports from neighboring departments. The data, when looked at squarely, tells one consistent story.
+    <strong>9,479 incidents</strong>, hand-OCR'd and parsed from forty-seven weeks of departmental Media Bulletins. Eighty-eight arrests. The data, examined squarely, tells one consistent story across all four seasons.
   </div>
 
-  <!-- HERO STATS -->
   <div class="hero-stats">
     <div class="hero-stat">
-      <div class="hero-stat-num">3,176</div>
+      <div class="hero-stat-num">9,479</div>
       <div class="hero-stat-label">Incidents logged</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">61<span style="font-size:26px">%</span></div>
+      <div class="hero-stat-num">57<span style="font-size:26px">%</span></div>
       <div class="hero-stat-label">Officer-initiated</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">35</div>
+      <div class="hero-stat-num">88</div>
       <div class="hero-stat-label">Total arrests</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">2</div>
+      <div class="hero-stat-num">10</div>
       <div class="hero-stat-label">Burglaries reported</div>
     </div>
   </div>
@@ -328,9 +306,9 @@
     <h2 class="section-title">Cloverdale leads the region in officer-initiated calls.</h2>
     <p class="section-dek">Share of all activity that officers begin themselves — security checks, building checks, on-view stops — rather than responding to a citizen call.</p>
     <div class="chart-frame">
-      <div class="chart-wrap h-220"><canvas id="oiChart" role="img" aria-label="Cloverdale 61 percent officer-initiated, Sebastopol 54 percent, typical small-city PD around 35 percent"></canvas></div>
+      <div class="chart-wrap h-220"><canvas id="oiChart" role="img" aria-label="Cloverdale 57 percent officer-initiated, Sebastopol 54 percent, typical small-city PD around 35 percent"></canvas></div>
     </div>
-    <div class="takeaway">Sebastopol publishes monthly counts (June through October 2025 averaged 54% officer-initiated). Cloverdale runs <b>61%</b> — its security-check tempo is unusually heavy. Of those 1,938 officer-initiated incidents, the overwhelming majority resolved as <i>"Checks Ok"</i> or <i>"Completed."</i></div>
+    <div class="takeaway">Sebastopol publishes monthly counts (Jun–Oct 2025 averaged 54%). Cloverdale runs <b>57%</b> across the full year — the security-check tempo is heavy and consistent. Of the 5,449 officer-initiated incidents, the overwhelming majority resolved as <i>"Checks Ok"</i> or <i>"Completed."</i></div>
   </div>
 
   <!-- SECTION 2 -->
@@ -339,48 +317,47 @@
     <h2 class="section-title">Cloverdale officers carry the lightest per-head load.</h2>
     <p class="section-dek">Total annualized incidents divided by sworn patrol officers and 52 weeks.</p>
     <div class="chart-frame">
-      <div class="chart-wrap h-200"><canvas id="loadChart" role="img" aria-label="Calls per officer per week: Sebastopol 27.5, Healdsburg 20.7, Cloverdale 14.4"></canvas></div>
+      <div class="chart-wrap h-200"><canvas id="loadChart" role="img" aria-label="Calls per officer per week: Sebastopol 27.5, Healdsburg 20.7, Cloverdale 15.5"></canvas></div>
     </div>
-    <div class="takeaway">Per officer, Cloverdale handles <b>roughly half</b> a Sebastopol officer's weekly volume — and a third less than Healdsburg, which Chief Jenkins has publicly described as operating with chronic vacancies. Adding a fourteenth officer in Cloverdale would lower an already low ratio.</div>
+    <div class="takeaway">Per officer, Cloverdale handles <b>roughly half</b> a Sebastopol officer's weekly volume — and a quarter less than Healdsburg, which Chief Jenkins has publicly described as operating with chronic vacancies. Adding a fourteenth officer in Cloverdale would lower an already low ratio.</div>
   </div>
 
   <!-- SECTION 3 -->
   <div class="section">
-    <div class="section-eyebrow">Exhibit C · Volume across the season</div>
-    <h2 class="section-title">No upward trend. The line is essentially flat.</h2>
-    <p class="section-dek">Weekly incident volume from December 29, 2025 through April 26, 2026, separated by who initiated the call.</p>
+    <div class="section-eyebrow">Exhibit C · Twelve months of weekly volume</div>
+    <h2 class="section-title">A flat baseline, with seasonal echoes.</h2>
+    <p class="section-dek">Weekly incident volume from May 19, 2025 through April 26, 2026, separated by who initiated the call.</p>
     <div class="chart-frame">
       <div class="legend">
         <span><span class="swatch" style="background: var(--officer)"></span>Officer-initiated</span>
         <span><span class="swatch" style="background: var(--citizen)"></span>Citizen-initiated</span>
       </div>
-      <div class="chart-wrap h-300"><canvas id="weeklyChart" role="img" aria-label="Stacked bar chart of weekly volume Dec 29 to Apr 26, ranging from 122 to 235 incidents per week with no trend"></canvas></div>
+      <div class="chart-wrap h-300"><canvas id="weeklyChart" role="img" aria-label="Stacked bar chart of weekly volume across 47 weeks, ranging from 122 to 288 incidents per week with seasonal variation"></canvas></div>
     </div>
-    <div class="takeaway">Seventeen weeks. No upward slope. The Feb 16 dip aligns with President's Day. There is <b>no rising-crime signal</b> in the underlying data, despite what's circulating at city council meetings.</div>
+    <div class="takeaway">The June 30 spike is <b>July Fourth fireworks</b> — 73 incidents that single day, 23 of them firework calls (Chablis Way alone produced six). The September lift coincides with school resumption. The November plateau reflects officer-initiated activity, not crime. <b>No upward crime trend is visible across twelve months.</b></div>
   </div>
 
   <!-- SECTION 4 - hours -->
   <div class="section">
     <div class="section-eyebrow">Exhibit D · The 24-hour clock</div>
-    <h2 class="section-title">The 8 PM spike is the park-closing routine.</h2>
-    <p class="section-dek">Distribution of all 3,176 incidents across the hours of the day. Highlighted bars are the patrol-driven peaks.</p>
+    <h2 class="section-title">The 8 PM mountain is the park-closing routine.</h2>
+    <p class="section-dek">Distribution of all 9,479 incidents across the hours of the day. Highlighted bars are the patrol-driven peaks.</p>
     <div class="chart-frame">
-      <div class="chart-wrap h-260"><canvas id="hoursChart" role="img" aria-label="Bar chart of incidents by hour: 8 PM peak with 370 incidents, 11 AM 202, 7 AM 192, lowest 3-6 AM"></canvas></div>
+      <div class="chart-wrap h-260"><canvas id="hoursChart" role="img" aria-label="Bar chart of incidents by hour: 8 PM peak with 1,101 incidents, 11 AM 671, 7 AM 505, lowest 3-6 AM"></canvas></div>
     </div>
-    <div class="takeaway">The towering 8 PM bar is the routine park-closing checks at Elbridge, West Second, and Healdsburg Avenue. The 7 AM spike is the same checks in reverse — opening rounds. The 11 AM bump is downtown-area patrol. <b>These three rituals account for hundreds of incidents per month.</b></div>
+    <div class="takeaway">The towering 8 PM bar — <b>1,101 incidents across the year</b> — is the routine park-closing checks at Elbridge, West Second, and Healdsburg Avenue. The 7 AM spike is the same checks in reverse: opening rounds. The 11 AM bump is downtown patrol. <b>These three rituals account for nearly a third of all annual activity.</b></div>
   </div>
 
-  <!-- PULL QUOTE -->
-  <div class="pull-quote">"Almost no weekend spike — unusual for a small town. The activity mix here is patrol, not nightlife."</div>
+  <div class="pull-quote">"The data signature of this department is patrol, not response. The peaks are the rhythm of officers, not the rhythm of crime."</div>
 
   <!-- TWO-COL: dow + arrests -->
   <div class="two-col">
     <div class="section">
       <div class="section-eyebrow">Exhibit E</div>
-      <h2 class="section-title" style="font-size: 24px;">Day of the week barely matters.</h2>
-      <p class="section-dek">All 3,176 incidents by day. Note the absence of Friday or Saturday peaks.</p>
+      <h2 class="section-title" style="font-size: 24px;">Friday is the busiest day, barely.</h2>
+      <p class="section-dek">All 9,479 incidents by day. Note Friday's modest lift — driven by FNL evenings and Citrus Fair weekends.</p>
       <div class="chart-frame tight">
-        <div class="chart-wrap h-220"><canvas id="dowChart" role="img" aria-label="Distribution by day of week: Mon 416, Tue 423, Wed 494, Thu 472, Fri 478, Sat 479, Sun 414"></canvas></div>
+        <div class="chart-wrap h-220"><canvas id="dowChart" role="img" aria-label="Distribution by day of week: Mon 1255, Tue 1366, Wed 1380, Thu 1359, Fri 1517, Sat 1369, Sun 1233"></canvas></div>
       </div>
     </div>
     <div class="section">
@@ -388,7 +365,7 @@
       <h2 class="section-title" style="font-size: 24px;">Annualized arrests per 1,000.</h2>
       <p class="section-dek">A blunt measure of how often calls turn into bookings.</p>
       <div class="chart-frame tight">
-        <div class="chart-wrap h-220"><canvas id="arrestChart" role="img" aria-label="Annual arrests per 1000: Sebastopol 39.6, Cloverdale 11.9"></canvas></div>
+        <div class="chart-wrap h-220"><canvas id="arrestChart" role="img" aria-label="Annual arrests per 1000: Sebastopol 39.6, Cloverdale 10.9"></canvas></div>
       </div>
     </div>
   </div>
@@ -397,11 +374,11 @@
   <div class="section">
     <div class="section-eyebrow">Exhibit G · Crime, in the words of the log itself</div>
     <h2 class="section-title">The keywords don't lie.</h2>
-    <p class="section-dek">Specific term mentions across roughly 5,000 OCR'd pages of Media Bulletins. These are raw word matches, not category guesses.</p>
+    <p class="section-dek">Specific term mentions across roughly 14,000 OCR'd pages of Media Bulletins. These are raw word matches, not category guesses.</p>
     <div class="chart-frame">
-      <div class="chart-wrap h-340"><canvas id="kwChart" role="img" aria-label="Keyword mentions: vandalism 10, eBike 9, weapon 8, unhoused 7, mental health 5150 3, stolen vehicle 3, burglary 2, domestic violence 2, suicide 1, fentanyl 0"></canvas></div>
+      <div class="chart-wrap h-340"><canvas id="kwChart" role="img" aria-label="Keyword mentions: fireworks 87, hit and run 25, vandalism 24, eBike 18, unhoused 14, burglary 10, stolen vehicle 9, mental health 5150 9, weapon 8, suicide 4, domestic violence 4, fentanyl 0"></canvas></div>
     </div>
-    <div class="takeaway"><b>Two burglary mentions across nearly four months. Three stolen vehicles. Zero overdose calls.</b> The categories Flock surveillance is engineered to address — auto theft, organized retail crime, plate-on-hotlist hits — barely register in Cloverdale's actual call data.</div>
+    <div class="takeaway"><b>Ten burglary mentions across an entire year. Nine stolen vehicles. Zero overdose calls.</b> The categories Flock surveillance is engineered to address — auto theft, organized retail crime, plate-on-hotlist hits — barely register. Fireworks, by contrast, are 87% of one bad weekend.</div>
   </div>
 
   <!-- VERDICT -->
@@ -409,33 +386,29 @@
     <div class="verdict-eyebrow">The Verdict, Reluctantly Rendered</div>
     <h3 class="verdict-title">More cops or more cameras?<br>Not on this data.</h3>
     <div class="verdict-body">
-      <p>Seventeen weeks of complete records, three peer-city comparisons, two staffing benchmarks, and one inescapable conclusion: the case for either expansion fails on the merits. Cloverdale's department generates so much idle-time activity that 61% of everything it logs is something it found for itself to do. Per officer, the workload is the lightest of any nearby city. Per resident, the arrest rate is one-third Sebastopol's. The crimes that dominate Flock's marketing materials — auto theft, organized burglary crews, stolen-plate hits — appear in the logs at rates of two, three, and three across four months.</p>
+      <p>Forty-seven weeks of complete records, three peer-city comparisons, two staffing benchmarks, and one inescapable conclusion: the case for either expansion fails on the merits. Cloverdale's department generates so much idle-time activity that 57% of everything it logs is something it found for itself to do. Per officer, the workload is the lightest of any nearby city. Per resident, the arrest rate is roughly a quarter of Sebastopol's. The crimes that dominate Flock's marketing materials — auto theft, organized burglary crews, stolen-plate hits — appear in the logs at rates of ten, nine, and twenty-five across an entire year.</p>
 
-      <p>None of which means the department isn't doing its job. The Reveille files going back to 1973 show the same pattern: a quiet town that calls when the dog won't stop barking, when the Yukon hasn't moved in two weeks, and occasionally when something genuinely dangerous happens. The DUI hydrant crash on May 1 was handled. The eBike thief on May 2 got chased into a vineyard. The disturbance arrest on May 1 produced one Elbridge Avenue father-and-son cool-down. Thirteen officers handled all of it.</p>
+      <p>None of which means the department isn't doing its job. The Reveille files going back to 1973 show the same pattern: a quiet town that calls when the dog won't stop barking, when the abandoned RV hasn't moved in two weeks, and occasionally when something genuinely dangerous happens. The Hit and Run Felony at the Quik Stop on May 24 was handled — vehicle vs. motorcycle trike, suspect arrested. The kidnapping on Chablis Way in July resolved within the day. The eBike thieves of summer got chased into vineyards. The Friday Night Live evenings produced exactly the parking-violation surge a small department manages with cones and overtime. Thirteen officers handled all of it.</p>
 
-      <p>The honest argument for adding a fourteenth officer or one more Flock camera would have to rest on something other than the numbers in the logs — projected growth, geographic coverage of the unincorporated edge, mental-health response capacity, or specific service gaps. Those arguments deserve to be made on their own terms, not under cover of a vague "rising crime" sense the data simply does not support. Sebastopol's path of asking hard questions before expanding surveillance, and Healdsburg's path of agendizing a Flock review, are both more defensible than the unexamined drift toward more.</p>
+      <p>The honest argument for adding a fourteenth officer or a fifteenth Flock camera would have to rest on something other than the numbers in the logs — projected growth, geographic coverage of the unincorporated edge, mental-health response capacity, or specific service gaps. Those arguments deserve to be made on their own terms, not under cover of a vague "rising crime" sense the data simply does not support. Sebastopol's path of asking hard questions before expanding surveillance, and Healdsburg's path of agendizing a Flock review, are both more defensible than the unexamined drift toward more.</p>
     </div>
   </div>
- 
-  <!--BUTTON-->
+  
   <div class="pull-quote">
   <a href="https://cloverdale.life/sunshine.html" style="display:inline-block;background:#8b1e1e;color:#fff;font-family:Georgia,serif;font-size:20px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding:16px 38px;border-radius:2px;">What the data don't say →</a>
-  </div>
+  </div>  
 
-  <!-- COLOPHON -->
   <div class="colophon">
-    Set in Old Standard TT and IBM Plex Mono · Data: Cloverdale PD Media Bulletins (Dec 2025 — Apr 2026) · Comparison data: City of Sebastopol monthly police reports, Healdsburg PD 2025 Annual Update, FBI UCR 2023 · Compiled with care, OCR'd with patience
+    Set in Old Standard TT and IBM Plex Mono · Data: 47 weeks of Cloverdale PD Media Bulletins, May 19, 2025 — April 26, 2026 · Comparison data: City of Sebastopol monthly police reports, Healdsburg PD 2025 Annual Update, FBI UCR 2023 · Compiled with care, OCR'd with patience
   </div>
 </div>
 
 <script>
-// Editorial color palette
 const C_INK = '#1a1612';
 const C_INK_SOFT = '#4a3f2f';
 const C_ACCENT = '#8b1e1e';
 const C_OFFICER = '#6b4423';
 const C_CITIZEN = '#2c4a5e';
-const C_PAPER_DARK = '#ebe4d3';
 const C_RULE_THIN = '#c9bfa9';
 
 const editorialFont = "'Old Standard TT', serif";
@@ -445,93 +418,84 @@ Chart.defaults.font.family = monoFont;
 Chart.defaults.font.size = 11;
 Chart.defaults.color = C_INK_SOFT;
 
-// ============== CHART 1: OFFICER-INITIATED COMPARISON ==============
 new Chart(document.getElementById('oiChart'), {
   type: 'bar',
   data: {
     labels: ['Cloverdale', 'Sebastopol', 'Typical small-city PD'],
     datasets: [{
-      data: [61, 54, 35],
+      data: [57, 54, 35],
       backgroundColor: [C_ACCENT, C_OFFICER, '#a89880'],
-      borderColor: C_INK,
-      borderWidth: 1,
-      barThickness: 70
+      borderColor: C_INK, borderWidth: 1, barThickness: 70
     }]
   },
   options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (c) => c.parsed.y + '% officer-initiated' } }
-    },
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.parsed.y + '% officer-initiated' } } },
     scales: {
       x: { ticks: { font: { family: editorialFont, size: 14, weight: 'bold' }, color: C_INK }, grid: { display: false }, border: { color: C_INK } },
-      y: { beginAtZero: true, max: 75, ticks: { callback: (v) => v + '%', font: { family: monoFont, size: 11 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } }
+      y: { beginAtZero: true, max: 75, ticks: { callback: (v) => v + '%' }, grid: { color: C_RULE_THIN }, border: { color: C_INK } }
     }
   }
 });
 
-// ============== CHART 2: CALLS PER OFFICER ==============
 new Chart(document.getElementById('loadChart'), {
   type: 'bar',
   data: {
     labels: ['Sebastopol', 'Healdsburg', 'Cloverdale'],
     datasets: [{
-      data: [27.5, 20.7, 14.4],
+      data: [27.5, 20.7, 15.5],
       backgroundColor: ['#a89880', '#a89880', C_ACCENT],
-      borderColor: C_INK,
-      borderWidth: 1,
-      barThickness: 32
+      borderColor: C_INK, borderWidth: 1, barThickness: 32
     }]
   },
   options: {
-    indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (c) => c.parsed.x.toFixed(1) + ' calls per officer per week' } }
-    },
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.parsed.x.toFixed(1) + ' calls/officer/week' } } },
     scales: {
-      x: { beginAtZero: true, max: 32, ticks: { callback: (v) => v.toFixed(0), font: { family: monoFont, size: 11 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } },
+      x: { beginAtZero: true, max: 32, ticks: { callback: (v) => v.toFixed(0) }, grid: { color: C_RULE_THIN }, border: { color: C_INK } },
       y: { ticks: { font: { family: editorialFont, size: 14, weight: 'bold' }, color: C_INK }, grid: { display: false }, border: { color: C_INK } }
     }
   }
 });
 
-// ============== CHART 3: WEEKLY TREND ==============
 const weeks = [
-  ['Dec 29', 77, 45], ['Jan 5', 108, 66], ['Jan 12', 144, 91], ['Jan 19', 116, 59],
-  ['Jan 26', 134, 92], ['Feb 2', 107, 86], ['Feb 9', 131, 77], ['Feb 16', 87, 46],
-  ['Feb 23', 103, 77], ['Mar 2', 107, 80], ['Mar 9', 117, 93], ['Mar 16', 108, 77],
-  ['Mar 23', 136, 81], ['Mar 30', 127, 64], ['Apr 6', 100, 70], ['Apr 13', 122, 71], ['Apr 20', 114, 63]
+  ['May 19',100,103],['May 26',106,77],['Jun 02',98,86],['Jun 09',110,106],
+  ['Jun 16',113,89],['Jun 23',92,83],['Jun 30',156,132],['Jul 07',121,94],
+  ['Jul 14',105,83],['Jul 21',108,102],['Jul 28',92,104],['Aug 04',70,101],
+  ['Aug 11',73,94],['Aug 18',76,86],['Aug 25',89,103],['Sep 01',112,96],
+  ['Sep 08',142,107],['Sep 15',159,121],['Sep 22',120,98],['Sep 29',89,87],
+  ['Oct 06',102,88],['Oct 13',154,89],['Oct 20',116,83],['Oct 27',105,99],
+  ['Nov 03',159,97],['Nov 10',158,80],['Nov 17',173,82],['Nov 24',159,78],
+  ['Dec 01',118,95],['Dec 08',112,73],['Dec 29',77,45],['Jan 05',111,63],
+  ['Jan 12',147,88],['Jan 19',118,57],['Jan 26',141,85],['Feb 02',110,83],
+  ['Feb 09',131,77],['Feb 16',89,44],['Feb 23',103,77],['Mar 02',107,80],
+  ['Mar 09',118,92],['Mar 16',108,77],['Mar 23',137,80],['Mar 30',127,64],
+  ['Apr 06',102,68],['Apr 13',122,71],['Apr 20',114,63]
 ];
+
 new Chart(document.getElementById('weeklyChart'), {
   type: 'bar',
   data: {
     labels: weeks.map(w => w[0]),
     datasets: [
-      { label: 'Officer-initiated', data: weeks.map(w => w[1]), backgroundColor: C_OFFICER, borderColor: C_INK, borderWidth: 1, stack: 's' },
-      { label: 'Citizen-initiated', data: weeks.map(w => w[2]), backgroundColor: C_CITIZEN, borderColor: C_INK, borderWidth: 1, stack: 's' }
+      { label: 'Officer-initiated', data: weeks.map(w => w[1]), backgroundColor: C_OFFICER, borderColor: C_INK, borderWidth: 0, stack: 's' },
+      { label: 'Citizen-initiated', data: weeks.map(w => w[2]), backgroundColor: C_CITIZEN, borderColor: C_INK, borderWidth: 0, stack: 's' }
     ]
   },
   options: {
-    responsive: true,
-    maintainAspectRatio: false,
+    responsive: true, maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: { callbacks: { label: (c) => c.dataset.label + ': ' + c.parsed.y } }
     },
     scales: {
-      x: { stacked: true, ticks: { font: { family: monoFont, size: 10 }, maxRotation: 45, minRotation: 45 }, grid: { display: false }, border: { color: C_INK } },
+      x: { stacked: true, ticks: { font: { family: monoFont, size: 9 }, maxRotation: 70, minRotation: 70, autoSkip: false }, grid: { display: false }, border: { color: C_INK } },
       y: { stacked: true, beginAtZero: true, ticks: { font: { family: monoFont, size: 11 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } }
     }
   }
 });
 
-// ============== CHART 4: HOURS ==============
-const hourData = [156,97,80,72,72,103,69,192,154,108,106,202,136,119,160,113,101,126,136,135,370,110,127,132];
+const hourData = [396,320,303,225,208,327,214,505,372,351,352,671,429,414,431,376,297,316,375,358,1101,304,431,400];
 new Chart(document.getElementById('hoursChart'), {
   type: 'bar',
   data: {
@@ -539,17 +503,12 @@ new Chart(document.getElementById('hoursChart'), {
     datasets: [{
       data: hourData,
       backgroundColor: hourData.map((v, i) => (i === 7 || i === 11 || i === 20) ? C_ACCENT : '#a89880'),
-      borderColor: C_INK,
-      borderWidth: 1
+      borderColor: C_INK, borderWidth: 1
     }]
   },
   options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (c) => c.parsed.y + ' incidents at ' + c.label + ':00' } }
-    },
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.parsed.y + ' incidents at ' + c.label + ':00' } } },
     scales: {
       x: { ticks: { font: { family: monoFont, size: 10 } }, grid: { display: false }, border: { color: C_INK } },
       y: { beginAtZero: true, ticks: { font: { family: monoFont, size: 11 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } }
@@ -557,54 +516,39 @@ new Chart(document.getElementById('hoursChart'), {
   }
 });
 
-// ============== CHART 5: DAY OF WEEK ==============
 new Chart(document.getElementById('dowChart'), {
   type: 'bar',
   data: {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [{
-      data: [416, 423, 494, 472, 478, 479, 414],
-      backgroundColor: C_OFFICER,
-      borderColor: C_INK,
-      borderWidth: 1,
-      barThickness: 36
+      data: [1255, 1366, 1380, 1359, 1517, 1369, 1233],
+      backgroundColor: ['#a89880','#a89880','#a89880','#a89880', C_ACCENT, '#a89880','#a89880'],
+      borderColor: C_INK, borderWidth: 1, barThickness: 36
     }]
   },
   options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (c) => c.parsed.y + ' incidents' } }
-    },
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.parsed.y + ' incidents' } } },
     scales: {
       x: { ticks: { font: { family: editorialFont, size: 13 }, color: C_INK }, grid: { display: false }, border: { color: C_INK } },
-      y: { beginAtZero: true, suggestedMax: 550, ticks: { font: { family: monoFont, size: 10 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } }
+      y: { beginAtZero: true, suggestedMax: 1700, ticks: { font: { family: monoFont, size: 10 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } }
     }
   }
 });
 
-// ============== CHART 6: ARRESTS ==============
 new Chart(document.getElementById('arrestChart'), {
   type: 'bar',
   data: {
     labels: ['Sebastopol', 'Cloverdale'],
     datasets: [{
-      data: [39.6, 11.9],
+      data: [39.6, 10.9],
       backgroundColor: ['#a89880', C_ACCENT],
-      borderColor: C_INK,
-      borderWidth: 1,
-      barThickness: 38
+      borderColor: C_INK, borderWidth: 1, barThickness: 38
     }]
   },
   options: {
-    indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (c) => c.parsed.x.toFixed(1) + ' arrests per 1,000/year' } }
-    },
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.parsed.x.toFixed(1) + ' arrests per 1,000/year' } } },
     scales: {
       x: { beginAtZero: true, ticks: { font: { family: monoFont, size: 10 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } },
       y: { ticks: { font: { family: editorialFont, size: 14, weight: 'bold' }, color: C_INK }, grid: { display: false }, border: { color: C_INK } }
@@ -612,11 +556,11 @@ new Chart(document.getElementById('arrestChart'), {
   }
 });
 
-// ============== CHART 7: KEYWORDS ==============
 const kw = [
-  ['Vandalism', 10], ['eBike incidents', 9], ['Weapon mention', 8], ['Unhoused / transient', 7],
-  ['Mental health (5150)', 3], ['Stolen vehicle', 3], ['Burglary', 2],
-  ['Domestic violence', 2], ['Suicide-related', 1], ['Fentanyl / overdose', 0]
+  ['Fireworks', 87],['Hit and Run', 25],['Vandalism', 24],['eBike incidents', 18],
+  ['Unhoused / transient', 14],['Burglary', 10],['Stolen vehicle', 9],
+  ['Mental health (5150)', 9],['Weapon mention', 8],['Domestic violence', 4],
+  ['Suicide-related', 4],['Fentanyl / overdose', 0]
 ];
 new Chart(document.getElementById('kwChart'), {
   type: 'bar',
@@ -624,22 +568,15 @@ new Chart(document.getElementById('kwChart'), {
     labels: kw.map(k => k[0]),
     datasets: [{
       data: kw.map(k => k[1]),
-      backgroundColor: C_ACCENT,
-      borderColor: C_INK,
-      borderWidth: 1,
-      barThickness: 22
+      backgroundColor: kw.map(k => k[0]==='Fireworks' ? '#b85c39' : C_ACCENT),
+      borderColor: C_INK, borderWidth: 1, barThickness: 18
     }]
   },
   options: {
-    indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (c) => c.parsed.x + ' mentions in 17 weeks' } }
-    },
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => c.parsed.x + ' mentions in 47 weeks' } } },
     scales: {
-      x: { beginAtZero: true, ticks: { stepSize: 2, font: { family: monoFont, size: 10 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } },
+      x: { beginAtZero: true, ticks: { stepSize: 10, font: { family: monoFont, size: 10 } }, grid: { color: C_RULE_THIN }, border: { color: C_INK } },
       y: { ticks: { font: { family: editorialFont, size: 13 }, color: C_INK }, grid: { display: false }, border: { color: C_INK } }
     }
   }
