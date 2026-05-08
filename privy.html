@@ -1,1 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What the Logs Don't Say — A Cloverdale Police Data Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f5f1e8;
+    --ink: #1a1612;
+    --ink-soft: #4a3f2f;
+    --rule: #1a1612;
+    --rule-thin: #c9bfa9;
+    --accent: #8b1e1e;
+    --officer: #6b4423;
+    --citizen: #2c4a5e;
+    --warm-1: #f0e1c0;
+    --warm-2: #e0b87a;
+    --warm-3: #c98745;
+    --warm-4: #a85a2a;
+    --warm-5: #8b3a17;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+  }
+  /* HEADER */
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  h1.headline {
+    font-family: "Old Standard TT", serif;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -.01em;
+    margin: 0 0 16px;
+    font-style: italic;
+  }
+  .standfirst {
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+    font-style: italic;
+  }
+  .byline {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 36px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule-thin);
+  }
+  /* BODY */
+  p { margin: 0 0 18px; }
+  h2 {
+    font-family: "Old Standard TT", serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 40px 0 12px;
+    letter-spacing: -.005em;
+  }
+  h3 {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 28px 0 6px;
+  }
+  /* TIGHT FIGURE BOX */
+  .figure {
+    margin: 28px 0;
+    border-top: 1px solid var(--rule-thin);
+    border-bottom: 1px solid var(--rule-thin);
+    padding: 16px 0;
+  }
+  .figure-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  /* HEAT MAP - horizontal bar style, no decoration */
+  .heatmap-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 50px;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+  .heatmap-street {
+    font-family: "Old Standard TT", serif;
+    font-size: 14px;
+    text-align: right;
+    color: var(--ink);
+  }
+  .heatmap-bar {
+    height: 14px;
+    background: var(--warm-1);
+    position: relative;
+  }
+  .heatmap-fill {
+    height: 100%;
+    background: var(--warm-3);
+  }
+  .heatmap-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: left;
+  }
+  .heatmap-note {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 9px;
+    color: var(--ink-soft);
+    margin-top: 12px;
+    letter-spacing: .05em;
+  }
 
+  /* SIMPLE TABLE */
+  table.tight {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  table.tight th {
+    text-align: left;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 6px 6px;
+  }
+  table.tight td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--rule-thin);
+    font-family: "Old Standard TT", serif;
+  }
+  table.tight td.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    text-align: right;
+    color: var(--ink);
+  }
+  table.tight tr.featured td { background: rgba(139, 30, 30, .04); }
+  table.tight tr.featured td:first-child { font-weight: 700; }
+
+  /* PULL QUOTE / KICKER */
+  .kicker {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .kicker b { font-style: normal; font-weight: 700; }
+
+  /* SOURCE ROW */
+  .sourcing {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: .05em;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+  /* CAVEAT BOX */
+  .caveat {
+    background: rgba(107, 68, 35, .05);
+    border-left: 3px solid var(--officer);
+    padding: 14px 18px;
+    margin: 24px 0;
+    font-size: 14px;
+    line-height: 1.55;
+    font-family: "Old Standard TT", serif;
+  }
+  .caveat b { font-weight: 700; }
+
+  /* COLOPHON */
+  .colophon {
+    margin-top: 60px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule-thin);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(139,30,30,.3); }
+  a:hover { border-bottom-color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .page { padding: 36px 22px 60px; }
+    h1.headline { font-size: 30px; }
+    .heatmap-row { grid-template-columns: 130px 1fr 40px; gap: 6px; }
+    .heatmap-street { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="eyebrow">A Reveille Files Companion · Part III</div>
+  <h1 class="headline">What the Logs Don't Say</h1>
+  <p class="standfirst">Three thousand incidents tell us where the police go. They tell us less about what is actually happening — and almost nothing about what the city has chosen not to publish.</p>
+  <div class="byline">May 2026 · Cloverdale, California</div>
+
+  <p>The conclusion in the previous installment of this analysis was that the data, taken at face value, did not support adding a fourteenth officer or a fifteenth Flock camera. That conclusion stands. But the data has its own story to tell — about what gets counted, what gets excluded, and where Cloverdale sits relative to its peers when it comes to publishing the numbers at all.</p>
+
+  <p>Three things this companion piece sets out to show: where in town the police actually spend their time, what Cloverdale has shared with its own residents through official channels, and how the unincorporated edge — patrolled by Sonoma County Sheriff's deputies, not city officers — looks when held alongside the city itself.</p>
+
+  <h2>Where the calls land</h2>
+
+  <p>Across seventeen weeks of Media Bulletins, the same fifteen streets account for more than three-quarters of all logged activity. None of this is a surprise to anyone who lives here. The map of police activity is essentially the map of where commerce, traffic, and parks intersect.</p>
+
+  <div class="figure">
+    <div class="figure-label">FIGURE I · LOGGED ACTIVITY BY STREET, ALL INCIDENT TYPES, 17 WEEKS</div>
+
+    <div class="heatmap-row">
+      <div class="heatmap-street">Broad St</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 100%; background: #8b3a17;"></div></div>
+      <div class="heatmap-count">445</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">S Cloverdale Blvd</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 81%; background: #a85a2a;"></div></div>
+      <div class="heatmap-count">360</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Elbridge Ave</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 57%; background: #c98745;"></div></div>
+      <div class="heatmap-count">252</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Healdsburg Ave</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 53%; background: #c98745;"></div></div>
+      <div class="heatmap-count">236</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Asti Rd</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 49%; background: #c98745;"></div></div>
+      <div class="heatmap-count">216</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">N Cloverdale Blvd</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 42%; background: #c98745;"></div></div>
+      <div class="heatmap-count">185</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">S Washington St</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 14%; background: #e0b87a;"></div></div>
+      <div class="heatmap-count">62</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Airport Rd</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 12%; background: #e0b87a;"></div></div>
+      <div class="heatmap-count">53</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Nopo Way</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 12%; background: #e0b87a;"></div></div>
+      <div class="heatmap-count">53</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Cherry Creek Rd</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 8%; background: #e0b87a;"></div></div>
+      <div class="heatmap-count">36</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Clark Ave</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 8%; background: #e0b87a;"></div></div>
+      <div class="heatmap-count">35</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Kings Cir</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 7%; background: #e0b87a;"></div></div>
+      <div class="heatmap-count">32</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">N Jefferson St</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 7%; background: #f0e1c0;"></div></div>
+      <div class="heatmap-count">30</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">North St</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 7%; background: #f0e1c0;"></div></div>
+      <div class="heatmap-count">30</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="heatmap-street">Treadway Dr</div>
+      <div class="heatmap-bar"><div class="heatmap-fill" style="width: 5%; background: #f0e1c0;"></div></div>
+      <div class="heatmap-count">22</div>
+    </div>
+    <div class="heatmap-note">Based on 2,718 location matches parsed from 17 weeks of Cloverdale Police Department Media Bulletins, December 29, 2025 through April 26, 2026.</div>
+  </div>
+
+  <p>The top entry is misleading on its face. <i>Broad Street</i> with 445 mentions is essentially the police station's own address — most "Broad St" entries are walk-ins, fingerprint appointments, and lobby drop-offs. The genuine activity corridor is the next two: <b>South Cloverdale Boulevard</b> at 360 hits, the commercial spine, and <b>Elbridge Avenue</b> at 252, which runs along the city park and accounts for most of the 8 PM park-closing rounds.</p>
+
+  <p>Healdsburg Ave (236) and Asti Road (216) are next — the former because of the small park at its south end, the latter because Asti is a long industrial road with wineries, the Citrus Fair, and freeway access, where every traffic stop and every abandoned-RV report gets logged. After the top six the curve drops sharply, and by the time you reach Nopo Way (I had to look it up—it must be Bi’Du Khaale Community Center), Cherry Creek Road, and Clark Avenue you're in single-incident-per-week territory. Below the top 15 streets, no street accumulates more than about ten incidents over the entire seventeen weeks.</p>
+
+  <div class="kicker">The geography is not neutral. <b>The "heat" in this heat map is mostly the heat of officer-initiated patrol</b> — security checks at the same dozen locations, rerun every shift.</div>
+
+  <h2>What the city has actually published</h2>
+
+  <p>I went looking, on the Cloverdale Agenda Center, for any document in which the Cloverdale Police Department had quantified its own work for the public. The Agenda Center contains five years of regular City Council meetings, the Finance/Administration/Police subcommittee archive going back to 2011, plus subcommittee meetings on infrastructure, public works, planning, and homelessness.</p>
+
+  <p>Police updates appear regularly. They are listed by name. The November 4, 2024 Finance, Administration & Police subcommittee agenda, for example, includes:</p>
+
+  <table class="tight">
+    <tr><th>Item</th><th>Type</th><th>Statistical attachment?</th></tr>
+    <tr><td>Update — Measure P Cannabis Report</td><td class="num">Standing</td><td class="num">Yes (PDF)</td></tr>
+    <tr><td>Update — Water Rate Revenue Tracking</td><td class="num">Standing</td><td class="num">Yes (PDF)</td></tr>
+    <tr><td>Update — Grants & Grant Writing</td><td class="num">Standing</td><td class="num">Yes (PDF)</td></tr>
+    <tr class="featured"><td>Update — Traffic Enforcement and Citations</td><td class="num">Standing</td><td class="num">No</td></tr>
+    <tr class="featured"><td>Update — Chief Report</td><td class="num">Standing</td><td class="num">No</td></tr>
+    <tr class="featured"><td>Discussion — Police Department Staffing Update</td><td class="num">New</td><td class="num">No</td></tr>
+  </table>
+
+  <p>The pattern repeats across every meeting going back several years. Cannabis revenue, water rates, and grant tracking always come with a supplemental PDF. Police reports come with nothing. Chief Parker delivers verbal updates; the minutes record only that he "reported" or "responded to subcommittee inquiries." For the public, that is the report.</p>
+
+  <p>This is not standard practice. Two cities away, in <b>Sebastopol</b>, Police Chief Sean McDonagh issues a written monthly police update — typically a single page — listing calls for service, officer-initiated incidents, 911 emergencies, non-emergency calls, arrests, police reports, citations, and building checks. <a href="https://www.cityofsebastopol.gov/wp-content/uploads/2024/09/October-2025-Police-Monthly-Update.pdf">October 2025</a>: 789 calls, 837 OI, 243 emergency, 1,317 non-emergency, 24 arrests, 65 reports, 79 citations, 609 building checks. Each month, posted to the city website. Anyone can read them.</p>
+
+  <p>In Healdsburg, the chief delivers an annual report to council with detailed statistics. This year's report — covered in the <i>Healdsburg Tribune</i> on March 5 — included calls answered (19,643), incidents logged (18,341), reported crime change versus prior year (down 17%), use of force incidents (5), and CORE social-worker contacts (562). It is a written report; <a href="https://www.healdsburgtribune.com/city-report-council-meeting-of-march-2/">a journalist could read from it</a>.</p>
+
+  <p>Cloverdale's residents have, instead, a weekly Police Bulletin PDF, which is itself a kind of transparency: it lists every incident, with a redacted address, a brief description, and a disposition. It is also a scanned image, which means it does not contain searchable text and cannot be tabulated without the work I have done here. It is transparency in the form a fax machine might provide.</p>
+
+  <div class="caveat"><b>This is the part of the analysis where the police logs are the wrong source.</b> They are good for pattern-finding, hour-of-day analysis, and street-frequency mapping. They are bad for understanding aggregates the way a council member needs to. For that you'd want monthly counts of CFS, OI, 911, arrests, and reports — exactly what Sebastopol publishes and Cloverdale does not. The logs are a window; they are not a dashboard.</div>
+
+  <h2>Beyond the city limits</h2>
+
+  <p>Cloverdale ends abruptly. Drive a quarter-mile north on the Boulevard and you are no longer in city; the police department's jurisdiction ends and the Sonoma County Sheriff's begins. The river, the airport, Asti, Geyserville Avenue, Highway 128 toward the Geysers — all of it is unincorporated, all of it patrolled by deputies, none of it logged by Cloverdale PD.</p>
+
+  <p>Sonoma County publishes Sheriff dispatch data on its open-data portal. Each row contains date, address, nature code (415R = "disturbance report," 1017 = "security check," T = "traffic stop"), beat zone, event source ("OFFICER" for self-initiated, "CALL" for citizen), and disposition. Beat zone <b>11002</b> covers the unincorporated area from Cloverdale northward through Geyserville and out to Asti Road, the Geysers, and the river canyon.</p>
+
+  <p>I pulled a thirty-six-hour window from May 5–6, 2026, of the most recent ~250 records. Cloverdale-tagged events in that span:</p>
+
+  <table class="tight">
+    <tr><th>Date</th><th>Location</th><th>Nature</th><th>Source</th></tr>
+    <tr><td>May 6</td><td>Henry Rd / River Rd</td><td>Disturbance report</td><td class="num">Citizen</td></tr>
+    <tr><td>May 6</td><td>Duesler Rd / River Rd</td><td>911 wireless</td><td class="num">Citizen</td></tr>
+    <tr><td>May 5</td><td>Crocker Rd / River Rd</td><td>Disturbance report</td><td class="num">Citizen</td></tr>
+    <tr><td>May 5</td><td>Else Way / McCray Rd</td><td>Extra patrol</td><td class="num">Officer</td></tr>
+    <tr><td>May 5</td><td>Asti Rd / Santana Dr</td><td>Telephone</td><td class="num">Citizen</td></tr>
+  </table>
+
+  <p>Five Cloverdale-area events in thirty-six hours. The proportions tell the story: <b>only one of the five was officer-initiated</b>. The Sheriff's posture in this rural beat is reactive — they respond to citizen calls. Cloverdale PD's posture inside the city is the opposite: 61% of all activity is officer-initiated, almost entirely security checks of the same downtown corridor, every night.</p>
+
+  <p>That is not a comparison of crime. It is a comparison of patrol philosophy on either side of an invisible line. In the city, thirteen officers run the same five-block route a dozen times per shift. In the unincorporated area surrounding it — geographically, sixty times the size — deputies show up when called.</p>
+
+  <h2>The probability mismatches</h2>
+
+  <p>What is missing is what is most interesting. Three categories of police activity are systematically undercounted, and in each case the undercount is structural, not accidental.</p>
+
+  <h3>Mental health calls (Section 5150)</h3>
+  <p>Cloverdale's logs mention <b>5150</b> three times across seventeen weeks. The Sheriff's open data deliberately excludes all 5150 events from publication, citing the California Public Records Act. So the public never sees a number for mental-health crisis response in either dataset. <b>Three mentions in 17 weeks</b> is almost certainly far below the actual rate; Sebastopol's monthly reports show that mental-health and unhoused-related calls account for a substantial share of officer time. Cloverdale's logs, in their reluctance to use the code at all, give a misleadingly low impression.</p>
+
+  <h3>Sex crimes and domestic violence</h3>
+  <p>The Sheriff's dataset excludes <b>twenty-eight different penal codes</b> related to sexual assault and exploitation, plus stalking (PC 646.9) and harassment (PC 422.6). Cloverdale's logs show two explicit "domestic violence" mentions in seventeen weeks and six "domestic related incidents." Neither dataset is a reliable indicator of household violence. Both are designed not to be—for good reason.</p>
+
+  <h3>Overdoses</h3>
+  <p>Across seventeen weeks of Cloverdale logs: zero mentions of "overdose," "fentanyl," or "Narcan." Sonoma County's medical examiner reports roughly fifteen to twenty overdose deaths per year countywide. Some of those happen in the Cloverdale area. They aren't appearing in the Police Bulletin at all — likely because they're handled as medical calls by Cloverdale Fire and never become PD entries.</p>
+
+  <div class="kicker">When the ledger has structural blind spots, the picture you get is not the picture that exists. <b>The transparency theater here is the ledger itself</b>, presented as if complete.</div>
+
+  <h2>What this is and isn't evidence for</h2>
+
+  <p>This series began with a simple question: should Cloverdale add a police officer or expand its Flock camera deployment? The data answer remains no — the workload doesn't justify staffing expansion, the crime profile doesn't match what surveillance cameras solve, and the regional trend in 2026 is toward Flock review and rollback, not expansion.</p>
+
+  <p>But the deeper finding from the trip through the Agenda Center, the Sheriff's open data, and seventeen weeks of OCR'd PDFs is this: Cloverdale's residents are not being given the tools to evaluate their police department's work for themselves. They are being given a weekly scanned bulletin and a verbal Chief's report at meetings most of them will never attend. Sebastopol gives its residents a one-page monthly fact sheet. Healdsburg gives them an annual report with use-of-force counts and crime-rate comparisons. Cloverdale gives them prose.</p>
+
+  <p>The case for adding an officer or a camera should rest on numbers the public can see and check. Today, those numbers exist only inside the department's CAD system. Until they come out, every conversation about this is being held in the dark.</p>
+
+  <div class="colophon">
+    Set in Old Standard TT and IBM Plex Mono. Data sources: Cloverdale Police Department Media Bulletins (Dec 29, 2025 — Apr 26, 2026), 17 weeks; City of Sebastopol Monthly Police Updates (Jun, Jul, Aug, Oct 2025); <i>Healdsburg Tribune</i>, March 5, 2026 council coverage; Cloverdale Agenda Center, Finance/Administration/Police subcommittee archive 2024; Sonoma County Sheriff's Office Event Data (dataset bpq8-s7gr), 36-hour sample from May 5–6, 2026; FBI UCR 2023.
+  </div>
+
+</div>
+</body>
+</html>
