@@ -1,1 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Packet Night — A Civics Game - What Does City Council Do?</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --paper: #fffdf7;
+    --ink: #1a1a1a;
+    --muted: #5a5a5a;
+    --rule: #d4cfc0;
+    --accent: #7a3b2e;
+    --warn: #a8541f;
+    --good: #3d6b3d;
+    --bad: #8b2e2e;
+    --tab-inactive: #e8dfc8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.55;
+    padding: 20px;
+  }
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    background: var(--paper);
+    padding: 36px 44px;
+    border: 1px solid var(--rule);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  h1 {
+    font-family: 'Georgia', serif;
+    font-size: 28px;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.5px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+    border-bottom: 2px solid var(--accent);
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 12px 20px;
+    background: var(--tab-inactive);
+    border: 1px solid var(--rule);
+    border-bottom: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: bold;
+    transition: all 0.15s;
+    margin-right: 4px;
+  }
+  .tab:hover { background: #ddd0b0; color: var(--ink); }
+  .tab.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .tab-content { padding-top: 24px; }
+  .scene {
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-left: 3px solid var(--accent);
+    background: rgba(122, 59, 46, 0.04);
+  }
+  .meters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 18px;
+    background: #f8f4e8;
+    padding: 14px 18px;
+    border: 1px solid var(--rule);
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .meter {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted #d4cfc0;
+    padding: 2px 0;
+  }
+  .meter:last-child, .meter:nth-last-child(2) { border-bottom: none; }
+  .meter-name { color: var(--muted); }
+  .meter-value { font-weight: bold; font-variant-numeric: tabular-nums; }
+  .budget {
+    text-align: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 17px;
+    font-weight: bold;
+    margin: 8px 0 24px 0;
+    padding: 10px;
+    background: #f0e8d4;
+    border: 1px solid var(--rule);
+  }
+  .budget-detail {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: normal;
+    font-style: italic;
+    margin-top: 4px;
+  }
+  .budget-low { background: #f5e0d0; color: var(--warn); }
+  h2 {
+    font-size: 20px;
+    margin: 28px 0 8px 0;
+    color: var(--accent);
+  }
+  .item {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .item:last-child { border-bottom: none; }
+  .item-title { font-weight: bold; margin-bottom: 4px; }
+  .item-meta { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .item-note {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--warn);
+    margin-bottom: 10px;
+  }
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .choice {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    transition: all 0.15s;
+  }
+  .choice:hover:not(:disabled) {
+    background: #f0e8d4;
+    border-color: var(--accent);
+  }
+  .choice.selected {
+    background: #e8dfc8;
+    border-color: var(--accent);
+    border-width: 2px;
+  }
+  .choice:disabled { opacity: 0.5; cursor: not-allowed; }
+  .choice-cost {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    float: right;
+  }
+  .popup {
+    background: #fef5e0;
+    border: 2px solid var(--warn);
+    padding: 16px 20px;
+    margin: 24px 0;
+    position: relative;
+  }
+  .popup-label {
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    background: var(--warn);
+    color: white;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: 1px;
+  }
+  .popup-content { font-style: italic; margin-bottom: 12px; }
+  .submit-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 24px;
+    letter-spacing: 0.5px;
+  }
+  .submit-btn:hover:not(:disabled) { background: #5d2c22; }
+  .submit-btn:disabled { background: var(--muted); cursor: not-allowed; }
+  .resolution {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid var(--accent);
+  }
+  .res-item {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #f8f4e8;
+    border-left: 3px solid var(--muted);
+  }
+  .res-item.good { border-left-color: var(--good); }
+  .res-item.bad { border-left-color: var(--bad); }
+  .res-item.neutral { border-left-color: var(--muted); }
+  .change {
+    font-size: 13px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .change .up { color: var(--good); font-weight: bold; }
+  .change .down { color: var(--bad); font-weight: bold; }
+  .epilogue {
+    margin-top: 24px;
+    padding: 18px;
+    background: #f0e8d4;
+    font-style: italic;
+    text-align: center;
+  }
+  .restart { margin-top: 20px; text-align: center; }
+  .footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .block-info {
+    background: #eef0e8;
+    border: 1px solid #c8d0b8;
+    padding: 10px 14px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .block-info strong { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
 
+<h1>Packet Night</h1>
+<div class="subtitle">A game about being on city council. Pick a life, then play it.</div>
+
+<div class="tabs">
+  <button class="tab active" data-profile="retiree">Retiree</button>
+  <button class="tab" data-profile="parent">Working Parent</button>
+  <button class="tab" data-profile="self">Self-Employed</button>
+</div>
+
+<div class="tab-content" id="game-area"></div>
+
+<div class="footer">A prototype. Built for thinking about civic education, not for shipping.</div>
+
+</div>
+
+<script>
+const profiles = {
+  retiree: {
+    label: "Retiree",
+    scene: `It's Sunday, 9:30 AM. The packet for Tuesday's council meeting dropped Friday afternoon. You've made coffee. The light is good. You have most of the day, but you also have a grandchild's birthday party at 2, and you promised yourself you'd get on the bike for an hour this afternoon.<br><br>You have <strong>240 minutes of focused reading time</strong> across today and Monday evening. After that, your eyes blur and you stop retaining anything.`,
+    budgetLabel: "Reading time this week",
+    budgetDetail: "Focused minutes before retention drops",
+    budget: 240,
+    meters: {
+      "Constituent Trust": 6,
+      "Staff Relationship": 7,
+      "Colleague Relations": 5,
+      "Legal Exposure": 2,
+      "Energy Reserve": 6,
+      "Re-election Viability": 6
+    },
+    personalMeterName: "Energy Reserve",
+    inverseMeters: ["Legal Exposure"],
+    popups: [
+      {
+        id: "rosewater",
+        triggerAt: 60,
+        label: "INCOMING TEXT • 11:14 AM",
+        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Tuesday.\"",
+        choices: [
+          { label: "Reply substantively about the contract", cost: 5, key: "rosewater_sub" },
+          { label: "Reply: 'Let's discuss at the meeting'", cost: 1, key: "rosewater_defer" },
+          { label: "Don't reply right now", cost: 0, key: "rosewater_silent" },
+          { label: "Call him instead", cost: 20, key: "rosewater_call" }
+        ]
+      },
+      {
+        id: "sister",
+        triggerAt: 110,
+        label: "INCOMING CALL • 12:48 PM",
+        content: "Your sister calls. She wants to talk about your mother's care arrangements — a real conversation, not a quick one. You've been putting it off for two weeks.",
+        choices: [
+          { label: "Take the call now (it'll be 40 min)", cost: 40, key: "sister_now" },
+          { label: "Take the call but keep it short (15 min)", cost: 15, key: "sister_short" },
+          { label: "Send to voicemail, call back tomorrow", cost: 0, key: "sister_later" }
+        ]
+      },
+      {
+        id: "neighbor",
+        triggerAt: 170,
+        label: "INCOMING EMAIL • 3:22 PM",
+        content: "From a constituent: \"I live next to 142 Oak. The traffic study is wrong. I counted cars myself for a week. Can I send you my data?\"",
+        choices: [
+          { label: "Reply: 'Please send to the full council and staff'", cost: 3, key: "neighbor_proper" },
+          { label: "Reply: 'Yes, send it to me'", cost: 3, key: "neighbor_direct" },
+          { label: "Don't reply tonight, flag for tomorrow", cost: 1, key: "neighbor_defer" },
+          { label: "Forward to City Clerk for proper handling", cost: 3, key: "neighbor_clerk" }
+        ]
+      }
+    ],
+    blockNote: null,
+    personalCosts: {
+      heavy: { threshold: 210, change: -2, reason: "Eyes blurred by Monday night", tone: "neutral", text: "<strong>By Monday night:</strong> You read deeply but your eyes are tired. You skipped the bike ride. You'll be running on adrenaline at the meeting." },
+      light: { threshold: 100, change: 1, reason: "Protected your energy", tone: "bad", text: "<strong>By Monday night:</strong> You took it easy and feel rested. You also walk into Tuesday underprepared on multiple items." }
+    }
+  },
+
+  parent: {
+    label: "Working Parent",
+    scene: `It's Sunday, 8:47 PM. Bedtime took forty-five minutes longer than it should have. The packet for Tuesday's council meeting has been sitting in your inbox since Friday.<br><br>You don't get a clean evening. You get <strong>three uneven blocks of time</strong> between now and Tuesday afternoon:<br><br>• <strong>Sunday night, 40 minutes</strong> (before you crash)<br>• <strong>Monday lunch, 25 minutes</strong> (eating at your desk)<br>• <strong>Tuesday late afternoon, 30 minutes</strong> (in the car, waiting for pickup)<br><br>Total: <strong>95 minutes</strong>. Allocate carefully.`,
+    budgetLabel: "Total minutes across three blocks",
+    budgetDetail: "40 tonight + 25 Mon lunch + 30 Tues car",
+    budget: 95,
+    meters: {
+      "Constituent Trust": 6,
+      "Staff Relationship": 7,
+      "Colleague Relations": 5,
+      "Legal Exposure": 2,
+      "Family Bandwidth": 5,
+      "Re-election Viability": 6
+    },
+    personalMeterName: "Family Bandwidth",
+    inverseMeters: ["Legal Exposure"],
+    popups: [
+      {
+        id: "kid",
+        triggerAt: 15,
+        label: "INTERRUPTION • 9:12 PM",
+        content: "A kid is at the top of the stairs. \"I can't sleep.\" Not crying, but not going back to bed on their own. A stuffed animal slides down two steps and stops.",
+        choices: [
+          { label: "Go up, do the full reset (20 min)", cost: 20, key: "kid_full" },
+          { label: "Quick check-in, back to packet (8 min)", cost: 8, key: "kid_quick" },
+          { label: "Pretend not to hear (0 min, you'll feel it later)", cost: 0, key: "kid_ignore" }
+        ]
+      },
+      {
+        id: "rosewater",
+        triggerAt: 30,
+        label: "INCOMING TEXT • 9:38 PM",
+        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Tuesday.\"",
+        choices: [
+          { label: "Reply substantively about the contract", cost: 5, key: "rosewater_sub" },
+          { label: "Reply: 'Let's discuss at the meeting'", cost: 1, key: "rosewater_defer" },
+          { label: "Don't reply tonight", cost: 0, key: "rosewater_silent" },
+          { label: "Call him during lunch tomorrow (15 min from Block 2)", cost: 15, key: "rosewater_call" }
+        ]
+      },
+      {
+        id: "neighbor",
+        triggerAt: 60,
+        label: "INCOMING EMAIL • Monday 12:34 PM",
+        content: "From a constituent: \"I live next to 142 Oak. The traffic study is wrong. I counted cars myself for a week. Can I send you my data?\"",
+        choices: [
+          { label: "Reply: 'Please send to the full council and staff'", cost: 3, key: "neighbor_proper" },
+          { label: "Reply: 'Yes, send it to me'", cost: 3, key: "neighbor_direct" },
+          { label: "Don't reply, flag for later — 11 minutes of lunch left", cost: 0, key: "neighbor_defer" },
+          { label: "Forward to City Clerk for proper handling", cost: 3, key: "neighbor_clerk" }
+        ]
+      }
+    ],
+    blockNote: "<strong>Note:</strong> You have 95 minutes total. The order you tackle items matters less than what you choose to skip. You will skip something. Pick what.",
+    personalCosts: {
+      heavy: { threshold: 85, change: -2, reason: "Bedtimes ran long, evenings were grim", tone: "neutral", text: "<strong>By Tuesday afternoon:</strong> You used nearly every minute. Bedtimes ran long all week because you weren't fully present. The household picked up extra. You owe it some real time soon." },
+      light: { threshold: 40, change: 1, reason: "Protected family time", tone: "bad", text: "<strong>By Tuesday afternoon:</strong> You stayed mostly present at home. You also walk into the meeting visibly underprepared." }
+    }
+  },
+
+  self: {
+    label: "Self-Employed",
+    scene: `It's Sunday, 6:18 PM. The packet dropped Friday. You meant to read it Saturday. Saturday became invoicing, then a client emergency, then the gutters. Now it's Sunday and you have a proposal due Tuesday morning at 9 — the proposal is the next two months of revenue.<br><br>You have <strong>180 minutes</strong> tonight before the proposal needs them back. Every minute spent on the packet is a minute not on billable work. Council pays $850/month. Your hourly rate is $145.<br><br>The math doesn't math. But you ran anyway. Now what.`,
+    budgetLabel: "Minutes before the proposal needs you",
+    budgetDetail: "Each minute ≈ $2.42 in opportunity cost",
+    budget: 180,
+    meters: {
+      "Constituent Trust": 6,
+      "Staff Relationship": 7,
+      "Colleague Relations": 5,
+      "Legal Exposure": 2,
+      "Business Revenue": 6,
+      "Re-election Viability": 6
+    },
+    personalMeterName: "Business Revenue",
+    inverseMeters: ["Legal Exposure"],
+    popups: [
+      {
+        id: "client",
+        triggerAt: 35,
+        label: "INCOMING TEXT • 7:42 PM",
+        content: "From your biggest client: \"Hey, quick question about the scope on Section 3 — can you hop on a call?\" Last time \"quick question\" was an hour.",
+        choices: [
+          { label: "Take the call now (40 min, but protects the relationship)", cost: 40, key: "client_now" },
+          { label: "Reply: 'Tomorrow first thing?' (5 min back-and-forth)", cost: 5, key: "client_defer" },
+          { label: "Reply: 'Let me look and email you in 20' (15 min)", cost: 15, key: "client_async" }
+        ]
+      },
+      {
+        id: "rosewater",
+        triggerAt: 70,
+        label: "INCOMING TEXT • 8:30 PM",
+        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Tuesday.\"",
+        choices: [
+          { label: "Reply substantively about the contract", cost: 5, key: "rosewater_sub" },
+          { label: "Reply: 'Let's discuss at the meeting'", cost: 1, key: "rosewater_defer" },
+          { label: "Don't reply tonight", cost: 0, key: "rosewater_silent" },
+          { label: "Call him instead", cost: 20, key: "rosewater_call" }
+        ]
+      },
+      {
+        id: "neighbor",
+        triggerAt: 125,
+        label: "INCOMING EMAIL • 9:48 PM",
+        content: "From a constituent: \"I live next to 142 Oak. The traffic study is wrong. I counted cars myself for a week. Can I send you my data?\"",
+        choices: [
+          { label: "Reply: 'Please send to the full council and staff'", cost: 3, key: "neighbor_proper" },
+          { label: "Reply: 'Yes, send it to me'", cost: 3, key: "neighbor_direct" },
+          { label: "Don't reply, the proposal is waiting", cost: 1, key: "neighbor_defer" },
+          { label: "Forward to City Clerk for proper handling", cost: 3, key: "neighbor_clerk" }
+        ]
+      }
+    ],
+    blockNote: "<strong>Note:</strong> The proposal still needs writing. Whatever minutes you spend here come out of that work, or out of sleep. There's no third pile.",
+    personalCosts: {
+      heavy: { threshold: 160, change: -2, reason: "Proposal got the leftovers", tone: "neutral", text: "<strong>By Monday night:</strong> You finished the proposal at 1:30 AM. It's not your best work. You're hoping the client doesn't notice." },
+      light: { threshold: 80, change: 1, reason: "Protected the business", tone: "bad", text: "<strong>By Monday night:</strong> The proposal is solid. You walk into Tuesday's meeting noticeably less prepared than usual." }
+    }
+  }
+};
+
+const items = [
+  {
+    id: 1,
+    title: "Consent Calendar (8 items bundled)",
+    meta: "47 pages • Staff recommends approval",
+    note: "One item is a $180K contract amendment with a vendor Councilmember Rosewater has publicly criticized.",
+    choices: [
+      { label: "Skim", cost: 10, key: "consent_skim" },
+      { label: "Read carefully", cost: 35, key: "consent_read" },
+      { label: "Pull the contract item for Tuesday discussion", cost: 5, key: "consent_pull" }
+    ]
+  },
+  {
+    id: 2,
+    title: "Proclamation: Pollinator Week",
+    meta: "2 pages",
+    note: null,
+    choices: [
+      { label: "Read", cost: 2, key: "pollinator_read" },
+      { label: "Skip", cost: 0, key: "pollinator_skip" }
+    ]
+  },
+  {
+    id: 3,
+    title: "Public Hearing: Use Permit for 142 Oak Street",
+    meta: "84 pages • Traffic study, neighbor correspondence, staff report, CEQA categorical exemption",
+    note: "11 letters of opposition. Quasi-judicial — ex parte rules apply.",
+    choices: [
+      { label: "Skim staff report only", cost: 15, key: "oak_skim" },
+      { label: "Read staff report + correspondence", cost: 40, key: "oak_read" },
+      { label: "Full read including traffic study", cost: 75, key: "oak_deep" }
+    ]
+  },
+  {
+    id: 4,
+    title: "Resolution: Letter of Support for Regional Water Resilience Study",
+    meta: "18 pages",
+    note: "Councilmember Pilgrim has been vocal about regional water issues. The letter doesn't name his signature concern but the scope arguably touches it.",
+    choices: [
+      { label: "Skim", cost: 8, key: "water_skim" },
+      { label: "Read carefully + cross-reference Pilgrim's past statements", cost: 30, key: "water_read" },
+      { label: "Read and call the City Manager tomorrow for context", cost: 15, key: "water_call" }
+    ]
+  },
+  {
+    id: 5,
+    title: "Introduction of Ordinance: Short-Term Rental Regulations",
+    meta: "62 pages",
+    note: "Will generate heavy public comment. First reading only — you vote again in two weeks.",
+    choices: [
+      { label: "Skim", cost: 15, key: "str_skim" },
+      { label: "Read carefully", cost: 45, key: "str_read" },
+      { label: "Defer deep read until second reading", cost: 0, key: "str_defer" }
+    ]
+  },
+  {
+    id: 6,
+    title: "Budget Amendment: Mid-Year Adjustments",
+    meta: "28 pages of tables • Staff recommends approval",
+    note: null,
+    choices: [
+      { label: "Skim summary", cost: 8, key: "budget_skim" },
+      { label: "Work through the tables", cost: 30, key: "budget_read" }
+    ]
+  },
+  {
+    id: 7,
+    title: "Items 7–12: Six smaller items",
+    meta: "Average 6 pages each • Mix of routine and minor",
+    note: null,
+    choices: [
+      { label: "Batch skim", cost: 25, key: "small_skim" },
+      { label: "Read each", cost: 60, key: "small_read" },
+      { label: "Skip — rely on staff presentation", cost: 0, key: "small_skip" }
+    ]
+  }
+];
+
+let state = null;
+let currentProfile = "retiree";
+
+function initState(profileKey) {
+  const profile = profiles[profileKey];
+  state = {
+    profileKey,
+    profile,
+    budget: profile.budget,
+    initialBudget: profile.budget,
+    meters: { ...profile.meters },
+    choices: {},
+    popupsTriggered: {}
+  };
+  profile.popups.forEach(p => state.popupsTriggered[p.id] = false);
+}
+
+function renderAll() {
+  const area = document.getElementById("game-area");
+  area.innerHTML = `
+    <div class="scene">${state.profile.scene}</div>
+    <div class="meters" id="meters"></div>
+    <div class="budget" id="budget"></div>
+    ${state.profile.blockNote ? `<div class="block-info">${state.profile.blockNote}</div>` : ''}
+    <h2>Tuesday's Agenda — 12 items</h2>
+    <div id="agenda"></div>
+    <div id="popups"></div>
+    <button class="submit-btn" id="submit" disabled>Go to Tuesday's meeting →</button>
+    <div id="resolution"></div>
+  `;
+  renderMeters();
+  renderBudget();
+  renderAgenda();
+  document.getElementById("submit").addEventListener("click", showResolution);
+}
+
+function renderMeters() {
+  const el = document.getElementById("meters");
+  el.innerHTML = Object.entries(state.meters).map(([name, val]) => {
+    const isInverse = state.profile.inverseMeters.includes(name);
+    return `<div class="meter"><span class="meter-name">${name}${isInverse ? ' (lower=better)' : ''}</span><span class="meter-value">${val}/10</span></div>`;
+  }).join("");
+}
+
+function renderBudget() {
+  const el = document.getElementById("budget");
+  el.innerHTML = `${state.profile.budgetLabel}: ${state.budget} min<div class="budget-detail">${state.profile.budgetDetail}</div>`;
+  el.className = state.budget < 25 ? "budget budget-low" : "budget";
+}
+
+function renderAgenda() {
+  const el = document.getElementById("agenda");
+  el.innerHTML = items.map(item => `
+    <div class="item" data-item="${item.id}">
+      <div class="item-title">Item ${item.id}. ${item.title}</div>
+      <div class="item-meta">${item.meta}</div>
+      ${item.note ? `<div class="item-note">${item.note}</div>` : ''}
+      <div class="choices">
+        ${item.choices.map(c => `
+          <button class="choice" data-item="${item.id}" data-key="${c.key}" data-cost="${c.cost}">
+            ${c.label}
+            <span class="choice-cost">${c.cost} min</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `).join("");
+
+  el.querySelectorAll('.choice').forEach(btn => {
+    btn.addEventListener('click', () => handleChoice(btn));
+  });
+}
+
+function handleChoice(btn) {
+  const itemId = btn.dataset.item;
+  const key = btn.dataset.key;
+  const cost = parseInt(btn.dataset.cost);
+
+  const prev = state.choices[itemId];
+  if (prev) state.budget += prev.cost;
+
+  if (state.budget - cost < 0) {
+    alert("Not enough time left. Pick a faster option, or change an earlier choice.");
+    if (prev) state.budget -= prev.cost;
+    return;
+  }
+
+  state.budget -= cost;
+  state.choices[itemId] = { key, cost };
+
+  document.querySelectorAll(`.choice[data-item="${itemId}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  renderBudget();
+  checkPopups();
+  checkSubmitReady();
+}
+
+function checkPopups() {
+  const spent = state.initialBudget - state.budget;
+  state.profile.popups.forEach(p => {
+    if (!state.popupsTriggered[p.id] && spent >= p.triggerAt) {
+      state.popupsTriggered[p.id] = true;
+      renderPopup(p);
+    }
+  });
+}
+
+function renderPopup(p) {
+  const el = document.getElementById("popups");
+  const div = document.createElement("div");
+  div.className = "popup";
+  div.innerHTML = `
+    <div class="popup-label">${p.label}</div>
+    <div class="popup-content">${p.content}</div>
+    <div class="choices">
+      ${p.choices.map(c => `
+        <button class="choice" data-popup="${p.id}" data-key="${c.key}" data-cost="${c.cost}">
+          ${c.label}
+          <span class="choice-cost">${c.cost} min</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+  el.appendChild(div);
+  div.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  div.querySelectorAll('.choice').forEach(btn => {
+    btn.addEventListener('click', () => handlePopupChoice(btn, p.id));
+  });
+}
+
+function handlePopupChoice(btn, popupId) {
+  const key = btn.dataset.key;
+  const cost = parseInt(btn.dataset.cost);
+
+  const prev = state.choices[`popup_${popupId}`];
+  if (prev) state.budget += prev.cost;
+
+  if (state.budget - cost < 0) {
+    alert("Not enough time left.");
+    if (prev) state.budget -= prev.cost;
+    return;
+  }
+
+  state.budget -= cost;
+  state.choices[`popup_${popupId}`] = { key, cost };
+
+  document.querySelectorAll(`.choice[data-popup="${popupId}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  renderBudget();
+  checkSubmitReady();
+}
+
+function checkSubmitReady() {
+  const itemsAnswered = items.every(i => state.choices[i.id]);
+  const popupsAnswered = state.profile.popups.every(p => !state.popupsTriggered[p.id] || state.choices[`popup_${p.id}`]);
+  document.getElementById("submit").disabled = !(itemsAnswered && popupsAnswered);
+}
+
+function resolve() {
+  const c = state.choices;
+  const results = [];
+
+  function adjust(meter, delta, reason) {
+    state.meters[meter] = Math.max(0, Math.min(10, state.meters[meter] + delta));
+    return { meter, delta, reason };
+  }
+
+  if (c[1]?.key === "consent_skim") {
+    results.push({
+      tone: "bad",
+      text: "<strong>Consent calendar:</strong> The Henderson contract passed in the bundle without comment. Rosewater is visibly frustrated you didn't pull it. Two days later, a Press Democrat reporter calls asking why the council approved an amendment for a vendor with a problematic track record.",
+      changes: [adjust("Colleague Relations", -1, "Rosewater wanted backup"), adjust("Re-election Viability", -1, "Press coverage")]
+    });
+  } else if (c[1]?.key === "consent_read") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>Consent calendar:</strong> You read it carefully. You saw the Henderson item but decided not to pull it. The vote passed cleanly. Rosewater mentions afterward he wishes you'd flagged it, but appreciates that you knew what was in it.",
+      changes: []
+    });
+  } else if (c[1]?.key === "consent_pull") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>Consent calendar:</strong> You pulled the Henderson contract. 25 minutes of meeting discussion. Rosewater is grateful. The vendor's lobbyist sends a chilly email Wednesday. Staff is annoyed they have to redo the staff report.",
+      changes: [adjust("Colleague Relations", 1, "Rosewater backed up"), adjust("Staff Relationship", -1, "Extra work for staff")]
+    });
+  }
+
+  if (c[3]?.key === "oak_skim") {
+    results.push({
+      tone: "bad",
+      text: "<strong>142 Oak Street:</strong> During public comment, a neighbor asks you directly about the mitigation measure on page 61 of the traffic study. You don't know it. You say \"I'll need to look at that.\" The room shifts. A Nextdoor thread starts Wednesday.",
+      changes: [adjust("Constituent Trust", -1, "Visibly unprepared"), adjust("Re-election Viability", -1, "Public moment")]
+    });
+  } else if (c[3]?.key === "oak_read") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>142 Oak Street:</strong> You knew the staff report and correspondence. You handled the neighbor's questions about ingress/egress well. The traffic study question that came up was technical — staff fielded it. You looked competent.",
+      changes: [adjust("Constituent Trust", 1, "Prepared")]
+    });
+  } else if (c[3]?.key === "oak_deep") {
+    results.push({
+      tone: "good",
+      text: "<strong>142 Oak Street:</strong> You caught a discrepancy between the traffic study's peak-hour assumptions and the actual school pickup window. You raised it on the dais. Staff agreed to come back with a corrected analysis. Neighbors take note. Pilgrim does too.",
+      changes: [adjust("Constituent Trust", 2, "Visible diligence"), adjust("Staff Relationship", -1, "Caught their error"), adjust("Colleague Relations", 1, "Pilgrim respected the catch")]
+    });
+  }
+
+  if (c[4]?.key === "water_skim") {
+    results.push({
+      tone: "bad",
+      text: "<strong>Water resilience letter:</strong> The letter passes 4-1, Pilgrim voting no. After the meeting he tells you privately he expected you to catch what was in there. You're not sure what he means until you re-read it Wednesday.",
+      changes: [adjust("Colleague Relations", -1, "Missed the subtext")]
+    });
+  } else if (c[4]?.key === "water_read") {
+    results.push({
+      tone: "good",
+      text: "<strong>Water resilience letter:</strong> You caught that one paragraph could be read as endorsing a position Pilgrim opposes. You proposed a friendly amendment. The letter passes 5-0. Pilgrim respects that you engaged with the substance.",
+      changes: [adjust("Colleague Relations", 2, "Earned respect across difference")]
+    });
+  } else if (c[4]?.key === "water_call") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>Water resilience letter:</strong> The City Manager gave you helpful context. You were prepared but didn't propose changes. Pilgrim voted no. The City Manager appreciated that you came to her instead of escalating publicly.",
+      changes: [adjust("Staff Relationship", 1, "Used the right channel")]
+    });
+  }
+
+  if (c[5]?.key === "str_defer") {
+    results.push({
+      tone: "bad",
+      text: "<strong>Short-term rentals:</strong> Public comment was heavier than expected — 47 speakers. Several asked detailed questions about Section 12 (the enforcement mechanism). You hadn't read it. You let staff field everything, which read as disengaged.",
+      changes: [adjust("Constituent Trust", -1, "Looked checked out")]
+    });
+  } else if (c[5]?.key === "str_read") {
+    results.push({
+      tone: "good",
+      text: "<strong>Short-term rentals:</strong> You came in with three specific questions about enforcement and one about grandfathering. Your questions shaped the second reading. Several speakers thanked you afterward for actually engaging with the substance.",
+      changes: [adjust("Constituent Trust", 1, "Substantive engagement")]
+    });
+  }
+
+  if (c.popup_rosewater?.key === "rosewater_sub") {
+    results.push({
+      tone: "bad",
+      text: "<strong>The Rosewater text:</strong> You replied substantively about the Henderson contract. Tuesday afternoon, Pilgrim raises a question about whether a serial meeting occurred. The City Attorney has to weigh in. Nothing comes of it formally, but the City Clerk now watches your texts.",
+      changes: [adjust("Legal Exposure", 2, "Possible Brown Act issue"), adjust("Staff Relationship", -1, "Flagged")]
+    });
+  } else if (c.popup_rosewater?.key === "rosewater_call") {
+    results.push({
+      tone: "good",
+      text: "<strong>The Rosewater call:</strong> No written record. You walked through your respective concerns. He feels heard. You feel aligned without having committed to anything that creates a serial meeting problem.",
+      changes: [adjust("Colleague Relations", 1, "Real conversation")]
+    });
+  } else if (c.popup_rosewater?.key === "rosewater_defer") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>The Rosewater text:</strong> He replied \"ok\" and left it alone. At Tuesday's meeting he was less prepared than he wanted to be on the Henderson item. He doesn't mention it, but you can tell.",
+      changes: [adjust("Colleague Relations", -1, "Felt unsupported")]
+    });
+  } else if (c.popup_rosewater?.key === "rosewater_silent") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>The Rosewater text:</strong> No reply. At Tuesday's meeting he sat colder than usual. You'll need to repair this.",
+      changes: [adjust("Colleague Relations", -1, "Read as dismissive")]
+    });
+  }
+
+  if (c.popup_neighbor?.key === "neighbor_direct") {
+    results.push({
+      tone: "bad",
+      text: "<strong>The 142 Oak email:</strong> You replied \"yes send it to me.\" The applicant's attorney noticed the ex parte communication during the hearing and put it on the record. You had to disclose. The decision survives, but a procedural challenge is now possible if the project is approved.",
+      changes: [adjust("Legal Exposure", 3, "Ex parte on quasi-judicial"), adjust("Constituent Trust", 1, "Responsive")]
+    });
+  } else if (c.popup_neighbor?.key === "neighbor_proper") {
+    results.push({
+      tone: "good",
+      text: "<strong>The 142 Oak email:</strong> You directed her to send to the full council and staff so it would be in the record. She did. Her data went into the public file. She felt respected; the hearing record is clean.",
+      changes: [adjust("Constituent Trust", 1, "Took her seriously, properly")]
+    });
+  } else if (c.popup_neighbor?.key === "neighbor_clerk") {
+    results.push({
+      tone: "good",
+      text: "<strong>The 142 Oak email:</strong> The City Clerk handled it through the proper channel. Clean record. Constituent slightly puzzled by the indirect response but ultimately fine.",
+      changes: [adjust("Staff Relationship", 1, "Used the system")]
+    });
+  } else if (c.popup_neighbor?.key === "neighbor_defer") {
+    results.push({
+      tone: "bad",
+      text: "<strong>The 142 Oak email:</strong> You meant to handle it Monday. You didn't. She showed up at the hearing visibly upset that no one had responded. Her three minutes of public comment were about being ignored.",
+      changes: [adjust("Constituent Trust", -2, "Felt ignored")]
+    });
+  }
+
+  // PROFILE-SPECIFIC
+
+  if (c.popup_sister?.key === "sister_now") {
+    results.push({
+      tone: "good",
+      text: "<strong>Your sister:</strong> The call ran 50 minutes. You both cried a little. You made a real decision about your mother. You also lost most of Sunday afternoon.",
+      changes: [adjust("Energy Reserve", 1, "Did the hard thing")]
+    });
+  } else if (c.popup_sister?.key === "sister_short") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>Your sister:</strong> The conversation was rushed. You said you'd call back Wednesday. You both know you won't.",
+      changes: [adjust("Energy Reserve", -1, "Carrying it unresolved")]
+    });
+  } else if (c.popup_sister?.key === "sister_later") {
+    results.push({
+      tone: "bad",
+      text: "<strong>Your sister:</strong> You sent it to voicemail. By Tuesday morning the unreturned call is its own small weight in your chest.",
+      changes: [adjust("Energy Reserve", -2, "Avoidance has a cost")]
+    });
+  }
+
+  if (c.popup_kid?.key === "kid_full") {
+    results.push({
+      tone: "good",
+      text: "<strong>The bedtime visit:</strong> Twenty minutes of back-rubbing. They were asleep before you left the room. You felt like a good parent. You also lost a fifth of your evening block.",
+      changes: [adjust("Family Bandwidth", 1, "Showed up")]
+    });
+  } else if (c.popup_kid?.key === "kid_quick") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>The bedtime visit:</strong> Quick reset, back to the packet. They were up again twenty minutes later. You handled it more shortly the second time.",
+      changes: []
+    });
+  } else if (c.popup_kid?.key === "kid_ignore") {
+    results.push({
+      tone: "bad",
+      text: "<strong>The bedtime visit:</strong> They eventually went back to bed on their own. They mentioned it at breakfast Monday — that you didn't come. It was small. It also wasn't nothing.",
+      changes: [adjust("Family Bandwidth", -2, "Noticed by a kid")]
+    });
+  }
+
+  if (c.popup_client?.key === "client_now") {
+    results.push({
+      tone: "good",
+      text: "<strong>The client call:</strong> 45 minutes, but you caught a scope misalignment that would have cost you twice that to fix later. Relationship strengthened.",
+      changes: [adjust("Business Revenue", 1, "Protected the contract")]
+    });
+  } else if (c.popup_client?.key === "client_async") {
+    results.push({
+      tone: "neutral",
+      text: "<strong>The client call:</strong> You sent a thorough email instead. They responded \"thanks, this works\" — but you can't tell from the email whether \"works\" means satisfied or annoyed.",
+      changes: []
+    });
+  } else if (c.popup_client?.key === "client_defer") {
+    results.push({
+      tone: "bad",
+      text: "<strong>The client call:</strong> By Monday morning they'd already made a decision without your input. The decision wasn't wrong, exactly. It also wasn't what you would have recommended.",
+      changes: [adjust("Business Revenue", -1, "Lost the room")]
+    });
+  }
+
+  const totalSpent = state.initialBudget - state.budget;
+  const heavy = state.profile.personalCosts.heavy;
+  const light = state.profile.personalCosts.light;
+  if (totalSpent > heavy.threshold) {
+    results.push({
+      tone: heavy.tone,
+      text: heavy.text,
+      changes: [adjust(state.profile.personalMeterName, heavy.change, heavy.reason)]
+    });
+  } else if (totalSpent < light.threshold) {
+    results.push({
+      tone: light.tone,
+      text: light.text,
+      changes: [adjust(state.profile.personalMeterName, light.change, light.reason)]
+    });
+  }
+
+  return results;
+}
+
+function showResolution() {
+  const results = resolve();
+  const el = document.getElementById("resolution");
+  el.style.display = "block";
+  el.innerHTML = `
+    <div class="resolution">
+      <h2>Tuesday, 6:00 PM — The Meeting</h2>
+      ${results.map(r => `
+        <div class="res-item ${r.tone}">
+          ${r.text}
+          ${r.changes.length ? `<div class="change">${r.changes.map(ch => {
+            const arrow = ch.delta > 0 ? `<span class="up">+${ch.delta}</span>` : ch.delta < 0 ? `<span class="down">${ch.delta}</span>` : '';
+            return ch.delta !== 0 ? `${ch.meter} ${arrow} (${ch.reason})` : '';
+          }).filter(Boolean).join(' • ')}</div>` : ''}
+        </div>
+      `).join('')}
+
+      <h2 style="margin-top: 32px;">Where you stand now</h2>
+      <div class="meters">
+        ${Object.entries(state.meters).map(([name, val]) => {
+          const isInverse = state.profile.inverseMeters.includes(name);
+          return `<div class="meter"><span class="meter-name">${name}${isInverse ? ' (lower=better)' : ''}</span><span class="meter-value">${val}/10</span></div>`;
+        }).join("")}
+      </div>
+
+      <div class="epilogue">
+        It's Tuesday night, 9:47 PM. The meeting ran long. You're heading home.<br>
+        Friday afternoon, the next packet drops. It's 312 pages this time.<br><br>
+        <strong>You have two more years of this.</strong>
+      </div>
+
+      <div class="restart">
+        <button class="submit-btn" onclick="restartCurrentProfile()" style="max-width: 280px; margin: 20px auto 0;">Try a different Sunday →</button>
+      </div>
+    </div>
+  `;
+  el.scrollIntoView({ behavior: "smooth" });
+  document.getElementById("submit").style.display = "none";
+}
+
+function restartCurrentProfile() {
+  initState(currentProfile);
+  renderAll();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentProfile = tab.dataset.profile;
+    initState(currentProfile);
+    renderAll();
+  });
+});
+
+initState("retiree");
+renderAll();
+</script>
+</body>
+</html>
