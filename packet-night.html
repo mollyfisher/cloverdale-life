@@ -277,7 +277,7 @@
 const profiles = {
   retiree: {
     label: "Retiree",
-    scene: `It's Sunday, 9:30 AM. The packet for Wendesday's council meeting dropped Friday afternoon. You've made coffee. The light is good. You have most of the day, but you also have a grandchild's birthday party at 2, and you promised yourself you'd get on the bike for an hour this afternoon.<br><br>You have <strong>240 minutes of focused reading time</strong> across today and Monday evening. After that, your eyes blur and you stop retaining anything.`,
+    scene: `It's Sunday, 9:30 AM. The packet for Wednesday's council meeting dropped Friday afternoon. You've made coffee. The light is good. You have most of the day, but you also have a grandchild's birthday party at 2, and you promised yourself you'd get on the bike for an hour this afternoon.<br><br>You have <strong>240 minutes of focused reading time</strong> across today and Monday evening. After that, your eyes blur and you stop retaining anything.`,
     budgetLabel: "Reading time this week",
     budgetDetail: "Focused minutes before retention drops",
     budget: 240,
@@ -536,6 +536,7 @@ const items = [
 
 let state = null;
 let currentProfile = "retiree";
+let lastItemId = null;  // Remember the last agenda item the player touched, so popups can return them there
 
 function initState(profileKey) {
   const profile = profiles[profileKey];
@@ -549,6 +550,7 @@ function initState(profileKey) {
     popupsTriggered: {}
   };
   profile.popups.forEach(p => state.popupsTriggered[p.id] = false);
+  lastItemId = null;
 }
 
 function renderAll() {
@@ -623,6 +625,7 @@ function handleChoice(btn) {
 
   state.budget -= cost;
   state.choices[itemId] = { key, cost };
+  lastItemId = itemId;  // Remember where we are, in case a popup interrupts
 
   document.querySelectorAll(`.choice[data-item="${itemId}"]`).forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
@@ -687,6 +690,17 @@ function handlePopupChoice(btn, popupId) {
 
   renderBudget();
   checkSubmitReady();
+
+  // The interruption is handled. Return the player to where they were working
+  // on the packet. Small delay so the choice-selection animation registers first.
+  if (lastItemId) {
+    const target = document.querySelector(`.item[data-item="${lastItemId}"]`);
+    if (target) {
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+    }
+  }
 }
 
 function checkSubmitReady() {
