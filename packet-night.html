@@ -277,7 +277,7 @@
 const profiles = {
   retiree: {
     label: "Retiree",
-    scene: `It's Sunday, 9:30 AM. The packet for Tuesday's council meeting dropped Friday afternoon. You've made coffee. The light is good. You have most of the day, but you also have a grandchild's birthday party at 2, and you promised yourself you'd get on the bike for an hour this afternoon.<br><br>You have <strong>240 minutes of focused reading time</strong> across today and Monday evening. After that, your eyes blur and you stop retaining anything.`,
+    scene: `It's Sunday, 9:30 AM. The packet for Wendesday's council meeting dropped Friday afternoon. You've made coffee. The light is good. You have most of the day, but you also have a grandchild's birthday party at 2, and you promised yourself you'd get on the bike for an hour this afternoon.<br><br>You have <strong>240 minutes of focused reading time</strong> across today and Monday evening. After that, your eyes blur and you stop retaining anything.`,
     budgetLabel: "Reading time this week",
     budgetDetail: "Focused minutes before retention drops",
     budget: 240,
@@ -296,7 +296,7 @@ const profiles = {
         id: "rosewater",
         triggerAt: 60,
         label: "INCOMING TEXT • 11:14 AM",
-        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Tuesday.\"",
+        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Wednesday.\"",
         choices: [
           { label: "Reply substantively about the contract", cost: 5, key: "rosewater_sub" },
           { label: "Reply: 'Let's discuss at the meeting'", cost: 1, key: "rosewater_defer" },
@@ -331,13 +331,13 @@ const profiles = {
     blockNote: null,
     personalCosts: {
       heavy: { threshold: 210, change: -2, reason: "Eyes blurred by Monday night", tone: "neutral", text: "<strong>By Monday night:</strong> You read deeply but your eyes are tired. You skipped the bike ride. You'll be running on adrenaline at the meeting." },
-      light: { threshold: 100, change: 1, reason: "Protected your energy", tone: "bad", text: "<strong>By Monday night:</strong> You took it easy and feel rested. You also walk into Tuesday underprepared on multiple items." }
+      light: { threshold: 100, change: 1, reason: "Protected your energy", tone: "bad", text: "<strong>By Monday night:</strong> You took it easy and feel rested. You also walk into Wednesday underprepared on multiple items." }
     }
   },
 
   parent: {
     label: "Working Parent",
-    scene: `It's Sunday, 8:47 PM. Bedtime took forty-five minutes longer than it should have. The packet for Tuesday's council meeting has been sitting in your inbox since Friday.<br><br>You don't get a clean evening. You get <strong>three uneven blocks of time</strong> between now and Tuesday afternoon:<br><br>• <strong>Sunday night, 40 minutes</strong> (before you crash)<br>• <strong>Monday lunch, 25 minutes</strong> (eating at your desk)<br>• <strong>Tuesday late afternoon, 30 minutes</strong> (in the car, waiting for pickup)<br><br>Total: <strong>95 minutes</strong>. Allocate carefully.`,
+    scene: `It's Sunday, 8:47 PM. Bedtime took forty-five minutes longer than it should have. The packet for Wednesday's council meeting has been sitting in your inbox since Friday.<br><br>You don't get a clean evening. You get <strong>three uneven blocks of time</strong> between now and Wednesday afternoon:<br><br>• <strong>Sunday night, 40 minutes</strong> (before you crash)<br>• <strong>Monday lunch, 25 minutes</strong> (eating at your desk)<br>• <strong>Wednesday late afternoon, 30 minutes</strong> (in the car, waiting for pickup)<br><br>Total: <strong>95 minutes</strong>. Allocate carefully.`,
     budgetLabel: "Total minutes across three blocks",
     budgetDetail: "40 tonight + 25 Mon lunch + 30 Tues car",
     budget: 95,
@@ -367,7 +367,7 @@ const profiles = {
         id: "rosewater",
         triggerAt: 30,
         label: "INCOMING TEXT • 9:38 PM",
-        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Tuesday.\"",
+        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Wednesday.\"",
         choices: [
           { label: "Reply substantively about the contract", cost: 5, key: "rosewater_sub" },
           { label: "Reply: 'Let's discuss at the meeting'", cost: 1, key: "rosewater_defer" },
@@ -390,14 +390,14 @@ const profiles = {
     ],
     blockNote: "<strong>Note:</strong> You have 95 minutes total. The order you tackle items matters less than what you choose to skip. You will skip something. Pick what.",
     personalCosts: {
-      heavy: { threshold: 85, change: -2, reason: "Bedtimes ran long, evenings were grim", tone: "neutral", text: "<strong>By Tuesday afternoon:</strong> You used nearly every minute. Bedtimes ran long all week because you weren't fully present. The household picked up extra. You owe it some real time soon." },
-      light: { threshold: 40, change: 1, reason: "Protected family time", tone: "bad", text: "<strong>By Tuesday afternoon:</strong> You stayed mostly present at home. You also walk into the meeting visibly underprepared." }
+      heavy: { threshold: 85, change: -2, reason: "Bedtimes ran long, evenings were grim", tone: "neutral", text: "<strong>By Wednesday afternoon:</strong> You used nearly every minute. Bedtimes ran long all week because you weren't fully present. The household picked up extra. You owe it some real time soon." },
+      light: { threshold: 40, change: 1, reason: "Protected family time", tone: "bad", text: "<strong>By Wednesday afternoon:</strong> You stayed mostly present at home. You also walk into the meeting visibly underprepared." }
     }
   },
 
   self: {
     label: "Self-Employed",
-    scene: `It's Sunday, 6:18 PM. The packet dropped Friday. You meant to read it Saturday. Saturday became invoicing, then a client emergency, then the gutters. Now it's Sunday and you have a proposal due Tuesday morning at 9 — the proposal is the next two months of revenue.<br><br>You have <strong>180 minutes</strong> tonight before the proposal needs them back. Every minute spent on the packet is a minute not on billable work. Council pays $850/month. Your hourly rate is $145.<br><br>The math doesn't math. But you ran anyway. Now what.`,
+    scene: `It's Sunday, 6:18 PM. The packet dropped Friday. You meant to read it Saturday. Saturday became invoicing, then a client emergency, then the gutters. Now it's Sunday and you have a proposal due Wednesday morning at 9 — the proposal is the next two months of revenue.<br><br>You have <strong>180 minutes</strong> tonight before the proposal needs them back. Every minute spent on the packet is a minute not on billable work. Council pays $850/month. Your hourly rate is $145.<br><br>The math doesn't math. But you ran anyway. Now what.`,
     budgetLabel: "Minutes before the proposal needs you",
     budgetDetail: "Each minute ≈ $2.42 in opportunity cost",
     budget: 180,
@@ -427,7 +427,7 @@ const profiles = {
         id: "rosewater",
         triggerAt: 70,
         label: "INCOMING TEXT • 8:30 PM",
-        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Tuesday.\"",
+        content: "From Councilmember Rosewater: \"You seeing what's in the consent calendar re: the Henderson contract? We should talk before Wednesday.\"",
         choices: [
           { label: "Reply substantively about the contract", cost: 5, key: "rosewater_sub" },
           { label: "Reply: 'Let's discuss at the meeting'", cost: 1, key: "rosewater_defer" },
@@ -451,7 +451,7 @@ const profiles = {
     blockNote: "<strong>Note:</strong> The proposal still needs writing. Whatever minutes you spend here come out of that work, or out of sleep. There's no third pile.",
     personalCosts: {
       heavy: { threshold: 160, change: -2, reason: "Proposal got the leftovers", tone: "neutral", text: "<strong>By Monday night:</strong> You finished the proposal at 1:30 AM. It's not your best work. You're hoping the client doesn't notice." },
-      light: { threshold: 80, change: 1, reason: "Protected the business", tone: "bad", text: "<strong>By Monday night:</strong> The proposal is solid. You walk into Tuesday's meeting noticeably less prepared than usual." }
+      light: { threshold: 80, change: 1, reason: "Protected the business", tone: "bad", text: "<strong>By Monday night:</strong> The proposal is solid. You walk into Wednesday's meeting noticeably less prepared than usual." }
     }
   }
 };
@@ -465,7 +465,7 @@ const items = [
     choices: [
       { label: "Skim", cost: 10, key: "consent_skim" },
       { label: "Read carefully", cost: 35, key: "consent_read" },
-      { label: "Pull the contract item for Tuesday discussion", cost: 5, key: "consent_pull" }
+      { label: "Pull the contract item for Wednesday discussion", cost: 5, key: "consent_pull" }
     ]
   },
   {
@@ -558,10 +558,10 @@ function renderAll() {
     <div class="meters" id="meters"></div>
     <div class="budget" id="budget"></div>
     ${state.profile.blockNote ? `<div class="block-info">${state.profile.blockNote}</div>` : ''}
-    <h2>Tuesday's Agenda — 12 items</h2>
+    <h2>Wednesday's Agenda — 12 items</h2>
     <div id="agenda"></div>
     <div id="popups"></div>
-    <button class="submit-btn" id="submit" disabled>Go to Tuesday's meeting →</button>
+    <button class="submit-btn" id="submit" disabled>Go to Wednesday's meeting →</button>
     <div id="resolution"></div>
   `;
   renderMeters();
@@ -781,7 +781,7 @@ function resolve() {
   if (c.popup_rosewater?.key === "rosewater_sub") {
     results.push({
       tone: "bad",
-      text: "<strong>The Rosewater text:</strong> You replied substantively about the Henderson contract. Tuesday afternoon, Pilgrim raises a question about whether a serial meeting occurred. The City Attorney has to weigh in. Nothing comes of it formally, but the City Clerk now watches your texts.",
+      text: "<strong>The Rosewater text:</strong> You replied substantively about the Henderson contract. Wednesday afternoon, Pilgrim raises a question about whether a serial meeting occurred. The City Attorney has to weigh in. Nothing comes of it formally, but the City Clerk now watches your texts.",
       changes: [adjust("Legal Exposure", 2, "Possible Brown Act issue"), adjust("Staff Relationship", -1, "Flagged")]
     });
   } else if (c.popup_rosewater?.key === "rosewater_call") {
@@ -793,13 +793,13 @@ function resolve() {
   } else if (c.popup_rosewater?.key === "rosewater_defer") {
     results.push({
       tone: "neutral",
-      text: "<strong>The Rosewater text:</strong> He replied \"ok\" and left it alone. At Tuesday's meeting he was less prepared than he wanted to be on the Henderson item. He doesn't mention it, but you can tell.",
+      text: "<strong>The Rosewater text:</strong> He replied \"ok\" and left it alone. At Wednesday's meeting he was less prepared than he wanted to be on the Henderson item. He doesn't mention it, but you can tell.",
       changes: [adjust("Colleague Relations", -1, "Felt unsupported")]
     });
   } else if (c.popup_rosewater?.key === "rosewater_silent") {
     results.push({
       tone: "neutral",
-      text: "<strong>The Rosewater text:</strong> No reply. At Tuesday's meeting he sat colder than usual. You'll need to repair this.",
+      text: "<strong>The Rosewater text:</strong> No reply. At Wednesday's meeting he sat colder than usual. You'll need to repair this.",
       changes: [adjust("Colleague Relations", -1, "Read as dismissive")]
     });
   }
@@ -847,7 +847,7 @@ function resolve() {
   } else if (c.popup_sister?.key === "sister_later") {
     results.push({
       tone: "bad",
-      text: "<strong>Your sister:</strong> You sent it to voicemail. By Tuesday morning the unreturned call is its own small weight in your chest.",
+      text: "<strong>Your sister:</strong> You sent it to voicemail. By Wednesday morning the unreturned call is its own small weight in your chest.",
       changes: [adjust("Energy Reserve", -2, "Avoidance has a cost")]
     });
   }
@@ -918,7 +918,7 @@ function showResolution() {
   el.style.display = "block";
   el.innerHTML = `
     <div class="resolution">
-      <h2>Tuesday, 6:00 PM — The Meeting</h2>
+      <h2>Wednesday, 6:00 PM — The Meeting</h2>
       ${results.map(r => `
         <div class="res-item ${r.tone}">
           ${r.text}
@@ -938,7 +938,7 @@ function showResolution() {
       </div>
 
       <div class="epilogue">
-        It's Tuesday night, 9:47 PM. The meeting ran long. You're heading home.<br>
+        It's Wednesday night, 9:47 PM. The meeting ran long. You're heading home.<br>
         Friday afternoon, the next packet drops. It's 312 pages this time.<br><br>
         <strong>You have two more years of this.</strong>
       </div>
