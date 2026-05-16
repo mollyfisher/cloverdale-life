@@ -29,7 +29,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --paper: #ffffff;
@@ -148,20 +148,12 @@
     padding: 0 8px;
   }
 
-  /* SECTION HEADERS */
+  /* SECTION HEADER (for principles only now) */
   .section-header {
     margin: 80px 0 40px;
     display: flex;
     align-items: baseline;
     gap: 24px;
-  }
-
-  .section-number {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: var(--red-earth);
-    letter-spacing: 0.1em;
-    white-space: nowrap;
   }
 
   .section-title {
@@ -185,7 +177,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 28px;
-    margin-bottom: 40px;
+    margin: 0 0 60px;
   }
 
   .crop {
@@ -244,22 +236,13 @@
   /* THE OLD VINES SECTION */
   .vines-feature {
     margin: 80px 0;
-    background: var(--oak);
-    color: var(--paper);
+    background: var(--paper-shade);
+    color: var(--ink);
     padding: 60px 50px;
     position: relative;
     overflow: hidden;
-  }
-
-  .vines-feature::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 100%;
-    background: linear-gradient(135deg, transparent 0%, rgba(74, 31, 46, 0.4) 100%);
-    pointer-events: none;
+    border-top: 3px solid var(--oak);
+    border-bottom: 3px solid var(--oak);
   }
 
   .vines-eyebrow {
@@ -267,7 +250,7 @@
     font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--red-earth);
     margin-bottom: 20px;
   }
 
@@ -277,18 +260,18 @@
     font-weight: 500;
     line-height: 1.05;
     margin-bottom: 24px;
-    color: var(--paper);
+    color: var(--oak);
   }
 
   .vines-title em {
     font-style: italic;
-    color: var(--gold);
+    color: var(--red-earth);
   }
 
   .vines-lede {
     font-size: 19px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--oak-light);
     max-width: 620px;
     margin-bottom: 36px;
     font-style: italic;
@@ -310,7 +293,7 @@
     font-family: Georgia, serif;
     font-size: 22px;
     font-weight: 600;
-    color: var(--paper);
+    color: var(--oak);
     margin-bottom: 4px;
     line-height: 1.1;
   }
@@ -318,16 +301,16 @@
   .grape-note {
     font-size: 14px;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--oak-light);
   }
 
   .vines-quote {
     margin-top: 40px;
     padding-top: 30px;
-    border-top: 1px solid rgba(184, 146, 58, 0.3);
+    border-top: 1px solid var(--gold);
     font-family: 'Caveat', cursive;
-    font-size: 24px;
-    color: var(--gold);
+    font-size: 26px;
+    color: var(--red-earth);
     line-height: 1.4;
     max-width: 580px;
   }
@@ -435,13 +418,12 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .header, .intro, .section-header, .crops-grid, .vines-feature, .principles, .footer-manifesto {
+  .header, .intro, .crops-grid, .vines-feature, .principles, .footer-manifesto {
     animation: fadeUp 0.8s ease-out both;
   }
 
   .intro { animation-delay: 0.1s; }
-  .section-header { animation-delay: 0.2s; }
-  .crops-grid { animation-delay: 0.3s; }
+  .crops-grid { animation-delay: 0.2s; }
   .vines-feature { animation-delay: 0.2s; }
 </style>
 </head>
@@ -469,13 +451,7 @@
     </p>
   </section>
 
-  <!-- SECTION 1: PERENNIALS -->
-  <div class="section-header">
-    <span class="section-number">I.</span>
-    <h2 class="section-title">Perennials that drink winter rain</h2>
-    <div class="section-rule"></div>
-  </div>
-
+  <!-- CROPS GRID - flattened -->
   <div class="crops-grid">
     <div class="crop">
       <span class="crop-icon">🫒</span>
@@ -488,13 +464,13 @@
     </div>
 
     <div class="crop">
-      <span class="crop-icon">🌰</span>
-      <div class="crop-name">Acorn-bearing Oaks</div>
-      <div class="crop-latin">Quercus lobata, Q. kelloggii</div>
+      <span class="crop-icon">🍑</span>
+      <div class="crop-name">Stone Fruit, Fresh</div>
+      <div class="crop-latin">Prunus spp.</div>
       <p class="crop-desc">
-        Valley oak and black oak define the foothill woodland that surrounds Potter Valley. The trees are already standing; the question is whether we keep them as food, forage, and habitat rather than removing them for vineyards.
+        Peach, apricot, plum, cherry — for the farmers' market, not the cannery. Small scale, high value, climate-suited.
       </p>
-      <div class="crop-water">Zero applied water</div>
+      <div class="crop-water">Moderate, summer-supplemental</div>
     </div>
 
     <div class="crop">
@@ -508,24 +484,15 @@
     </div>
 
     <div class="crop">
-      <span class="crop-icon">🍑</span>
-      <div class="crop-name">Stone Fruit, Fresh</div>
-      <div class="crop-latin">Prunus spp.</div>
+      <span class="crop-icon">🍇</span>
+      <div class="crop-name">Dry-Farmed Grapes</div>
+      <div class="crop-latin">Vitis vinifera</div>
       <p class="crop-desc">
-        Peach, apricot, plum, cherry — for the farmers' market, not the cannery. Small scale, high value, climate-suited.
+        Head-pruned, deep-rooted, never irrigated. Old-vine Zinfandel, Carignan, Petite Sirah, Mataro. The heritage wine category sells into the one part of the wine market still holding up.
       </p>
-      <div class="crop-water">Moderate, summer-supplemental</div>
+      <div class="crop-water">Zero applied water</div>
     </div>
-  </div>
 
-  <!-- SECTION 2: ANNUALS -->
-  <div class="section-header">
-    <span class="section-number">II.</span>
-    <h2 class="section-title">Dry-farmed annuals</h2>
-    <div class="section-rule"></div>
-  </div>
-
-  <div class="crops-grid">
     <div class="crop">
       <span class="crop-icon">🌾</span>
       <div class="crop-name">Heritage Grain</div>
@@ -565,16 +532,7 @@
       </p>
       <div class="crop-water">Minimal</div>
     </div>
-  </div>
 
-  <!-- SECTION 3: PROTEIN -->
-  <div class="section-header">
-    <span class="section-number">III.</span>
-    <h2 class="section-title">Protein from the dryland</h2>
-    <div class="section-rule"></div>
-  </div>
-
-  <div class="crops-grid">
     <div class="crop">
       <span class="crop-icon">🐄</span>
       <div class="crop-name">Grass-fed Beef</div>
@@ -596,16 +554,6 @@
     </div>
 
     <div class="crop">
-      <span class="crop-icon">🐝</span>
-      <div class="crop-name">Honey</div>
-      <div class="crop-latin">Apis mellifera</div>
-      <p class="crop-desc">
-        Mendocino has a strong apiary tradition. The diverse flora of valley and surrounding hills produces distinctive single-source honey with a willing market.
-      </p>
-      <div class="crop-water">None</div>
-    </div>
-
-    <div class="crop">
       <span class="crop-icon">🐟</span>
       <div class="crop-name">Returning Salmonids</div>
       <div class="crop-latin">Oncorhynchus spp.</div>
@@ -613,6 +561,16 @@
         Not a commercial crop for the valley, but once the Eel runs free, the ecological return of chinook and steelhead reshapes everything about what this watershed produces — and what eating from it means.
       </p>
       <div class="crop-water">A river that runs</div>
+    </div>
+
+    <div class="crop">
+      <span class="crop-icon">🐝</span>
+      <div class="crop-name">Honey</div>
+      <div class="crop-latin">Apis mellifera</div>
+      <p class="crop-desc">
+        Mendocino has a strong apiary tradition. The diverse flora of valley and surrounding hills produces distinctive single-source honey with a willing market.
+      </p>
+      <div class="crop-water">None</div>
     </div>
   </div>
 
@@ -665,7 +623,6 @@
 
   <!-- PRINCIPLES -->
   <div class="section-header">
-    <span class="section-number">IV.</span>
     <h2 class="section-title">Five principles for eating with the valley</h2>
     <div class="section-rule"></div>
   </div>
