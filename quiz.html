@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where did it originate? AVR or Esmeralda</title>
+<meta name="description" content="Eleven components of the Esmeralda Specific Plan for the former mill site in Cloverdale, California. Which did Esmeralda introduce, which came from the 2009 Alexander Valley Resort plan, and which are older than both?">
+
+<!--
+  TO EDIT THE QUIZ: change the QUESTIONS list just below.
+  Each entry has a prompt, an answer (avr, esm, city, or neither),
+  and an explanation. Everything else on the page is built from it.
+-->
+<script>
+const ANSWERS = {
+  avr:     "AVR (2009)",
+  esm:     "Esmeralda (2026)",
+  city:    "City plans, before AVR",
+  neither: "Neither plan"
+};
+
+const QUESTIONS = [
+  {
+    prompt: "A water storage tank on the site’s highest knoll, built by the developer for the City’s Zone 1 water system.",
+    answer: "city",
+    explanation: "The City’s 1998 Master Plan Update for Water System Improvements sited a 1.0 million-gallon Zone 1 reservoir on this knoll (2004 Draft EIR, Section 4.13). AVR’s 2003 Initial Study says the proponents proposed to build it; the AVR Specific Plan lists it as “the City’s planned Zone 1 reservoir,” to be built by the developer or paid for as a fair share, with costs possibly reimbursable under the Development Agreement; a 2008 FAA airspace filing for the project covered it (Resolution 085-2018). Esmeralda’s plan restates it as a Development Agreement obligation: fund, build and dedicate a 1 million-gallon tank (two 500,000-gallon tanks) before the first building is occupied (Section 4.2.2). The Development Agreements themselves were not reviewed for this quiz."
+  },
+  {
+    prompt: "Connecting to City water at two points—a 16-inch main at Asti Road and Santana Drive and a 12-inch main at the southeast end of Santana Drive—looped through the site.",
+    answer: "avr",
+    explanation: "The AVR Specific Plan’s Domestic Water System Plan; the 2004 Draft EIR (Section 4.13) attributes the two-point scheme to that plan. Esmeralda’s plan repeats it nearly word for word (Section 4.2.2, Policy INF-2). The 16-inch Asti Road main was already “planned” in AVR’s day—Esmeralda ties it to the City’s Master Plan Update—and is still unbuilt in 2026."
+  },
+  {
+    prompt: "An 18-hole public golf course built partly on reprocessed sawmill wood waste.",
+    answer: "avr",
+    explanation: "AVR’s 2003 application (2004 Draft EIR; 2008 Recirculated Draft EIR, Section 3.3): 18 holes on roughly 219 acres, open to the public, half the holes between the railroad tracks and the river. The two sawmill wood-waste piles were to be excavated, reprocessed and used as fill for the river-side holes. Esmeralda dropped the course; that land is open space in its plan."
+  },
+  {
+    prompt: "A resort hotel with a spa and conference facilities.",
+    answer: "avr",
+    explanation: "AVR: a 100- to 150-room resort hotel with restaurant, spa and conference center, up to 62 feet tall (2004 Draft EIR; 2008 Recirculated Draft EIR, Section 3.3). Esmeralda keeps the hotel and raises the cap to 200 rooms (Table 2-3); its first phase must include at least 50 rooms (Section 5.3.3)."
+  },
+  {
+    prompt: "Privately owned units next to the hotel, managed and rented out by the hotel operator.",
+    answer: "avr",
+    explanation: "AVR 2004: 60 to 70 attached “casitas,” privately owned, possibly through fractional ownership, rented through the hotel when the owners are away; cut to 40 in 2008. Esmeralda: up to 60 “attached hotel-residential” units, rental or for sale, designed, branded and managed by the hotel operator (Chapter 2, footnote 1; Table 2-3). Renamed, not new."
+  },
+  {
+    prompt: "A mixed-use retail center at the entrance with “Village” in its name.",
+    answer: "avr",
+    explanation: "AVR 2004: the “Village Marketplace”—15.6 acres and about 152,200 square feet of retail, restaurants and offices at the northwest corner—cut in 2008 to a 2.4-acre, 15,000-square-foot entry commercial component (Recirculated Draft EIR, Table 3.1). Esmeralda’s retail sits in its “Village Mixed Use” district: 21,700 square feet of retail and 17,500 of office and co-working space (Table 2-3). “Village” was AVR’s word first."
+  },
+  {
+    prompt: "Recycled-water (“purple pipe”) infrastructure for irrigation.",
+    answer: "avr",
+    explanation: "AVR: the developer builds the recycled-water system at its own cost, the City supplies all of its disinfected secondary effluent, and the golf course is irrigated with that plus the site’s existing well—no City drinking water for the course (Policies RWP1.1–1.2 and DWP1.4). Esmeralda: the Development Agreement requires the pipes “in the event that recycled water becomes available citywide” (Section 4.2.2). The pipes stayed; the supply commitment went out with the golf course."
+  },
+  {
+    prompt: "200 senior-living units, a preschool or daycare, an optional K–6 school and a 500-seat outdoor amphitheater.",
+    answer: "esm",
+    explanation: "Esmeralda, Table 2-3. None of these were in AVR. The City’s October 2018 Initial Study for the AVR addendum found that no schools exist or are planned near the site (p. 37, item c). Esmeralda’s own Restricted Use Overlay (Table 2-1) notes that the recorded land-use covenant bars residences, schools and day care in the restricted area unless further remediation takes place."
+  },
+  {
+    prompt: "Staff-level review of each building phase, approval due within 30 days of a complete application, no further CEQA review expected for consistent projects.",
+    answer: "esm",
+    explanation: "Esmeralda, Section 5.3: a “Phased Development Review Application” reviewed by City staff; the City must approve a compliant application within 30 days of finding it complete; Section 1.1 calls the process expedited and ministerial, and consistent projects “are not expected to require further CEQA review.” AVR required a Precise Development Plan for each of its six land-use designations, each checked for applicable EIR mitigation measures and for whether further CEQA review was needed (AVR Specific Plan, Development Approval Process)."
+  },
+  {
+    prompt: "Campsites, a ropes course and light-industrial “maker spaces.”",
+    answer: "esm",
+    explanation: "Esmeralda, Table 2-1: the Open Space Recreation district allows campsites, ropes courses, adventure play, permaculture gardens, farming, solar farms and battery storage; the Village Mixed Use district allows light-industrial maker spaces, co-working and art studios. AVR’s non-residential program was hotel and spa, golf and entry commercial; its open space was fairways, vineyards, oak woodland and the levee trail."
+  },
+  {
+    prompt: "A SMART train station on the property.",
+    answer: "neither",
+    explanation: "Neither plan. Esmeralda’s plan puts SMART’s future Cloverdale terminus downtown, “likely East 1st Street,” by 2035 (Section 4.8.2); the plan builds over a mile of the SMART bike-and-pedestrian pathway, not a station (Table 5-1). AVR predates SMART’s ownership of the corridor; its 2004 site plan shows an emergency-vehicle crossing of the Northwestern Pacific tracks and a “caboose rest stop.”"
+  }
+];
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: #eee;
+    color: #1f2937;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  button { font: inherit; cursor: pointer; }
+  a { color: #1d4ed8; }
+  :focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+
+  .page { max-width: 42rem; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+  h1 { font-size: 1.75rem; line-height: 1.2; margin: 0.5rem 0 0.5rem; color: #111827; }
+  .subtitle { margin: 0 0 1rem; color: #4b5563; }
+  .note { margin: 0 0 1.25rem; font-size: 0.95rem; color: #4b5563; }
+
+  .quiz {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .progress { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9rem; color: #6b7280; margin-bottom: 0.4rem; }
+  .progress-bar { height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-bottom: 1.25rem; }
+  .progress-bar > span { display: block; height: 100%; width: 0; background: #1d4ed8; transition: width .3s ease; }
+
+  .prompt { font-size: 1.25rem; font-weight: 600; line-height: 1.35; margin: 0 0 1rem; color: #111827; }
+
+  .options { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+  .option {
+    width: 100%; text-align: left;
+    display: flex; align-items: baseline; gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #d1d5db; border-radius: 8px;
+    background: #fff; color: #1f2937;
+  }
+  .option:hover:not(:disabled) { border-color: #1d4ed8; background: #f8fafc; }
+  .option:disabled { cursor: default; }
+  .option .key { flex: 0 0 auto; min-width: 1.2em; font-weight: 600; color: #6b7280; }
+  .option.is-correct { border-color: #1d4ed8; background: #eff6ff; color: #111827; }
+  .option.is-correct .key { color: #1d4ed8; }
+  .option.is-wrong { border-style: dashed; color: #6b7280; text-decoration: line-through; }
+  .option.is-muted { opacity: 0.55; }
+
+  .result { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid #e5e7eb; }
+  .result[hidden] { display: none; }
+  .verdict { margin: 0 0 0.5rem; font-weight: 700; color: #1d4ed8; }
+  .verdict.is-wrong { color: #6b7280; }
+  .verdict .answer { color: #111827; }
+  .explanation { margin: 0; color: #374151; }
+  .actions { margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 0.65rem 1.2rem;
+    border: 0; border-radius: 8px;
+    background: #1d4ed8; color: #fff; font-weight: 600;
+  }
+  .btn:hover { background: #1e40af; }
+  .btn.is-quiet { background: #fff; color: #1d4ed8; border: 1.5px solid #d1d5db; }
+  .btn.is-quiet:hover { border-color: #1d4ed8; }
+
+  .score { font-size: 1.5rem; font-weight: 700; margin: 0 0 0.5rem; color: #111827; }
+  .score em { font-style: normal; color: #1d4ed8; }
+  .tally { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0 0 1.25rem; font-size: 0.9rem; color: #6b7280; }
+  .key-list { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
+  .key-list li { padding: 0.6rem 0 0.6rem 0.9rem; border-left: 3px solid #d1d5db; }
+  .key-list li.is-hit { border-left-color: #1d4ed8; }
+  .key-list .k-num { display: block; font-size: 0.8rem; color: #6b7280; }
+  .key-list .k-prompt { color: #374151; }
+  .key-list .k-answer { display: block; margin-top: 0.2rem; font-weight: 600; color: #1d4ed8; }
+  .key-list .k-answer .you { font-weight: 400; color: #6b7280; }
+  .key-list details { margin-top: 0.3rem; }
+  .key-list summary { cursor: pointer; font-size: 0.85rem; color: #6b7280; }
+  .key-list details p { margin-top: 0.4rem; }
+
+  .sources { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #d1d5db; font-size: 0.85rem; color: #4b5563; }
+  .sources h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.5rem; color: #374151; }
+  .sources ul { margin: 0; padding-left: 1.2rem; }
+  .sources li { margin-bottom: 0.3rem; }
+  .sources p { margin: 0.75rem 0 0; }
+
+  @media print { body { background: #fff; } .quiz { box-shadow: none; } .btn { display: none; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <h1>Where did it originate? AVR or Esmeralda</h1>
+  <p class="subtitle">Eleven components of the Esmeralda Specific Plan for the former mill site on Asti Road. Which did Esmeralda introduce, which came from the Alexander Valley Resort plan the City approved in 2009, and which are older than both?</p>
+  <p class="note">Pick an answer and the record behind it appears. Nothing you click is saved or sent anywhere. The documents are listed at the bottom of the page.</p>
+
+  <section class="quiz" id="quiz" aria-label="Quiz">
+    <div class="progress" id="progress"></div>
+    <div class="progress-bar" aria-hidden="true"><span id="bar"></span></div>
+
+    <div id="question">
+      <h2 class="prompt" id="quiz-heading" tabindex="-1"></h2>
+      <ul class="options" id="options"></ul>
+      <div class="result" id="result" hidden tabindex="-1" aria-live="polite">
+        <p class="verdict" id="verdict"></p>
+        <p class="explanation" id="explanation"></p>
+        <div class="actions"><button class="btn" id="next" type="button">Next question</button></div>
+      </div>
+    </div>
+
+    <div id="end" hidden tabindex="-1">
+      <p class="score" id="score"></p>
+      <p class="tally" id="tally"></p>
+      <p class="explanation">The answer key, with the record behind each one:</p>
+      <ol class="key-list" id="key"></ol>
+      <div class="actions"><button class="btn is-quiet" id="restart" type="button">Start over</button></div>
+    </div>
+  </section>
+
+  <footer class="sources">
+    <h2>Documents</h2>
+    <ul>
+        <li><em>Alexander Valley Resort Specific Plan</em> (Tyris Corp.), approved by the City of Cloverdale in 2009, with modifications approved in 2016 and 2018.</li>
+        <li><em>Alexander Valley Resort Environmental Impact Report</em>, State Clearinghouse No. 2003072142: Initial Study (July 2003), Draft EIR (July 2004), Recirculated Draft EIR (December 2008), Final EIR (April 2009).</li>
+        <li>City of Cloverdale <em>Resolution No. 085-2018</em> (November 13, 2018), adopting the October 2018 CEQA Addendum and Initial Study.</li>
+        <li><em>Draft Esmeralda Specific Plan, revised</em> (Esmeralda Land Company, February 2026).</li>
+        <li>City of Cloverdale <em>Master Plan Update for Water System Improvements</em> (1998), as summarized in the 2004 Draft EIR, Section 4.13.</li>
+        <li><em>Covenant and Environmental Restriction on Property</em>, Sonoma County Recorder document 2013088084 (recorded August 28, 2013).</li>
+    </ul>
+    <p>Section and table numbers refer to these documents. Where a document was not reviewed, the answer says so.</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  const KEYS = ["avr", "esm", "city", "neither"];
+  const LETTERS = ["A", "B", "C", "D"];
+  const total = QUESTIONS.length;
+
+  const el = {
+    progress: document.getElementById("progress"),
+    bar: document.getElementById("bar"),
+    question: document.getElementById("question"),
+    heading: document.getElementById("quiz-heading"),
+    options: document.getElementById("options"),
+    result: document.getElementById("result"),
+    verdict: document.getElementById("verdict"),
+    explanation: document.getElementById("explanation"),
+    next: document.getElementById("next"),
+    end: document.getElementById("end"),
+    score: document.getElementById("score"),
+    tally: document.getElementById("tally"),
+    key: document.getElementById("key"),
+    restart: document.getElementById("restart")
+  };
+
+  let index = 0;
+  let picks = [];
+
+  function render() {
+    const q = QUESTIONS[index];
+    el.progress.innerHTML = "<span>Question " + (index + 1) + " of " + total + "</span><span>" +
+      picks.filter((p, i) => p === QUESTIONS[i].answer).length + " right so far</span>";
+    el.bar.style.width = (index / total * 100) + "%";
+    el.heading.textContent = q.prompt;
+    el.options.innerHTML = "";
+    KEYS.forEach(function (k, i) {
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "option";
+      b.dataset.key = k;
+      b.innerHTML = "<span class='key'>" + LETTERS[i] + "</span><span>" + ANSWERS[k] + "</span>";
+      b.addEventListener("click", function () { answer(k); });
+      li.appendChild(b);
+      el.options.appendChild(li);
+    });
+    el.result.hidden = true;
+    el.next.textContent = (index === total - 1) ? "See the answer key" : "Next question";
+    if (index > 0) el.heading.focus();
+  }
+
+  function answer(k) {
+    const q = QUESTIONS[index];
+    picks[index] = k;
+    const hit = (k === q.answer);
+    el.options.querySelectorAll(".option").forEach(function (b) {
+      b.disabled = true;
+      if (b.dataset.key === q.answer) b.classList.add("is-correct");
+      else if (b.dataset.key === k) b.classList.add("is-wrong");
+      else b.classList.add("is-muted");
+    });
+    el.verdict.className = "verdict" + (hit ? "" : " is-wrong");
+    el.verdict.innerHTML = hit
+      ? "Correct: <span class='answer'>" + ANSWERS[q.answer] + "</span>"
+      : "Not that one. The answer is <span class='answer'>" + ANSWERS[q.answer] + "</span>";
+    el.explanation.textContent = q.explanation;
+    el.result.hidden = false;
+    el.result.focus();
+  }
+
+  function finish() {
+    const right = picks.filter((p, i) => p === QUESTIONS[i].answer).length;
+    const counts = {};
+    QUESTIONS.forEach(function (q) { counts[q.answer] = (counts[q.answer] || 0) + 1; });
+    el.question.hidden = true;
+    el.progress.innerHTML = "<span>Finished</span><span>" + right + " of " + total + " right</span>";
+    el.bar.style.width = "100%";
+    el.score.innerHTML = "You placed <em>" + right + " of " + total + "</em>.";
+    el.tally.innerHTML = KEYS.map(function (k) { return "<span>" + ANSWERS[k] + ": " + (counts[k] || 0) + "</span>"; }).join("");
+    el.key.innerHTML = "";
+    QUESTIONS.forEach(function (q, i) {
+      const li = document.createElement("li");
+      const hit = picks[i] === q.answer;
+      li.className = hit ? "is-hit" : "";
+      li.innerHTML =
+        "<span class='k-num'>" + (i + 1) + "</span><span class='k-prompt'>" + q.prompt + "</span>" +
+        "<span class='k-answer'>" + ANSWERS[q.answer] +
+        (hit ? "" : " <span class='you'>(you said " + ANSWERS[picks[i]] + ")</span>") + "</span>" +
+        "<details><summary>The record</summary><p class='explanation'>" + q.explanation + "</p></details>";
+      el.key.appendChild(li);
+    });
+    el.end.hidden = false;
+    el.end.focus();
+  }
+
+  el.next.addEventListener("click", function () {
+    if (index < total - 1) { index += 1; render(); }
+    else { finish(); }
+  });
+
+  el.restart.addEventListener("click", function () {
+    index = 0; picks = [];
+    el.end.hidden = true;
+    el.question.hidden = false;
+    render();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (el.question.hidden || e.metaKey || e.ctrlKey || e.altKey) return;
+    const n = LETTERS.indexOf(e.key.toUpperCase());
+    if (n >= 0 && el.result.hidden) { answer(KEYS[n]); }
+    else if ((e.key === "Enter" || e.key === " ") && !el.result.hidden && document.activeElement === el.result) { e.preventDefault(); el.next.click(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
