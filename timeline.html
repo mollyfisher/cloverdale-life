@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alexander Valley Resort area, 1950s to 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,600,100&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fcfcff; --paper-deep:#eef0fa; --ink:#0a0a14; --ink-soft:#1a1d2e; --ink-faded:#4a4f63;
+    --cobalt:#1340e0; --cobalt-deep:#001a80; --slate:#2a4378; --rule:#c8cde0; --ochre:#b9770f;
+    --lane-own:#001a80; --lane-reg:#0e7d6b; --lane-city:#8a2846; --lane-rail:#5c5546;
+    --fs-xs:.75rem; --fs-sm:.875rem; --fs-base:1.0625rem; --fs-lg:1.6rem; --fs-xl:2.4rem;
+    --radius-organic:14px 20px 16px 12px / 18px 14px 20px 15px;
+    --card-w:212px; --row-h:132px; --lane-pad:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:var(--fs-base);line-height:1.45}
+  header{padding:28px 32px 14px;max-width:62rem}
+  h1{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 100;font-weight:400;font-size:var(--fs-xl);line-height:1.1;margin:0 0 10px;letter-spacing:-.01em}
+  header p{margin:0;color:var(--ink-faded);font-size:var(--fs-sm);max-width:52rem}
+  header p+p{margin-top:6px}
+  .key{display:flex;flex-wrap:wrap;gap:14px 22px;padding:10px 32px 14px;font-size:var(--fs-xs);color:var(--ink-faded);align-items:center}
+  .key span{display:inline-flex;align-items:center;gap:7px}
+  .sw{width:14px;height:14px;border-radius:4px;border:1px solid var(--rule);background:#fff}
+  .sw.own{border-left:4px solid var(--lane-own)}
+  .sw.reg{border-left:4px solid var(--lane-reg)}
+  .sw.city{border-left:4px solid var(--lane-city)}
+  .sw.rail{border-left:4px solid var(--lane-rail)}
+  .sw.unv{border-left:4px solid var(--ochre);background:#fbf6ec}
+  nav.jump{display:flex;flex-wrap:wrap;gap:6px;padding:0 32px 16px}
+  nav.jump button{font:inherit;font-size:var(--fs-xs);padding:4px 11px;border:1px solid var(--rule);background:#fff;border-radius:999px;color:var(--ink-soft);cursor:pointer}
+  nav.jump button:hover{border-color:var(--cobalt);color:var(--cobalt)}
+  :focus-visible{outline:2px solid var(--cobalt);outline-offset:3px;border-radius:2px}
+
+  .frame{position:relative;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .scroller{overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+  @media (prefers-reduced-motion:reduce){.scroller{scroll-behavior:auto}}
+  .canvas{position:relative;min-width:max-content}
+
+  /* ruler */
+  .ruler{position:sticky;top:0;z-index:5;height:54px;background:var(--paper);border-bottom:1px solid var(--rule)}
+  .ruler .band{position:absolute;top:0;bottom:0;background:var(--paper-deep);opacity:.55}
+  .ruler .tick{position:absolute;bottom:0;width:1px;height:10px;background:var(--rule)}
+  .ruler .tick.major{height:18px;background:var(--ink-faded)}
+  .ruler .yr{position:absolute;bottom:20px;transform:translateX(-50%);font-family:"Fraunces",Georgia,serif;font-size:15px;color:var(--ink-soft);white-space:nowrap}
+  .ruler .scale-note{position:absolute;top:6px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-faded);white-space:nowrap}
+
+  /* lanes */
+  .lane{position:relative;border-bottom:1px solid var(--rule)}
+  .lane:last-child{border-bottom:0}
+  .lane .label{position:sticky;left:0;z-index:4;width:150px;padding:12px 12px 0;font-family:"Fraunces",Georgia,serif;font-size:15px;line-height:1.2;color:var(--ink-soft);background:linear-gradient(90deg,var(--paper) 78%,rgba(252,252,255,0));pointer-events:none}
+  .lane .label small{display:block;font-family:"DM Sans",sans-serif;font-size:11px;color:var(--ink-faded);margin-top:3px}
+  .lane .baseline{position:absolute;left:0;right:0;bottom:12px;height:1px;background:var(--rule)}
+  .lane .stem{position:absolute;bottom:12px;width:1px;background:var(--ink-faded);opacity:.6}
+  .lane .dot{position:absolute;bottom:9px;width:7px;height:7px;border-radius:50%;transform:translateX(-3px);background:var(--lane-reg)}
+  .lane.own .dot{background:var(--lane-own)} .lane.city .dot{background:var(--lane-city)} .lane.rail .dot{background:var(--lane-rail)}
+  .lane .dot.unv{background:var(--ochre)}
+
+  .ev{position:absolute;width:var(--card-w);background:#fff;border:1px solid var(--rule);border-radius:var(--radius-organic);padding:8px 11px 9px;box-shadow:0 1px 2px rgba(10,10,20,.05);font-size:var(--fs-xs);line-height:1.35}
+  .lane.own .ev{border-left:3px solid var(--lane-own)}
+  .lane.reg .ev{border-left:3px solid var(--lane-reg)}
+  .lane.city .ev{border-left:3px solid var(--lane-city)}
+  .lane.rail .ev{border-left:3px solid var(--lane-rail)}
+  .ev.unv{border-left:3px solid var(--ochre)!important;background:#fbf6ec}
+  .ev .d{font-family:"Fraunces",Georgia,serif;font-size:14px;color:var(--cobalt-deep);letter-spacing:.01em}
+  .lane.own .ev .d{color:var(--lane-own)}
+  .lane.reg .ev .d{color:var(--lane-reg)}
+  .lane.city .ev .d{color:var(--lane-city)}
+  .lane.rail .ev .d{color:var(--lane-rail)}
+  .ev.unv .d{color:var(--ochre)!important}
+  .ev .t{font-weight:600;font-size:12.5px;color:var(--ink);margin-top:2px}
+  .ev .x{color:var(--ink-soft);margin-top:3px}
+  .ev .s{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-faded);margin-top:5px;word-break:break-word}
+  .ev .s::before{content:"src ";opacity:.7}
+  .ev .s a{color:var(--cobalt);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--cobalt) 35%,transparent)}
+  .ev .s a:hover{border-bottom-color:var(--cobalt)}
+  .ev.unv .s::after{content:" · unverified";color:var(--ochre)}
+
+  footer{padding:18px 32px 40px;font-size:var(--fs-sm);color:var(--ink-faded);max-width:62rem}
+  footer p{margin:0 0 8px}
+</style>
+</head>
+<body>
+<header>
+  <h1>AVR, south of Cloverdale, 1950s to now</h1>
+  <p>Every dated thing the record supports about the former Masonite / Louisiana-Pacific property and the City's plans for it, on one axis. Scroll sideways. The scale changes twice: the forty years before 1990 are compressed, 1990–2003 is medium, 2003 onward is expanded.</p>
+</header>
+<div class="key">
+  <span><i class="sw own"></i>Site &amp; ownership</span>
+  <span><i class="sw reg"></i>Cleanup &amp; regulators</span>
+  <span><i class="sw city"></i>City planning &amp; CEQA</span>
+  <span><i class="sw rail"></i>Rail &amp; neighbors</span>
+</div>
+<nav class="jump" aria-label="Jump to year"></nav>
+
+<div class="frame">
+  <div class="scroller" id="scroller">
+    <div class="canvas" id="canvas">
+      <div class="ruler" id="ruler"></div>
+      <div id="lanes"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Abbreviations</strong>: DHS = California Department of Health Services (predecessor of DTSC on this case);<br /> NCRWQCB = North Coast Regional Water Quality Control Board;<br /> MRP = monitoring and reporting program;<br /> SCR = AECOM Site Closure Report, March 2025;<br /> SP = Specific Plan;<br /> DEIR/RDEIR/FEIR = draft, recirculated draft, and final EIR under SCH 2003072142; <br />PD = Press Democrat.</p>
+</footer>
+
+<script>
+// ---- piecewise time scale (px per year) ----
+const BANDS = [
+  {from:1950, to:1990, ppy:14},
+  {from:1990, to:2003, ppy:46},
+  {from:2003, to:2027, ppy:172},
+];
+const START = 1950, END = 2027;
+const PAD_LEFT = 170; // room for sticky lane labels
+function x(dec){ // decimal year -> px
+  let px = PAD_LEFT;
+  for (const b of BANDS){
+    if (dec <= b.from) break;
+    const upto = Math.min(dec, b.to);
+    px += (upto - b.from) * b.ppy;
+  }
+  return px;
+}
+function dec(y, m=1, d=1){ return y + ((m-1)/12) + ((d-1)/365); }
+const TOTAL_W = x(END) + 260;
+
+// ---- events ----
+// lane: own | reg | city | rail ; unv: true = ochre
+const GT='https://geotracker.waterboards.ca.gov/regulators/deliverable_documents/';
+const ESI='https://geotracker.waterboards.ca.gov/esi/uploads/geo_report/';
+const CITY='https://www.cloverdale.net/DocumentCenter/View/';
+const PROF='https://geotracker.waterboards.ca.gov/profile_report?global_id=T0609793185';
+const PROF2='https://geotracker.waterboards.ca.gov/profile_report?global_id=T0609793259';
+const gt=(id,name)=>GT+id+'/'+encodeURIComponent(name);
+const esi=id=>ESI+id+'/T0609793185.PDF';
+const city=id=>CITY+id;
+// shared documents
+const SCR={t:'AECOM Site Closure Report Mar 2025',u:esi('5632535994')};
+const SP08={t:'AVR Specific Plan Dec 2008 (text in project files; City posts the RDEIR)',u:city(6767)};
+const DEIR04={t:'2004 Draft EIR',u:city(6772)};
+const RDEIR={t:'2008 Recirculated DEIR',u:city(6767)};
+const FEIR={t:'2009 Final EIR',u:city(6769)};
+const MMRP10={t:'Revised MMRP Jan 2010',u:city(6770)};
+const PR2015={t:'City press release 23 Sep 2015',u:'https://cloverdale.net/DocumentCenter/View/1740'};
+const PD16={t:'PD 13 Feb 2016',u:'https://www.pressdemocrat.com/2016/02/13/cloverdale-city-council-grants-revisions-to-alexander-valley-resort/'};
+const PD17={t:'PD 18 Jan 2017',u:'https://www.pressdemocrat.com/2017/01/18/for-sale-again-in-cloverdale-267-acres-of-resort-property/'};
+const NBBJ17={t:'NBBJ 12 Dec 2017',u:'https://www.pressdemocrat.com/2017/12/12/urban-center-developer-buys-32-acres-in-rohnert-parks-nascent-downtown/'};
+const PD24={t:'PD 26 Jul 2024',u:'https://www.pressdemocrat.com/2024/07/26/company-affiliated-with-edge-esmeralda-pop-up-village-enters-into-purchase-agreement-for-huge-site-in-cloverdale-2/'};
+const PD26a={t:'PD 4 Feb 2026',u:'https://www.pressdemocrat.com/2026/02/04/town-hall-scheduled-over-esmeralda-housing-resort-development-proposed-for-cloverdale/'};
+const PD26b={t:'PD 9 Feb 2026',u:'https://www.pressdemocrat.com/2026/02/09/cloverdale-esmeralda-development-housing-resort/'};
+const CPDR={t:'CP&DR 10 Aug 2026',u:'https://www.cp-dr.com/post/sonoma-development-hopes-to-break-california-s-new-urbanist-drought'};
+const CITYPAGE={t:'City Esmeralda page',u:'https://www.cloverdale.net/644/Esmeralda-Project-Information'};
+
+const EV = [
+  // Site & ownership
+  {lane:'own', y:dec(1955), d:'1950s', t:'Sawmill complex established', x:'On the lower flat beside the Russian River.', s:[SP08]},
+  {lane:'own', y:dec(1962), d:'early 1960s', t:'Wood-treatment plant built', x:'Mollala Forest Products: oil-based PCP and chromated copper arsenate; unlined recycling pond; two retorts.', s:[{t:'SCR §2.2.1',u:SCR.u},{t:'GeoTracker site history',u:PROF}]},
+  {lane:'own', y:dec(1969,10), d:'1969–70', t:'Masonite buys Mollala', x:'Continues wood treating.', s:[{t:'SCR §2.2.1',u:SCR.u}]},
+  {lane:'own', y:dec(1975), d:'1975', t:'Wood treating ends', x:'Plant dismantled 1976. Wood-waste landfill on the knolls continues to ~1993 (≈22 ac, ≈600,000 cy).', s:[{t:'SCR §2.2.1',u:SCR.u},{t:'AVR SP §I',u:SP08.u}]},
+  {lane:'own', y:dec(1984), d:'1984', t:'Louisiana-Pacific buys the mill', x:'Modernizes and expands the sawmill.', s:[{t:'AVR SP §I',u:SP08.u}]},
+  {lane:'own', y:dec(1991), d:'1991', t:'LP mill closes; demolished', x:'Partial slabs remain. Wood-waste disposal ends.', s:[{t:'AVR SP §I',u:SP08.u},{t:'2004 DEIR §4.2',u:DEIR04.u}]},
+  {lane:'own', y:dec(1992,6), d:'1992', t:'Part of the truck-shop parcel sold to Reuser Inc.', x:'Reuser’s business park grows on the north edge of the site.', s:[{t:'2004 DEIR §4.2',u:DEIR04.u}]},
+  {lane:'own', y:dec(2000,6), d:'≈2000', t:'Tyris / Spight acquire the property', x:'“Has owned the property for more than 16 years” as of January 2017. Owner: Spight Properties II LLC (Richard D. Spight Trust + Tyris Corp.); Tyris, later Diablo Commercial Properties, as agent.', s:[PD17,{t:'2004 DEIR ch.3',u:DEIR04.u}]},
+  {lane:'own', y:dec(2002,6), d:'2002', t:'15-acre vineyard sold to Spight', x:'Vines pulled; parcel added for the golf course.', s:[{t:'AVR SP §I',u:SP08.u}]},
+  {lane:'own', y:dec(2015,7,13), d:'Jul 2015', t:'Laulima Development presents an equestrian resort', x:'Prospective buyer under contract with Tyris. Jes Slavik of Laulima is the designer: hotel, residences, equestrian center on 254 ac. Concept requires closing the municipal airport. No application filed with the City.', s:[PD16,PR2015]},
+  {lane:'own', y:dec(2015,12,5), d:'Dec 2015', t:'Laulima misses airport-study deposit', x:'Deposit to cover City staff time on the airport-closure analysis, due early December, not paid.', s:[PD16]},
+  {lane:'own', y:dec(2016,5,15), d:'May–Jul 2016', t:'Phase II ESA for AVR', x:'Part conducted on the Masonite/IP parcel. Laulima (Shaw, Slavik) cc’d on the Tyris hotel / time-share covenant inquiry to NCRWQCB.', s:[{t:'AVR Phase II ESA (final 22 Jul 2016)',u:gt('4824816644','AVR Phase II 20160722-Final.pdf')},{t:'SCR §2.2.2',u:SCR.u}]},
+  {lane:'own', y:dec(2017,1,3), d:'3 Jan 2017', t:'Laulima misses closing; project falls through', x:'Property relisted. Zamberlin: “We aren’t going to build this… Our job is to create a canvas.” More than $24M spent on acquisition, cleanup and consultants. Laulima buys the Rohnert Park State Farm site 1 Dec 2017.', s:[PD17,NBBJ17]},
+  {lane:'own', y:dec(2024,7,26), d:'26 Jul 2024', t:'Esmeralda Land Company purchase agreement', x:'Devon Zuegel; investors undisclosed. City Manager Kelley: ELC had been working with the City “for over a year.” Closing deferred until approvals are secured.', s:[PD24,PD26b]},
+
+  // Cleanup & regulators
+  {lane:'reg', y:dec(1984,6), d:'1984', t:'Site assessment begins', x:'Shallow groundwater sampling; quarterly monitoring from 1988.', s:[{t:'SCR §2.3.1',u:SCR.u}]},
+  {lane:'reg', y:dec(1988,3,15), d:'15 Mar 1988', t:'DHS Remedial Action Order 87/88-038', x:'Amended 23 May 1988. DHS declares the remedial investigation complete 13 Dec 1988. Same year the wood-waste landfill is referred to the RWQCB.', s:[{t:'SCR §2.3.1',u:SCR.u},{t:'DHS RI-complete letter 13 Dec 1988',u:gt('8760572135','881213-CA-DHS_RI_complete_letter.pdf')},{t:'EnviroStor 49490010',u:'https://www.envirostor.dtsc.ca.gov/public/profile_report?global_id=49490010'}]},
+  {lane:'reg', y:dec(1990,1), d:'Jan–Jul 1990', t:'Remedial investigation and feasibility study', x:'KJC summary RI (16 Jan); WERI feasibility study (10 Jul); RWB comments on the FS/RAP (18 Jun).', s:[{t:'KJC Summary RI',u:gt('3038343131','900116-Summary-RI_report-KJC-partial.pdf')},{t:'WERI FS',u:gt('8111142814','900710-FeasibiltyStudy-Western_ERI.pdf')},{t:'RWB FS/RAP comments',u:gt('4869901359','900618_RWB_FS-RAP_comments.pdf')}]},
+  {lane:'reg', y:dec(1990,7,16), d:'16 Jul 1990', t:'State Superfund designation (DHS)', x:'DHS fact sheet #1. Never listed on the federal NPL—different programs, different agencies.', s:[{t:'DHS Superfund fact sheet',u:gt('6764356315','900716_superfund_fact_sheet.pdf')}]},
+  {lane:'reg', y:dec(1990,9,26), d:'26 Sep 1990', t:'DHS approves the Remedial Action Plan', x:'Final RAP comments 14 Sep; approval 26 Sep. Dioxin/furan sampling required (RWB letter 24 Jul; WERI plan 20 Nov).', s:[{t:'DHS RAP approval',u:gt('2157926261','900926-CA-DHS-RAP_approval.pdf')},{t:'DHS final RAP comments',u:gt('8199857413','900914_CA-DHS-final-RAP_comments.pdf')},{t:'RWB dioxin letter',u:gt('4557340323','900724_RWB_dioxin_sampling_clarification_ltr.pdf')},{t:'WERI dioxin plan',u:gt('3768521964','901120_WesternERI_Dioxin_analyses-plan.pdf')}]},
+  {lane:'reg', y:dec(1990,11), d:'Sep–Nov 1990', t:'Source-area soil removal', x:'≈37,802 tons to 20 ft bgs; DHS-approved PCP goal 17 mg/kg. Hot zone expanded during excavation (13 Sep); backfill sampling clarified (22 Oct).', s:[{t:'SCR §2.3.1.1',u:SCR.u},{t:'Verification sampling plan',u:gt('2017850577','900803-WesternERI-RemediationVerification_sampling-plan.pdf')},{t:'Expanded hot zone',u:gt('3254499137','900913-expanded_hot-zone-ChemWasteMngmnt.pdf')},{t:'DHS backfill letter',u:gt('8773893058','901022_CA-DHS-Badkfill-letter_and-background.pdf')}]},
+  {lane:'reg', y:dec(1991,7,1), d:'Feb–Jul 1991', t:'Report of Remedial Action; DHS certifies the cleanup plan', x:'WERI completion report 5 Feb 1991; DHS certification 1 Jul 1991.', s:[{t:'DHS certification',u:gt('3346372306','910701_CA_DHS_Certified_Cleanup_Plan.pdf')},{t:'GeoTracker regulatory file',u:PROF}]},
+  {lane:'reg', y:dec(1996,6), d:'1996', t:'Petroleum release found at the sawmill head rig', x:'Opens the separate sawmill case, 1NSO476. Truck-shop portion closed 29 Jan 1999.', s:[{t:'GeoTracker T0609793259',u:PROF2}]},
+  {lane:'reg', y:dec(1996,8,22), d:'22 Aug 1996', t:'RWQCB Resolution 96-58', x:'Board resolution on the remedial action plan, with a negative declaration accepted 7 Aug 1996.', s:[{t:'Resolution 96-58',u:gt('5435697257','Resolution-96-58.pdf')},{t:'EO summary / Neg Dec',u:gt('2147763907','960807-JG-accept_NegDec.pdf')}]},
+  {lane:'reg', y:dec(2003,3,27), d:'2003', t:'WDRs; in-situ groundwater treatment; sawmill soils removed', x:'WDR Order R1-2003-0043 (27 Mar). Reagents injected 2002–03 to degrade residual PCP and arsenic. 21 Jul 2003: PES excavates petroleum-affected soil at the head rig; completion report 29 Jan 2004. MRP R1-2005-083 follows (12 Aug 2005).', s:[{t:'WDR R1-2003-0043',u:gt('1751569449','030327-WDR-R1-2003-0043.pdf')},{t:'GeoTracker site history',u:PROF},{t:'PES completion report',u:gt('5077626109','January 29, 2004 Completion Report.pdf')},{t:'MRP R1-2005-083',u:gt('4292569816','050812_MRP-2005-083.pdf')}]},
+  {lane:'reg', y:dec(2007,5,29), d:'29 May 2007', t:'Closure denied; MRP R1-2007-0046 issued', x:'Board transmittal titled “deny closure”; semi-annual monitoring of shallow and bedrock groundwater ordered, International Paper as Masonite’s successor. Bedrock FS Sep 2009; MW-37 installed 2010.', s:[{t:'RWB letter 29 May 2007',u:gt('1273252189','070529_RWB_deny-closure-trans_2007MRP.pdf')},{t:'Bedrock FS 2009',u:esi('4651375889')},{t:'MW-37 installation report',u:esi('8655343174')}]},
+  {lane:'reg', y:dec(2012,6), d:'2012', t:'Wood-waste landfill WDRs rescinded', x:'Order R1-2012-0053.', s:[{t:'EnviroStor 49490010',u:'https://www.envirostor.dtsc.ca.gov/public/profile_report?global_id=49490010'}]},
+  {lane:'reg', y:dec(2013,6,3), d:'3 Jun 2013', t:'Final FS/RAP/RAW—MNA selected', x:'Monitored natural attenuation as the groundwater remedy; bedrock attenuation forecast 8–21 years. Public notice and draft covenant / SMP circulated 26 Jun; Board concurrence 20 Aug.', s:[{t:'Final FS',u:esi('1615609347')},{t:'Public notice',u:gt('3782195866','130626_JMG_IPPN.pdf')},{t:'Draft SMP',u:gt('8535018742','App A.pdf')},{t:'MNA concurrence',u:gt('2886319816','130820_JMG_er_MasoniteMNAltr.pdf')}]},
+  {lane:'reg', y:dec(2013,8,28), d:'28 Aug 2013', t:'Covenant #2013088084 recorded', x:'Spight c/o Tyris. Restricted Soil Area and Restricted Groundwater Area; perpetual. Companion Notice #2013088083. MRP R1-2013-0057 issued 20 Aug.', s:[{t:'Recorded covenant',u:gt('7683774650','2013-09-13_Final Covenant & Environmental Restriction.pdf')},{t:'Notice of restrictions',u:gt('3947461783','130828_DN_2013088083_Notice_Groundwater_Restrictions.pdf')},{t:'Exhibit A',u:gt('9231336832','Covenant Exhibit A.pdf')},{t:'MRP R1-2013-0057',u:gt('6294361948','R1-2013-0057.pdf')}]},
+  {lane:'reg', y:dec(2013,11,15), d:'Nov 2013', t:'16 wells destroyed', x:'Bedrock MW-17, -20, -25, -26, -28 to -36; shallow MW-6, -14, OW-13; the LP Well on 25 Nov.', s:[{t:'2013 destruction report',u:esi('8098331511')},{t:'LP Well report',u:esi('1178300380')}]},
+  {lane:'reg', y:dec(2014,11,20), d:'20 Nov 2014', t:'Order R1-2014-0051', x:'Rescinds WDRs and MRP R1-2003-0043.', s:[{t:'Order R1-2014-0051',u:gt('4050404429','Order No. R1-2014-0051.pdf')},{t:'Transmittal',u:gt('4904866099','141218_JMG_er_ResctransMasonite.pdf')}]},
+  {lane:'reg', y:dec(2016,7,5), d:'Jun–Jul 2016', t:'Dickerson: hotel / time-share not permitted', x:'NCRWQCB answers the Tyris/ETIC inquiry (5 Jul). Hotel use would need a site-specific risk assessment. A “legal opinion regarding covenant” follows 16 Dec 2016 on the sawmill case.', s:[{t:'GeoTracker regulatory file',u:PROF},{t:'Sawmill case file',u:PROF2}]},
+  {lane:'reg', y:dec(2018,9,7), d:'Sep 2018', t:'MRP R1-2018-0049', x:'Rescinds and replaces R1-2013-0057. Staff file-review memo and site summary 1 Aug 2018.', s:[{t:'MRP R1-2018-0049',u:gt('9498818516','18-0049_Masonite_MRP.pdf')},{t:'File review memo',u:gt('6540787220','180801_TNM_Masonite-File Memo-Site Summary 2018.pdf')}]},
+  {lane:'reg', y:dec(2019,7,19), d:'19 Jul 2019', t:'MW-13 and MW-23 destroyed', x:'MW-13 sat downgradient of the unexcavated rail-corridor soil.', s:[{t:'Destruction report',u:esi('4006585180')},{t:'Work plan',u:esi('3112601161')}]},
+  {lane:'reg', y:dec(2020,11,12), d:'Nov 2020', t:'MW-37 pump test; MW-27 destroyed', x:'≈2,500 gal extracted 11–12 Nov to assess residual PCP near the former pond; MW-27 destroyed 25 Nov.', s:[{t:'MW-27 work plan',u:gt('6971585929','MW-27 Destruction Work Plan - Former Masonite Cloverdale - 102020.pdf')},{t:'2020 annual report',u:esi('9998924970')}]},
+  {lane:'reg', y:dec(2023,3,9), d:'9 Mar 2023', t:'MRP R1-2023-0028—annual', x:'Monitoring frequency cut to annual.', s:[{t:'MRP R1-2023-0028',u:gt('1415250480','23_0028_Masonite_MRP.pdf')},{t:'Cover letter',u:gt('1415250480','230309_FAB_Masonite_MRP_cvr.pdf')}]},
+  {lane:'reg', y:dec(2024,7,29), d:'29 Jul 2024', t:'MW-37: 130 µg/L PCP', x:'Last reading; 130× the 1 µg/L objective; rising.', s:[{t:'2024 annual monitoring report',u:esi('6143767178')},{t:'2023 report',u:esi('8223331034')}]},
+  {lane:'reg', y:dec(2024,12,5), d:'Nov 2024–Jan 2025', t:'Sawmill case 1NSO476 closed', x:'Preclosure 15 Nov 2024 → Notice 5 Dec → NFA 16 Jan 2025. Res. 92-49, some contamination remains; no covenant.', s:[{t:'Preclosure letter',u:gt('8748899161','241115_KKH_LP Cloverdale Sawmill_Preclosure Letter.pdf')},{t:'Notice',u:gt('6315152823','241202_KKH_LP Cloverdale Sawmill_NFA Notice.pdf')},{t:'NFA',u:gt('6370359122','250116_KKH_LP_Cloverdale_Sawmill_NFA.pdf')}]},
+  {lane:'reg', y:dec(2025,3,14), d:'14 Mar 2025', t:'AECOM Site Closure Report', x:'Requests closure of 1NSO266. Board initial response 28 Apr; concurrence with no 2025 monitoring 19 Jun; staff NFA memo 1 Oct; pre-closure letter 9 Oct.', s:[SCR,{t:'Initial response',u:gt('3661405265','250428_InitialResponse_SiteClosureRpt.pdf')},{t:'Staff NFA memo',u:gt('6411008536','251001_NFA_memo.pdf')},{t:'Pre-closure letter',u:gt('3564450919','251009_FAB_Pre-Closure.pdf')}]},
+  {lane:'reg', y:dec(2025,10,27), d:'27 Oct 2025', t:'Notice of Proposed NFA', x:'“Fully assessed and remediated… little risk.” Comment period to 27 Nov 2025; zero comments received.', s:[{t:'Public notice',u:'https://www.waterboards.ca.gov/northcoast/public_notices/site_cleanup_decisions/pdf/2025/Masonite_PublicNotice.pdf'},{t:'GeoTracker copy',u:gt('2556180655','251027_FAB_Masonite_PublicNotice.pdf')}]},
+  {lane:'reg', y:dec(2025,12,11), d:'11–12 Dec 2025', t:'MW-12 and MW-37 destroyed', x:'Between close of comment and the NFA. Work plan concurred 1 Dec; report 7 Jan 2026.', s:[{t:'Destruction report',u:esi('8288119792')},{t:'Board concurrence',u:gt('5647733390','251201-Well-DestructWP-concur.pdf')},{t:'Work plan',u:esi('7635119915')}]},
+  {lane:'reg', y:dec(2026,1,21), d:'21 Jan 2026', t:'NFA letter (Quinto)', x:'Closed under Res. 92-49 with residual contamination; terminates MRP R1-2023-0028. The covenant is the sole remaining control.', s:[{t:'NFA letter',u:gt('7166867911','260121_FAB_Masonite_NFA_ltr.pdf')}]},
+  {lane:'reg', y:dec(2026,2,13), d:'13 Feb 2026', t:'SWRCB Petition A-2933 filed', x:'Challenges the NFA. Acknowledged 27 Mar; abeyance 14 May 2026 to 14 May 2028. EPA Region 9 a party of record.', s:[{t:'Petition (SWRCB)',u:'https://www.waterboards.ca.gov/public_notices/petitions/water_quality/docs/2026/a2933petition.pdf'},{t:'Acknowledgement',u:gt('2153257071','260327_A-2933-Acknowledge-petition-ltr.pdf')},{t:'Abeyance',u:gt('1147046744','A-2933 Existing Active Petition to Abeyance.pdf')}]},
+  {lane:'reg', y:dec(2026,7,22), d:'22 Jul 2026', t:'Bush letter: hotels permitted', x:'A non-residential hotel (stays ≤30 days) is not a “residence for human habitation” under LUC 3.1.a. Supersedes Dickerson 2016. No amendment recorded; no site-specific risk assessment.', s:[{t:'Bush letter',u:gt('5080426871','260722-Masonite-hotel-clarification-signed.pdf')}]},
+
+  // City planning & CEQA
+  {lane:'city', y:dec(1992,6), d:'1992', t:'General Plan: “Destination Commercial,” Area II', x:'≈388 ac in the SE planning area, one of three such areas. Golf, hotel, convention, RV parks, and “residential uses in conjunction with recreational amenities.”', s:[{t:'2004 DEIR §4.1',u:DEIR04.u},{t:'AVR SP §I',u:SP08.u}]},
+  {lane:'city', y:dec(1994,6), d:'1994', t:'US 101 bypass opens', x:'Highway leaves downtown; the site becomes the freeway-side “gateway.”', s:[{t:'AVR SP §III',u:SP08.u}]},
+  {lane:'city', y:dec(1998,6), d:'1998', t:'Sewer Master Plan Update stubs a force main to the site', x:'From the lower end of Santana Drive to the project’s north boundary—before any applicant.', s:[{t:'AVR SP §Infrastructure',u:SP08.u}]},
+  {lane:'city', y:dec(2001,6), d:'2001', t:'County Airport Land Use Plan', x:'Six safety zones overlap the site.', s:[{t:'AVR SP §I',u:SP08.u}]},
+  {lane:'city', y:dec(2003,1), d:'Jan 2003', t:'Cloverdale Southeast Specific Plan MEA', x:'Master Environmental Assessment—the base document for the Specific Plan and EIR.', s:[{t:'AVR SP §I.E',u:SP08.u}]},
+  {lane:'city', y:dec(2003,7,23), d:'23 Jul 2003', t:'NOP for the AVR EIR (SCH 2003072142)', x:'23 Sep 2003: Williamson Act notice of non-renewal approved.', s:[{t:'2004 DEIR §1',u:DEIR04.u},{t:'CEQAnet 2003072142',u:'https://ceqanet.lci.ca.gov/2003072142'},{t:'FEIR 2009',u:FEIR.u}]},
+  {lane:'city', y:dec(2004,7), d:'Jul 2004', t:'Draft EIR', x:'267 ac. 100–150-room hotel and spa, 60–70 resort units, 140 SFD + 25 estate lots (≈235), 18-hole golf, 152,200 sf commercial. RWQCB comments 20 Aug 2004.', s:[DEIR04,{t:'Appendices',u:city(6771)},{t:'RWQCB comments',u:gt('2284941732','smeagol@waterboards.ca.gov_20160323_112827.pdf')}]},
+  {lane:'city', y:dec(2008,12), d:'Dec 2008', t:'Recirculated DEIR + Draft Specific Plan', x:'254 ac; 170 units; hotel; golf. The 13-ac in-city parcel at Santana/Asti dropped.', s:[RDEIR,{t:'Appendices',u:city(6768)}]},
+  {lane:'city', y:dec(2009,6,10), d:'10 Jun 2009', t:'Final EIR certified; Specific Plan approved', x:'170 units. “Just as the recession took hold.”', s:[FEIR,PR2015,PD17]},
+  {lane:'city', y:dec(2010,2,10), d:'10 Feb 2010', t:'Reso 014-2010: Revised MM 5.6-3', x:'5–0. Human-health risk assessment at 10⁻⁶ with dioxins/furans. Revised MMRP Jan 2010.', s:[MMRP10]},
+  {lane:'city', y:dec(2015,5,15), d:'May 2015', t:'Tyris applies to amend the Specific Plan', x:'Owner’s application, not Laulima’s. Joint Council / Planning Commission workshops Aug 2015 and 22 Oct 2015: recreation use other than golf; adding 12 ac commercial; Development Agreement terms.', s:[PR2015]},
+  {lane:'city', y:dec(2016,2,9), d:'9 Feb 2016', t:'First Addendum—Council 4–1', x:'Golf course becomes optional; 12 adjacent acres added as “destination commercial.” Mayor Brigham dissents over downtown competition. Program: 100–150-room hotel, 40 attached + 105 SFD + 25 estate units.', s:[PD16,{t:'First Addendum (City file, dated 30 Nov 2016)',u:city(6766)},{t:'Attachment with exhibits',u:city(6774)}]},
+  {lane:'city', y:dec(2018,11,13), d:'13 Nov 2018', t:'Second Addendum—Reso 085-2018', x:'4–0. Increases site areas for resort and single-family residential. IS: “No schools exist or are planned near the Project site.”', s:[{t:'esmeralda.org/site',u:'https://esmeralda.org/site'},CITYPAGE]},
+  {lane:'city', y:dec(2024,7,26), d:'Jul 2024', t:'City Manager: no new environmental review expected', x:'Kelley: the 2009 EIR is on file; “as long as they come in with a design plan that’s consistent, it should be OK.”', s:[PD24]},
+  {lane:'city', y:dec(2025,11,12), d:'12 Nov 2025', t:'Joint Planning Commission meeting on Esmeralda', x:'Item E.1 presentation and agenda report.', s:[{t:'Agenda report',u:city(6605)},{t:'Presentation',u:city(6614)},{t:'Minutes',u:city(6623)}]},
+  {lane:'city', y:dec(2025,12,10), d:'10 Dec 2025', t:'Council adopts Resolution 074-2025—Water Supply Assessment', x:'Zuegel presents to Council: ≈1,500 new residents at buildout, about a decade after groundbreaking.', s:[{t:'Agenda report H.1',u:city(6616)},{t:'Reso 074-2025',u:city(6624)},{t:'Minutes',u:city(6622)},PD26a]},
+  {lane:'city', y:dec(2026,2,5), d:'5 Feb 2026', t:'Esmeralda town hall; City Attorney on processing', x:'≈300 attend. City Attorney Mog’s outline: First Carbon preparing an addendum; Council decides addendum vs. supplemental EIR on the record.', s:[PD26b,CPDR,{t:'E.2 Processing memo',u:city(6704)}]},
+  {lane:'city', y:dec(2026,2,20), d:'20 Feb 2026', t:'Draft Esmeralda Specific Plan (Revised-1)', x:'266 ac. 605 units, 200-room hotel, senior living, preschool / optional K–6, retail, amphitheater. Proceeds by a §15164 addendum—the third—not a §15162 EIR. Hotel construction targeted “as early as spring 2027.”', s:[{t:'CEQA summary (City)',u:city(6705)},PD26b]},
+  {lane:'city', y:dec(2026,9,11), d:'11 Sep 2026', t:'Hearing packet posted; Specific Plan v6', x:'v6 drops the human-health risk assessment measure entirely (Revised-1 had it at 10⁻⁵ without dioxins/furans). Packet: Draft Specific Plan, EIR Addendum, MMRP, Draft DA, Keyser Marston fiscal analysis with EPS peer review.', s:[{t:'Draft Specific Plan',u:city(6971)},{t:'EIR Addendum',u:city(6953)},{t:'MMRP',u:city(6952)},{t:'Draft DA',u:city(6967)},{t:'KMA FEIA',u:city(6968)},{t:'EPS peer review',u:city(6965)}]},
+  {lane:'city', y:dec(2026,10,1), d:'1 Oct 2026', t:'Planning Commission hearing', x:'Scheduled.', s:[{t:'Esmeralda schedule',u:city(6948)},CITYPAGE]},
+
+  // Rail & neighbors
+  {lane:'rail', y:dec(1990,11), d:'1990', t:'Rail-corridor soil left in place', x:'≈80-ft NWP right-of-way bisects the later Restricted Soil Area; excavation stopped at the ROW for access and stability. Sidewall PCP 2–55 mg/kg. Documented source of dissolved PCP in MW-12 / MW-13.', s:[{t:'SCR',u:SCR.u},{t:'1990–91 regulatory file',u:PROF}]},
+  {lane:'rail', y:dec(2002,9), d:'2002', t:'Cloverdale Rancheria casino proposed on Santana Dr', x:'88,000 sf gaming facility; ≈5,200 trips/day projected.', s:[{t:'2004 DEIR §4.2',u:DEIR04.u}]},
+  {lane:'rail', y:dec(2013,8,28), d:'2013', t:'Corridor excluded from the Burdened Property', x:'No railroad entity appears as a party in the GeoTracker file.', s:[{t:'Covenant Exhibit A',u:gt('9231336832','Covenant Exhibit A.pdf')}]},
+  {lane:'rail', y:dec(2016,2,9), d:'Feb 2016', t:'Reuser deed restriction', x:'Tyris agrees to a deed restriction protecting the adjacent business park “indefinitely.”', s:[PD16]},
+  {lane:'rail', y:dec(2021,3,4), d:'4 Mar 2021', t:'SMART acquires the corridor', x:'STB FD 36481 notice of exemption served 18 Feb 2021; effective 4 Mar 2021.', s:[{t:'Federal Register 18 Feb 2021',u:'https://www.federalregister.gov/documents/2021/02/18/2021-03377/sonoma-marin-area-rail-transit-district-acquisition-and-operation-exemption-north-coast-railroad'}]},
+  {lane:'rail', y:dec(2026,3,30), d:'Mar–May 2026', t:'SMART Healdsburg extension starts', x:'Field work from 30 Mar 2026; groundbreaking 8 May 2026; completion targeted late 2028. Stops short of the site; Cloverdale extension unfunded.', s:[{t:'PD 22 Mar 2026',u:'https://www.pressdemocrat.com/2026/03/22/smart-healdsburg-windsor-extension/'},{t:'SMART Healdsburg page',u:'https://www.sonomamarintrain.org/healdsburg'}]},
+];
+
+// ---- ruler ----
+const ruler = document.getElementById('ruler');
+const canvas = document.getElementById('canvas');
+canvas.style.width = TOTAL_W + 'px';
+for (const b of BANDS){
+  const el = document.createElement('div'); el.className='band';
+  el.style.left = x(b.from)+'px'; el.style.width = (x(b.to)-x(b.from))+'px';
+  if (BANDS.indexOf(b)%2===1) ruler.appendChild(el);
+  const note = document.createElement('div'); note.className='scale-note';
+  note.style.left = (x(b.from)+6)+'px';
+  note.textContent = `${b.from}–${b.to === 2027 ? 'now' : b.to}: 1 yr = ${b.ppy}px`;
+  ruler.appendChild(note);
+}
+for (let y=START; y<=2026; y++){
+  const band = BANDS.find(b=>y>=b.from && y<b.to) || BANDS[BANDS.length-1];
+  const every = band.ppy<20 ? 10 : band.ppy<60 ? 5 : 1;
+  const major = y%every===0;
+  if (band.ppy<20 && !major) continue;
+  const t = document.createElement('div'); t.className='tick'+(major?' major':''); t.style.left=x(y)+'px'; ruler.appendChild(t);
+  if (major){ const l=document.createElement('div'); l.className='yr'; l.style.left=x(y)+'px'; l.textContent=y; ruler.appendChild(l); }
+}
+
+// ---- lanes with greedy row packing ----
+const LANES = [
+  {id:'own', name:'Site & ownership', sub:'who held the land, who proposed to build'},
+  {id:'reg', name:'Cleanup & regulators', sub:'DHS/DTSC 1984–91; NCRWQCB 1NSO266 after'},
+  {id:'city', name:'City planning & CEQA', sub:'General Plan, SCH 2003072142, addenda, Esmeralda'},
+  {id:'rail', name:'Rail & neighbors', sub:'the corridor, adjacent proposals'},
+];
+const lanesEl = document.getElementById('lanes');
+const CW = 212, GAP = 10;
+function buildLanes(){
+lanesEl.innerHTML = '';
+for (const L of LANES){
+  const evs = EV.filter(e=>e.lane===L.id).sort((a,b)=>a.y-b.y);
+  const rows = []; // row -> right edge px
+  const placed = [];
+  for (const e of evs){
+    const left = x(e.y);
+    let r = 0;
+    while (rows[r] !== undefined && rows[r] + GAP > left) r++;
+    rows[r] = left + CW;
+    placed.push({e, left, r});
+  }
+  const nrows = Math.max(1, rows.length);
+  const lane = document.createElement('section'); lane.className='lane '+L.id;
+  lane.innerHTML = `<div class="label">${L.name}<small>${L.sub}</small></div><div class="baseline"></div>`;
+  lanesEl.appendChild(lane);
+  // first pass: create cards so they can be measured
+  for (const p of placed){
+    const card = document.createElement('article'); card.className='ev'+(p.e.unv?' unv':''); card.tabIndex=0;
+    card.style.left=p.left+'px'; card.style.bottom='0px';
+    const src = (Array.isArray(p.e.s)?p.e.s:[p.e.s]).map(q=>typeof q==='string'?q:(q.u?`<a href="${q.u}" target="_blank" rel="noopener">${q.t}</a>`:q.t)).join(' · ');
+    card.innerHTML = `<div class="d">${p.e.d}</div><div class="t">${p.e.t}</div>${p.e.x?`<div class="x">${p.e.x}</div>`:''}<div class="s">${src}</div>`;
+    lane.appendChild(card); p.card = card;
+  }
+  // measure: each row is as tall as its tallest card
+  const rowH = new Array(nrows).fill(0);
+  for (const p of placed){ rowH[p.r] = Math.max(rowH[p.r], p.card.offsetHeight + 14); }
+  const rowBottom = []; let acc = 12 + 22;
+  for (let r=0; r<nrows; r++){ rowBottom[r] = acc; acc += rowH[r]; }
+  lane.style.height = (acc + 14) + 'px';
+  for (const p of placed){
+    const bottom = rowBottom[p.r];
+    p.card.style.bottom = bottom+'px';
+    const stem = document.createElement('div'); stem.className='stem'; stem.style.left=p.left+'px'; stem.style.height=(bottom-12)+'px'; lane.insertBefore(stem, p.card);
+    const dot = document.createElement('div'); dot.className='dot'+(p.e.unv?' unv':''); dot.style.left=p.left+'px'; lane.appendChild(dot);
+  }
+}
+}
+buildLanes();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildLanes);
+
+// ---- jump nav ----
+const jump = document.querySelector('nav.jump');
+const scroller = document.getElementById('scroller');
+for (const y of [1960,1988,1992,2003,2009,2013,2016,2018,2024,2026]){
+  const b = document.createElement('button'); b.type='button'; b.textContent=y;
+  b.addEventListener('click',()=>{ scroller.scrollTo({left: Math.max(0, x(y)-PAD_LEFT-20)}); });
+  jump.appendChild(b);
+}
+// open at 2003 so the expanded band is in view
+scroller.scrollLeft = Math.max(0, x(2002.6)-PAD_LEFT);
+</script>
+</body>
+</html>
