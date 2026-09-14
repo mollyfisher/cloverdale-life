@@ -9,11 +9,11 @@
 <style>
   :root{
     --paper:#fcfcff; --paper-deep:#eef0fa; --ink:#0a0a14; --ink-soft:#1a1d2e; --ink-faded:#4a4f63;
-    --cobalt:#1340e0; --cobalt-deep:#001a80; --slate:#2a4378; --rule:#c8cde0; --ochre:#b9770f;
-    --lane-own:#001a80; --lane-reg:#0e7d6b; --lane-city:#8a2846; --lane-rail:#5c5546;
-    --fs-xs:.75rem; --fs-sm:.875rem; --fs-base:1.0625rem; --fs-lg:1.6rem; --fs-xl:2.4rem;
+    --cobalt:#1340e0; --cobalt-deep:#001a80; --rule:#c8cde0; --ochre:#b9770f;
+    --lane-own:#024600; --lane-reg:#0ab200; --lane-city:#0000FF; --lane-rail:#FF6600;
+    --fs-xs:.75rem; --fs-sm:.875rem; --fs-base:1.0625rem; --fs-xl:2.4rem;
     --radius-organic:14px 20px 16px 12px / 18px 14px 20px 15px;
-    --card-w:212px; --row-h:132px; --lane-pad:18px;
+    --card-w:212px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:var(--fs-base);line-height:1.45}
@@ -54,11 +54,14 @@
   .lane .label small{display:block;font-family:"DM Sans",sans-serif;font-size:11px;color:var(--ink-faded);margin-top:3px}
   .lane .baseline{position:absolute;left:0;right:0;bottom:12px;height:1px;background:var(--rule)}
   .lane .stem{position:absolute;bottom:12px;width:1px;background:var(--ink-faded);opacity:.6}
-  .lane .dot{position:absolute;bottom:9px;width:7px;height:7px;border-radius:50%;transform:translateX(-3px);background:var(--lane-reg)}
-  .lane.own .dot{background:var(--lane-own)} .lane.city .dot{background:var(--lane-city)} .lane.rail .dot{background:var(--lane-rail)}
+  .lane .dot{position:absolute;bottom:9px;width:7px;height:7px;border-radius:50%;transform:translateX(-3px)}
+  .lane.own .dot{background:var(--lane-own)}
+  .lane.reg .dot{background:var(--lane-reg)}
+  .lane.city .dot{background:var(--lane-city)}
+  .lane.rail .dot{background:var(--lane-rail)}
   .lane .dot.unv{background:var(--ochre)}
 
-  .ev{position:absolute;width:var(--card-w);background:#fff;border:1px solid var(--rule);border-radius:var(--radius-organic);padding:8px 11px 9px;box-shadow:0 1px 2px rgba(10,10,20,.05);font-size:var(--fs-xs);line-height:1.35}
+  .ev{position:absolute;width:var(--card-w);background:#fff;border:1px solid var(--rule);border-radius:var(--radius-organic);padding:11px 13px 12px;box-shadow:0 1px 2px rgba(10,10,20,.05);font-size:var(--fs-xs);line-height:1.4}
   .lane.own .ev{border-left:3px solid var(--lane-own)}
   .lane.reg .ev{border-left:3px solid var(--lane-reg)}
   .lane.city .ev{border-left:3px solid var(--lane-city)}
@@ -70,9 +73,9 @@
   .lane.city .ev .d{color:var(--lane-city)}
   .lane.rail .ev .d{color:var(--lane-rail)}
   .ev.unv .d{color:var(--ochre)!important}
-  .ev .t{font-weight:600;font-size:12.5px;color:var(--ink);margin-top:2px}
-  .ev .x{color:var(--ink-soft);margin-top:3px}
-  .ev .s{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-faded);margin-top:5px;word-break:break-word}
+  .ev .t{font-weight:600;font-size:12.5px;color:var(--ink);margin-top:5px}
+  .ev .x{color:var(--ink-soft);margin-top:6px;line-height:1.45}
+  .ev .s{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-faded);margin-top:8px;word-break:break-word}
   .ev .s::before{content:"src ";opacity:.7}
   .ev .s a{color:var(--cobalt);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--cobalt) 35%,transparent)}
   .ev .s a:hover{border-bottom-color:var(--cobalt)}
@@ -113,7 +116,8 @@
 const BANDS = [
   {from:1950, to:1990, ppy:14},
   {from:1990, to:2003, ppy:46},
-  {from:2003, to:2027, ppy:172},
+  {from:2003, to:2025, ppy:172},
+  {from:2025, to:2027, ppy:516},
 ];
 const START = 1950, END = 2027;
 const PAD_LEFT = 170; // room for sticky lane labels
@@ -265,7 +269,9 @@ const LANES = [
   {id:'rail', name:'Rail & neighbors', sub:'the corridor, adjacent proposals'},
 ];
 const lanesEl = document.getElementById('lanes');
-const CW = 212, GAP = 10;
+const CW = 212, GAP = 10; // GAP: min horizontal clearance between cards sharing a row
+const BASE_GAP = 12;      // clearance between the lane baseline and the first row
+const ROW_GAP = 22;       // vertical clearance between stacked rows
 function buildLanes(){
 lanesEl.innerHTML = '';
 for (const L of LANES){
@@ -293,14 +299,14 @@ for (const L of LANES){
   }
   // measure: each row is as tall as its tallest card
   const rowH = new Array(nrows).fill(0);
-  for (const p of placed){ rowH[p.r] = Math.max(rowH[p.r], p.card.offsetHeight + 14); }
-  const rowBottom = []; let acc = 12 + 22;
+  for (const p of placed){ rowH[p.r] = Math.max(rowH[p.r], p.card.offsetHeight + ROW_GAP); }
+  const rowBottom = []; let acc = BASE_GAP + ROW_GAP;
   for (let r=0; r<nrows; r++){ rowBottom[r] = acc; acc += rowH[r]; }
   lane.style.height = (acc + 14) + 'px';
   for (const p of placed){
     const bottom = rowBottom[p.r];
     p.card.style.bottom = bottom+'px';
-    const stem = document.createElement('div'); stem.className='stem'; stem.style.left=p.left+'px'; stem.style.height=(bottom-12)+'px'; lane.insertBefore(stem, p.card);
+    const stem = document.createElement('div'); stem.className='stem'; stem.style.left=p.left+'px'; stem.style.height=(bottom-BASE_GAP)+'px'; lane.insertBefore(stem, p.card);
     const dot = document.createElement('div'); dot.className='dot'+(p.e.unv?' unv':''); dot.style.left=p.left+'px'; lane.appendChild(dot);
   }
 }
