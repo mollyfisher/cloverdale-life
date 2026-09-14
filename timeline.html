@@ -13,7 +13,7 @@
     --lane-own:#024600; --lane-reg:#0ab200; --lane-city:#0000FF; --lane-rail:#FF6600;
     --fs-xs:.75rem; --fs-sm:.875rem; --fs-base:1.0625rem; --fs-xl:2.4rem;
     --radius-organic:14px 20px 16px 12px / 18px 14px 20px 15px;
-    --card-w:212px;
+    --card-w:212px; --axis-h:24px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:var(--fs-base);line-height:1.45}
@@ -52,14 +52,17 @@
   .lane:last-child{border-bottom:0}
   .lane .label{position:sticky;left:0;z-index:4;width:150px;padding:12px 12px 0;font-family:"Fraunces",Georgia,serif;font-size:15px;line-height:1.2;color:var(--ink-soft);background:linear-gradient(90deg,var(--paper) 78%,rgba(252,252,255,0));pointer-events:none}
   .lane .label small{display:block;font-family:"DM Sans",sans-serif;font-size:11px;color:var(--ink-faded);margin-top:3px}
-  .lane .baseline{position:absolute;left:0;right:0;bottom:12px;height:1px;background:var(--rule)}
-  .lane .stem{position:absolute;bottom:12px;width:1px;background:var(--ink-faded);opacity:.6}
-  .lane .dot{position:absolute;bottom:9px;width:7px;height:7px;border-radius:50%;transform:translateX(-3px)}
+  .lane .baseline{position:absolute;left:0;right:0;bottom:var(--axis-h);height:1px;background:var(--rule)}
+  .lane .stem{position:absolute;bottom:var(--axis-h);width:1px;background:var(--ink-faded);opacity:.6}
+  .lane .dot{position:absolute;bottom:calc(var(--axis-h) - 3px);width:7px;height:7px;border-radius:50%;transform:translateX(-3px)}
   .lane.own .dot{background:var(--lane-own)}
   .lane.reg .dot{background:var(--lane-reg)}
   .lane.city .dot{background:var(--lane-city)}
   .lane.rail .dot{background:var(--lane-rail)}
   .lane .dot.unv{background:var(--ochre)}
+  .lane .axis{position:absolute;left:0;right:0;bottom:0;height:var(--axis-h)}
+  .lane .axis .tick{position:absolute;bottom:0;width:1px;height:7px;background:var(--ink-faded);opacity:.7}
+  .lane .axis .yr{position:absolute;bottom:9px;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-faded);white-space:nowrap}
 
   .ev{position:absolute;width:var(--card-w);background:#fff;border:1px solid var(--rule);border-radius:var(--radius-organic);padding:11px 13px 12px;box-shadow:0 1px 2px rgba(10,10,20,.05);font-size:var(--fs-xs);line-height:1.4}
   .lane.own .ev{border-left:3px solid var(--lane-own)}
@@ -251,14 +254,21 @@ for (const b of BANDS){
   note.textContent = `${b.from}–${b.to === 2027 ? 'now' : b.to}: 1 yr = ${b.ppy}px`;
   ruler.appendChild(note);
 }
-for (let y=START; y<=2026; y++){
-  const band = BANDS.find(b=>y>=b.from && y<b.to) || BANDS[BANDS.length-1];
-  const every = band.ppy<20 ? 10 : band.ppy<60 ? 5 : 1;
-  const major = y%every===0;
-  if (band.ppy<20 && !major) continue;
-  const t = document.createElement('div'); t.className='tick'+(major?' major':''); t.style.left=x(y)+'px'; ruler.appendChild(t);
-  if (major){ const l=document.createElement('div'); l.className='yr'; l.style.left=x(y)+'px'; l.textContent=y; ruler.appendChild(l); }
+// addYearTicks: shared by the sticky top ruler and each lane's own mini-axis,
+// so every year mark lines up at the same x position everywhere on the page.
+// majorOnly=true skips the unlabeled minor ticks (used for the compact lane axis).
+function addYearTicks(container, majorOnly){
+  for (let y=START; y<=2026; y++){
+    const band = BANDS.find(b=>y>=b.from && y<b.to) || BANDS[BANDS.length-1];
+    const every = band.ppy<20 ? 10 : band.ppy<60 ? 5 : 1;
+    const major = y%every===0;
+    if (band.ppy<20 && !major) continue;
+    if (majorOnly && !major) continue;
+    const t = document.createElement('div'); t.className='tick'+(major?' major':''); t.style.left=x(y)+'px'; container.appendChild(t);
+    if (major){ const l=document.createElement('div'); l.className='yr'; l.style.left=x(y)+'px'; l.textContent=y; container.appendChild(l); }
+  }
 }
+addYearTicks(ruler, false);
 
 // ---- lanes with greedy row packing ----
 const LANES = [
@@ -269,7 +279,7 @@ const LANES = [
 ];
 const lanesEl = document.getElementById('lanes');
 const CW = 212, GAP = 10; // GAP: min horizontal clearance between cards sharing a row
-const BASE_GAP = 12;      // clearance between the lane baseline and the first row
+const AXIS_H = 24;        // reserved strip at the bottom of each lane: baseline + that lane's own year ticks
 const ROW_GAP = 22;       // vertical clearance between stacked rows
 function buildLanes(){
 lanesEl.innerHTML = '';
@@ -286,8 +296,9 @@ for (const L of LANES){
   }
   const nrows = Math.max(1, rows.length);
   const lane = document.createElement('section'); lane.className='lane '+L.id;
-  lane.innerHTML = `<div class="label">${L.name}<small>${L.sub}</small></div><div class="baseline"></div>`;
+  lane.innerHTML = `<div class="label">${L.name}<small>${L.sub}</small></div><div class="baseline"></div><div class="axis"></div>`;
   lanesEl.appendChild(lane);
+  addYearTicks(lane.querySelector('.axis'), true);
   // first pass: create cards so they can be measured
   for (const p of placed){
     const card = document.createElement('article'); card.className='ev'+(p.e.unv?' unv':''); card.tabIndex=0;
@@ -299,13 +310,13 @@ for (const L of LANES){
   // measure: each row is as tall as its tallest card
   const rowH = new Array(nrows).fill(0);
   for (const p of placed){ rowH[p.r] = Math.max(rowH[p.r], p.card.offsetHeight + ROW_GAP); }
-  const rowBottom = []; let acc = BASE_GAP + ROW_GAP;
+  const rowBottom = []; let acc = AXIS_H + ROW_GAP;
   for (let r=0; r<nrows; r++){ rowBottom[r] = acc; acc += rowH[r]; }
   lane.style.height = (acc + 14) + 'px';
   for (const p of placed){
     const bottom = rowBottom[p.r];
     p.card.style.bottom = bottom+'px';
-    const stem = document.createElement('div'); stem.className='stem'; stem.style.left=p.left+'px'; stem.style.height=(bottom-BASE_GAP)+'px'; lane.insertBefore(stem, p.card);
+    const stem = document.createElement('div'); stem.className='stem'; stem.style.left=p.left+'px'; stem.style.height=(bottom-AXIS_H)+'px'; lane.insertBefore(stem, p.card);
     const dot = document.createElement('div'); dot.className='dot'+(p.e.unv?' unv':''); dot.style.left=p.left+'px'; lane.appendChild(dot);
   }
 }
